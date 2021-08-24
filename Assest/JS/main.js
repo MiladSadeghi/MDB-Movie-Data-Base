@@ -1,17 +1,8 @@
-const imagesURL = ['https://s4.uupload.ir/files/2501_d007_00152r_ey35.png', 'https://s4.uupload.ir/files/captain-marvel-movie-poster-4k_1555208721_m5zo.jpg', 'https://s4.uupload.ir/files/wp2751429-wallpapers-movies-hd_rjc2.jpg', 'https://s4.uupload.ir/files/wp1926880-the-revenant-wallpapers_c5ph.jpg', 'https://s4.uupload.ir/files/the_dark_knight_characters-wallpaper-1920x1080_pvz4.jpg', 'https://s4.uupload.ir/files/mulan_2020_film-wallpaper-1920x1200_kb12.jpg', 'https://s4.uupload.ir/files/teahub.io-sith-wallpaper-657742_bl70.png', 'https://s4.uupload.ir/files/breaking_bad_science-wallpaper-1920x1080_q5tg.jpg', 'https://s4.uupload.ir/files/the_expendables-wallpaper-1920x1080_mbwt.jpg', 'https://s4.uupload.ir/files/wallpapertip_hd-movie-wallpapers-1080p_301131_69jz.jpg']
+const imagesURL = ['https://s4.uupload.ir/files/breaking_bad_science-wallpaper-1920x1080_4e76.jpg', 'https://s4.uupload.ir/files/mulan_2020_film-wallpaper-1920x1080_1omx.jpg', 'https://s4.uupload.ir/files/pirates_of_the_caribbean_5_dead_men_tell_no_tales-wallpaper-1920x1080_i680.jpg', 'https://s4.uupload.ir/files/kylo_ren_star_wars_the_force_awaken-wallpaper-1920x1080_l8w.jpg', 'https://s4.uupload.ir/files/fast_and_furious_6_movie_2013-wallpaper-1920x1080_jnyf.jpg', 'https://s4.uupload.ir/files/captain_marvel_4k_5k-wallpaper-1920x1080_rpgb.jpg', 'https://s4.uupload.ir/files/breaking_bad_science-wallpaper-1920x1080_(1)_ly8v.jpg', 'https://s4.uupload.ir/files/the_vampire_diaries_2-wallpaper-1920x1080_vpjv.jpg', 'https://s4.uupload.ir/files/the_expendables_3_2014_movie-wallpaper-1920x1080_qstm.jpg', 'https://s4.uupload.ir/files/fury_brad_pitt-wallpaper-1920x1080_8bz2.jpg', 'https://s4.uupload.ir/files/teen_wolf_cast-wallpaper-1920x1080_vva1.jpg']
 
+const searchSection = document.querySelector('.search')
+const randomImage = imagesURL[Math.floor(Math.random() * imagesURL.length)]
 
-const backgroundChange = document.querySelector('.background')
+searchSection.style.background = ` linear-gradient(90deg, rgba(187, 10, 13, 0.65) 0%, rgba(187, 10, 13, 0.65) 100%), url('${randomImage}') top no-repeat`
 
-let randomURL = Math.floor(Math.random() * imagesURL.length) 
-
-function randomBackground() {
-  if(randomURL >= imagesURL.length) {
-    randomURL = 0
-  }
-  backgroundChange.style.backgroundImage = `url('${imagesURL[randomURL]}'`
-  randomURL++
-  }
-
-setInterval(randomBackground, 5000)
-
+searchSection.style.backgroundPosition = '50% 10%'
