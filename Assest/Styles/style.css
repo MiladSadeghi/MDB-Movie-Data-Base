@@ -25,7 +25,7 @@ body {
 .search .search-Texts {
   display: flex;
   flex-direction: column;
-  text-shadow: 0 0 2px #000;
+  text-shadow: 0 0 20px #000;
 }
 
 .search .search-Texts h1 {
@@ -54,6 +54,7 @@ body {
   border: none;
   border-radius: 30px;
   padding: 0px 28px;
+  box-shadow: 0px 0px 20px 4px #000;
 }
 
 .search .btn {
