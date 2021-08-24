@@ -3,6 +3,6 @@ const imagesURL = ['https://s4.uupload.ir/files/breaking_bad_science-wallpaper-1
 const searchSection = document.querySelector('.search')
 const randomImage = imagesURL[Math.floor(Math.random() * imagesURL.length)]
 
-searchSection.style.background = ` linear-gradient(90deg, rgba(187, 10, 13, 0.65) 0%, rgba(187, 10, 13, 0.65) 100%), url('${randomImage}') top no-repeat`
+searchSection.style.background = ` linear-gradient(90deg, rgba(168,2,2,0.7) 0%, rgba(0,0,0,0.7) 100%), url('${randomImage}') top no-repeat`
 
 searchSection.style.backgroundPosition = '50% 10%'
