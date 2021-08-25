@@ -87,7 +87,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 426px;
+  height: 540px;
+  position: relative;
 }
 
 .trend .head {
@@ -100,7 +101,8 @@ body {
 .cards {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  position: relative;
 }
 
 .trend-card {
@@ -109,9 +111,6 @@ body {
   justify-content: center;
   color: #fff;
   
-}
-.trend-card:not(:first-child) {
-  margin-left: 42px;
 }
 
 .trend-card .image {
@@ -138,13 +137,45 @@ body {
 .release-date {
   width: 80px;
   height: 20px;
-  animation: skeletonStyle 4s linear infinite alternate;
+  animation: skeletonStyle 3s linear infinite alternate;
 }
 
+.prev-btn{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  top: 50%;
+  left: 1.9%;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.next-btn{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  top: 50%;
+  left: 95.5%;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.owl-item {
+  display: flex;
+  justify-content: center;
+}
 
 @keyframes skeletonStyle {
   from {
-    background: rgb(158, 158, 158);
+    background: rgb(170, 170, 170);
   }
   to {
     background: rgb(82, 82, 82);
