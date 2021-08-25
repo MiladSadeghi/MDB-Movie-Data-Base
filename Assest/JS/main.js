@@ -18,35 +18,61 @@ function createTrendCard(divNumber) {
   for (let i = 0; i <= divNumber; i++) {
     cardDiv.innerHTML += `
     <div class="trend-card item">
-      <div class="image">
+      <div class="image skeletonStyle">
         <img src="https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg" alt="">
       </div>
-
-      <h1 class="movie-name"></h1>
-      <p class="release-date"></p>
+      <h1 class="movie-name skeletonStyle"></h1>
+      <p class="release-date skeletonStyle"></p>
     </div>
     `;
   }
 }
 
+function changeTredingCard(result) {
+  const trendCard = document.querySelectorAll(".trend-card");
+  let posterPathURL = "https://www.themoviedb.org/t/p/w220_and_h330_face";
+  trendCard.forEach((element, res) => {
+    element.children[0].classList.remove("skeletonStyle");
+    element.children[1].classList.remove("skeletonStyle");
+    element.children[2].classList.remove("skeletonStyle");
+    element.children[0].children[0].style.width = "100%";
+
+    element.children[0].children[0].src = `${posterPathURL}${result[res].poster_path}`;
+    element.children[1].textContent = result[res].title;
+    element.children[2].textContent = result[res].release_date;
+  });
+}
+
+async function trending() {
+  const API_URL =
+    "Enter Your API";
+
+  const response = await fetch(API_URL);
+  const responseContent = await response.json();
+
+  return responseContent;
+}
+
 const searchSection = document.querySelector(".search");
 const randomImage = imagesURL[Math.floor(Math.random() * imagesURL.length)];
-
 searchSection.style.background = `linear-gradient(90deg, rgba(168, 2, 2, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%) 50% 10%, url('${randomImage}') no-repeat`;
 searchSection.style.backgroundPosition = "50% 10%";
 
-createTrendCard(20);
+createTrendCard(19);
+
+document.addEventListener("DOMContentLoaded", () => {
+  trending().then((result) => {
+    changeTredingCard(result.results);
+  });
+});
 
 let owl = $(".owl-carousel");
-
 $(".next-btn").click(function () {
   owl.trigger("next.owl.carousel");
 });
-
 $(".prev-btn").click(function () {
   owl.trigger("prev.owl.carousel");
 });
-
 $(".owl-carousel").owlCarousel({
   dots: false,
   nav: false,
