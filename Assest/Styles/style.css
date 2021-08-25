@@ -87,7 +87,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 336px;
+  height: 426px;
+}
+
+.trend .head {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 30px;
 }
 
 .cards {
@@ -113,7 +120,7 @@ body {
   justify-content: center;
   width: 170px;
   height: 250px;
-  animation: skeletonStyle 3s linear infinite alternate;
+  animation: skeletonStyle 2s linear infinite alternate;
   border-radius: 30px;
 }
 
@@ -124,22 +131,22 @@ body {
 .movie-name {
   width: 130px;
   height: 20px;
-  animation: skeletonStyle 4s linear infinite alternate;
+  animation: skeletonStyle 3s linear infinite alternate;
   margin: 15px 0;
 }
 
 .release-date {
   width: 80px;
   height: 20px;
-  animation: skeletonStyle 5s linear infinite alternate;
+  animation: skeletonStyle 4s linear infinite alternate;
 }
 
 
 @keyframes skeletonStyle {
   from {
-    background: rgb(151, 151, 151);
+    background: rgb(158, 158, 158);
   }
   to {
-    background: rgba(83,83,83,1);
+    background: rgb(82, 82, 82);
   }
 }
