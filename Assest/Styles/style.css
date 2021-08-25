@@ -14,7 +14,7 @@ body {
 }
 
 .search {
-  height: 320px;
+  height: 290px;
   width: 100%;
   display: flex;
   align-items: start;
@@ -80,4 +80,55 @@ body {
 .searchBox:focus {
   border: none;
   outline: none;
+}
+
+.trend {
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 336px;
+}
+
+.cards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trend-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  
+}
+.trend-card:not(:first-child) {
+  margin-left: 42px;
+}
+
+.trend-card .image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 170px;
+  height: 250px;
+  background-color: rgb(146, 146, 146);
+  border-radius: 30px;
+}
+
+.trend-card .image img {
+  width: 50%;
+}
+
+.movie-name {
+  width: 130px;
+  height: 20px;
+  background: linear-gradient(90deg, rgba(186,186,186,1) 0%, rgba(83,83,83,1) 100%);
+}
+
+.release-date {
+  width: 80px;
+  height: 20px;
+  background: linear-gradient(90deg, rgba(186,186,186,1) 0%, rgba(83,83,83,1) 100%);
 }
