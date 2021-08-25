@@ -119,7 +119,6 @@ body {
   justify-content: center;
   width: 170px;
   height: 250px;
-  animation: skeletonStyle 2s linear infinite alternate;
   border-radius: 30px;
 }
 
@@ -130,14 +129,12 @@ body {
 .movie-name {
   width: 130px;
   height: 20px;
-  animation: skeletonStyle 3s linear infinite alternate;
   margin: 15px 0;
 }
 
 .release-date {
-  width: 80px;
+  width: 114px;
   height: 20px;
-  animation: skeletonStyle 3s linear infinite alternate;
 }
 
 .prev-btn{
@@ -171,6 +168,10 @@ body {
 .owl-item {
   display: flex;
   justify-content: center;
+}
+
+.skeletonStyle {
+  animation: skeletonStyle 3s linear infinite alternate;
 }
 
 @keyframes skeletonStyle {
