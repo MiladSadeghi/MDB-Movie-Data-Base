@@ -93,8 +93,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 470px;
-  padding-top: 70px;
+  height: 500px;
 }
 
 .trend .head, .popular .head{
@@ -108,7 +107,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
 }
 
 .card {
@@ -180,6 +178,21 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.wave {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.popular, .trend {
+  position: relative;
 }
 
 .owl1 .owl-nav button.owl-prev, .owl2 .owl-nav button.owl-prev{
