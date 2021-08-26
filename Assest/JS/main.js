@@ -19,6 +19,7 @@ function createTrendCard(divNumber) {
     cardDiv.innerHTML += `
     <div class="trend-card item">
       <div class="image skeletonStyle">
+        <div class="vote"></div>
         <img src="https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg" alt="">
       </div>
       <h1 class="movie-name skeletonStyle"></h1>
@@ -31,13 +32,20 @@ function createTrendCard(divNumber) {
 function changeTredingCard(result) {
   const trendCard = document.querySelectorAll(".trend-card");
   let posterPathURL = "https://www.themoviedb.org/t/p/w220_and_h330_face";
+
+  Array.from(document.querySelectorAll('.movie-name', '.release-date'), (e) => {
+    e.style.width = '80%'
+    e.style.height = '100%'
+  })
+
   trendCard.forEach((element, res) => {
     element.children[0].classList.remove("skeletonStyle");
     element.children[1].classList.remove("skeletonStyle");
     element.children[2].classList.remove("skeletonStyle");
-    element.children[0].children[0].style.width = "100%";
+    element.children[0].children[1].style.width = "100%";
 
-    element.children[0].children[0].src = `${posterPathURL}${result[res].poster_path}`;
+    element.children[0].children[0].textContent = result[res].vote_average
+    element.children[0].children[1].src = `${posterPathURL}${result[res].poster_path}`;
     element.children[1].textContent = result[res].title;
     element.children[2].textContent = result[res].release_date;
   });
