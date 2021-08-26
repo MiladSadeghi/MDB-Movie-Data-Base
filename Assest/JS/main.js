@@ -12,12 +12,10 @@ const imagesURL = [
   "https://s4.uupload.ir/files/teen_wolf_cast-wallpaper-1920x1080_vva1.jpg",
 ];
 
-function createTrendCard(divNumber) {
-  const cardDiv = document.querySelector("#cards");
-
+function createCards(path, divNumber, classContent) {
   for (let i = 0; i <= divNumber; i++) {
-    cardDiv.innerHTML += `
-    <div class="trend-card item">
+    path.innerHTML += `
+    <div class="card item ${classContent}">
       <div class="image skeletonStyle">
         <div class="vote"></div>
         <img src="https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg" alt="">
@@ -29,22 +27,21 @@ function createTrendCard(divNumber) {
   }
 }
 
-function changeTredingCard(result) {
-  const trendCard = document.querySelectorAll(".trend-card");
+function changeCardCantent(path, result) {
   let posterPathURL = "https://www.themoviedb.org/t/p/w220_and_h330_face";
 
-  Array.from(document.querySelectorAll('.movie-name', '.release-date'), (e) => {
-    e.style.width = '80%'
-    e.style.height = '100%'
-  })
+  Array.from(document.querySelectorAll(".movie-name", ".release-date"), (e) => {
+    e.style.width = "80%";
+    e.style.height = "100%";
+  });
 
-  trendCard.forEach((element, res) => {
+  path.forEach((element, res) => {
     element.children[0].classList.remove("skeletonStyle");
     element.children[1].classList.remove("skeletonStyle");
     element.children[2].classList.remove("skeletonStyle");
     element.children[0].children[1].style.width = "100%";
 
-    element.children[0].children[0].textContent = result[res].vote_average
+    element.children[0].children[0].textContent = result[res].vote_average;
     element.children[0].children[1].src = `${posterPathURL}${result[res].poster_path}`;
     element.children[1].textContent = result[res].title;
     element.children[2].textContent = result[res].release_date;
@@ -53,7 +50,17 @@ function changeTredingCard(result) {
 
 async function trending() {
   const API_URL =
-    "Enter Your API";
+    "https://api.themoviedb.org/3/trending/movie/week?api_key=75c8aed355937ba0502f74d9a1aed11c";
+
+  const response = await fetch(API_URL);
+  const responseContent = await response.json();
+
+  return responseContent;
+}
+
+async function popular() {
+  const API_URL =
+    "https://api.themoviedb.org/3/movie/popular?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&page=1";
 
   const response = await fetch(API_URL);
   const responseContent = await response.json();
@@ -66,19 +73,27 @@ const randomImage = imagesURL[Math.floor(Math.random() * imagesURL.length)];
 searchSection.style.background = `linear-gradient(90deg, rgba(168, 2, 2, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%) 50% 10%, url('${randomImage}') no-repeat`;
 searchSection.style.backgroundPosition = "50% 10%";
 
-createTrendCard(19);
+const cardTrendDiv = document.querySelector("#trend-cards");
+createCards(cardTrendDiv, 19, "trend-card");
+const cardPopularDiv = document.querySelector("#popular-cards");
+createCards(cardPopularDiv, 19, "popular-card");
 
 document.addEventListener("DOMContentLoaded", () => {
   trending().then((result) => {
-    changeTredingCard(result.results);
+    const trendCard = document.querySelectorAll(".trend-card");
+    changeCardCantent(trendCard, result.results);
+  });
+  popular().then((result) => {
+    const popularCard = document.querySelectorAll(".popular-card");
+    changeCardCantent(popularCard, result.results);
   });
 });
 
 let owl = $(".owl-carousel");
-$(".next-btn").click(function () {
+$(".next-btn-trend").click(function () {
   owl.trigger("next.owl.carousel");
 });
-$(".prev-btn").click(function () {
+$(".prev-btn-trend").click(function () {
   owl.trigger("prev.owl.carousel");
 });
 $(".owl-carousel").owlCarousel({
