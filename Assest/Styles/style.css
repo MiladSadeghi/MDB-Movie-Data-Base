@@ -97,7 +97,7 @@ body {
   position: relative;
 }
 
-.trend .head {
+.trend .head, .popular .head{
   color: #fff;
   font-size: 2rem;
   font-weight: 600;
@@ -111,7 +111,7 @@ body {
   position: relative;
 }
 
-.trend-card {
+.card {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -137,12 +137,12 @@ body {
   transition: top 600ms ease-in-out, box-shadow 1500ms ease-in-out;
 }
 
-.trend-card:hover .vote {
+.card:hover .vote {
   top: 0;
   box-shadow: 0 0 20px #000;
 }
 
-.trend-card .image {
+.card .image {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,7 +153,7 @@ body {
   position: relative;
 }
 
-.trend-card .image img {
+.card .image img {
   width: 50%;
   border-radius: 30px;
 }
@@ -188,17 +188,26 @@ body {
   cursor: pointer;
 }
 
-.prev-btn {
+.prev-btn-trend {
   left: 1.9%;
 }
 
-.next-btn {
+.next-btn-trend {
   left: 95.5%;
 }
 
 .owl-item {
   display: flex;
   justify-content: center;
+}
+
+.popular {
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 540px;
+  position: relative;
 }
 
 .skeletonStyle {
