@@ -90,15 +90,21 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 let owl = $(".owl-carousel");
-$(".next-btn-trend").click(function () {
+$(".owl-next").click(function () {
   owl.trigger("next.owl.carousel");
 });
-$(".prev-btn-trend").click(function () {
+
+$(".owl-prev").click(function () {
   owl.trigger("prev.owl.carousel");
 });
-$(".owl-carousel").owlCarousel({
+
+$(".owl1, .owl2").owlCarousel({
   dots: false,
-  nav: false,
+  nav: true,
+  navText: [
+    "<i class='fas fa-chevron-left'></i>",
+    "<i class='fas fa-chevron-right'></i>",
+  ],
   responsive: {
     0: {
       items: 1,
