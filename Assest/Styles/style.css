@@ -10,6 +10,35 @@ body {
   font-family: "Poppins";
 }
 
+.error {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 3;
+}
+
+.error-content {
+  width: 250px;
+  height: 150px;
+  background: rgba(168, 2, 2, 0.876);
+  margin: 20px;
+  border-radius: 30px;
+  border: 5px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column-reverse;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  transition: border 300ms ease-in-out;
+}
+
+.error-content:hover {
+  border: 5px solid #fff;
+}
+
 .container {
   width: 90%;
   margin: 0 auto;
