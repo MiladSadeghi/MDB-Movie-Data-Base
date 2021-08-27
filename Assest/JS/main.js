@@ -68,6 +68,28 @@ async function popular() {
   return responseContent;
 }
 
+function search() {
+  const inputField = document.querySelector('#searchBox')
+  const errorDiv = document.querySelector('#error')
+  const errorContent = document.createElement('div')
+  errorContent.classList.add('error-content')
+
+  if(inputField.value === '' || inputField.value === null || inputField.value === undefined) {
+    errorContent.innerHTML = `
+      <p>You Shoud Enter Something</p>
+    `
+    errorDiv.append(errorContent)
+    
+    errorContent.addEventListener('click', ()=> {
+      errorContent.remove()
+    }) 
+    
+    setTimeout(() => {
+      errorContent.remove()
+    }, 5000);
+  }
+}
+
 const searchSection = document.querySelector(".search");
 const randomImage = imagesURL[Math.floor(Math.random() * imagesURL.length)];
 searchSection.style.background = `linear-gradient(90deg, rgba(168, 2, 2, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%) 50% 10%, url('${randomImage}') no-repeat`;
@@ -78,15 +100,20 @@ createCards(cardTrendDiv, 19, "trend-card");
 const cardPopularDiv = document.querySelector("#popular-cards");
 createCards(cardPopularDiv, 19, "popular-card");
 
+const fromSubmit = document.querySelector('#search')
+
 document.addEventListener("DOMContentLoaded", () => {
   trending().then((result) => {
     const trendCard = document.querySelectorAll(".trend-card");
     changeCardCantent(trendCard, result.results);
   });
+
   popular().then((result) => {
     const popularCard = document.querySelectorAll(".popular-card");
     changeCardCantent(popularCard, result.results);
   });
+
+  fromSubmit.addEventListener('submit', search)
 });
 
 let owl = $(".owl-carousel");
