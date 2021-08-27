@@ -56,7 +56,16 @@ body {
   border: none;
   border-radius: 30px;
   padding: 0px 28px;
-  box-shadow: 0px 0px 7px 0px #000;
+  box-shadow: 0px 0px 3px 0px #000;
+  transition: box-shadow 10ms ease-in-out;
+}
+
+.form:focus-within .searchBox[type="text"]{
+  box-shadow: 0px 0px 10px 0px #000;
+}
+
+.form:focus-within  .btn {
+  border: 2px solid #fff;
 }
 
 .search .btn {
@@ -81,6 +90,8 @@ body {
   font-size: 1.3rem;
   font-weight: 700;
   cursor: pointer;
+  border: 0px solid #fff;
+  transition: border 80ms ease-in-out;
 }
 
 .searchBox:focus {
