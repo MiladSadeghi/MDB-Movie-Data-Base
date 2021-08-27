@@ -8,4 +8,42 @@
 
 body {
   font-family: "Poppins";
+  background: #000;
+}
+
+.search {
+  display: flex;
+  width: 100%;
+  position: relative;
+}
+
+.search-bar {
+  width: 100%;
+  display: flex;
+  height: 55px;
+  border: none;
+  outline: none;
+  padding: 0 20px;
+  font-size: 1.2rem;
+  background: rgba(168, 2, 2, 0.527);
+  color: #fff;
+  font-family: 'poppins';
+  transition: border-radius 100ms ease-in-out;
+}
+
+.search-bar:focus-within {
+  border-radius: 30px;
+}
+
+.fa-search {
+  position: absolute;
+  right: 2%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #fff;
 }
