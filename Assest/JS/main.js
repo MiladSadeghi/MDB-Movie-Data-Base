@@ -91,7 +91,7 @@ function search(e) {
     }, 5000);
   } else {
     sessionStorage.setItem('search', inputField.value)
-    window.open('/Search', '_blank')
+    window.open('Search', '_blank')
   }
 }
 
