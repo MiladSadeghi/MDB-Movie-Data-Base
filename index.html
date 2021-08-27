@@ -31,6 +31,7 @@
 </head>
 
 <body>
+  <div class="error" id="error"></div>
   <section class="search">
     <div class="container">
       <div class="search-Texts">
@@ -38,11 +39,11 @@
         <h2>Movies, Tv Shows,and people to find out. Just Give me a Name</h2>
       </div>
 
-      <form action="/search" id="search" class="form">
+      <form action="#" id="search" class="form" method="get">
         <label>
-          <input type="text" class="searchBox" placeholder="movies,tv shows, person and ...">
+          <input type="text" class="searchBox" id="searchBox" placeholder="movies,tv shows, person and ...">
         </label>
-        <button type="submit" class="btn">search</button>
+        <button type="submit" class="btn" id="search-btn">search</button>
       </form>
     </div>
   </section>
