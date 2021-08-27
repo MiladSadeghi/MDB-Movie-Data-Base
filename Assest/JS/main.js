@@ -68,9 +68,11 @@ async function popular() {
   return responseContent;
 }
 
-function search() {
+function search(e) {
+  e.preventDefault()
   const inputField = document.querySelector('#searchBox')
   const errorDiv = document.querySelector('#error')
+  const form = document.querySelector('#search')
   const errorContent = document.createElement('div')
   errorContent.classList.add('error-content')
 
@@ -87,6 +89,9 @@ function search() {
     setTimeout(() => {
       errorContent.remove()
     }, 5000);
+  } else {
+    sessionStorage.setItem('search', inputField.value)
+    window.open('/Search', '_blank')
   }
 }
 
