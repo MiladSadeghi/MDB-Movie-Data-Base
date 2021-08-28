@@ -32,7 +32,7 @@ body {
   font-size: 1.2rem;
   background: rgba(168, 2, 2, 0.527);
   color: #fff;
-  font-family: 'poppins';
+  font-family: "poppins";
   transition: border-radius 100ms ease-in-out;
 }
 
@@ -103,7 +103,12 @@ body {
 }
 
 .lists:hover {
-  background: rgba(168, 2, 2, 0.445);
+  background: rgba(168, 2, 2, 0.246);
+}
+
+.bg-selected,
+.bg-selected:hover {
+  background: rgba(168, 2, 2, 0.808);
 }
 
 .content {
