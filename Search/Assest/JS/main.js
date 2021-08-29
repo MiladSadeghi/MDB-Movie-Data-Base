@@ -17,9 +17,11 @@ const searchQuery = [movie, tv, collection, person, company, keyword]
 
 document.addEventListener('DOMContentLoaded', ()=> {
   countResult(idOfResultCounter, searchQuery)
-  whatShouldBeShown(idOfResultCounter)
+  showContent('movies')
+  whatShouldBeShown()
 })
 
+eventListener()
 function eventListener() {
   selectUl.addEventListener("click", selectedBg);
 }
@@ -36,9 +38,66 @@ function whatShouldBeShown() {
   ['movies', 'tvShows', 'collection', 'people', 'companies', 'keywords'].forEach(element => {
     const selected = document.getElementById(element)
     selected.addEventListener('click', ()=> {
-      return selected.id
+      showContent(selected.id)
     })
   });
+}
+
+function showContent(ids) {
+  const path = document.querySelector('#content')
+  
+  let posterPathURL = "https://www.themoviedb.org/t/p/w220_and_h330_face";
+  let id;
+  switch (ids) {
+    case 'movies':
+      id = movie
+      break;
+    case 'tvShows':
+      id = tv
+      break;
+    case 'collection':
+      id = collection
+      break;
+    case 'people':
+      id = person
+      break;
+    case 'companies':
+      id = company
+      break;
+    case 'keywords':
+      id = keyword
+      break;
+  }
+  let image
+  let classStyle
+  
+  id.then((e)=> {
+    path.innerHTML = ''
+    e.results.forEach(element => {
+      if(element.poster_path === null || element.backdrop_path === null) {
+        image = `
+        <object id="svg-object" data="Assest/Images/LoadImage.svg" type="image/svg+xml"></object>
+        `
+        classStyle = 'content-row-img skeletonStyle'
+      } else {
+        image = `<img src="${posterPathURL+ element.poster_path}" alt=""></img>`
+        classStyle = 'content-row-img'
+      }
+      
+      path.innerHTML += `
+      <div class="content-row">
+        <div class="${classStyle}">
+          ${image}
+        </div>
+        <div class="content-row-text">
+          <h2 class="">${element.title}</h2>
+          <p class="">${element.overview}</p>
+          <span class="">${element.vote_average}</span>
+        </div>
+      </div>
+      `
+    });
+  })
 }
 
 function selectedBg(e) {
@@ -63,13 +122,13 @@ function createSkelton(Number) {
   for (let i = 1; i <= Number; i++) {
     path.innerHTML += `
     <div class="content-row">
-      <div class="content-row-img">
-        <img src="https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg" alt="">
+      <div class="content-row-img skeletonStyle">
+        <object id="svg-object" data="Assest/Images/LoadImage.svg" type="image/svg+xml"></object>
       </div>
       <div class="content-row-text">
-        <h2 class="nothing1"></h2>
-        <p class="nothing2"></p>
-        <span class="nothing3"></span>
+        <h2 class="nothing1 skeletonStyle"></h2>
+        <p class="nothing2 skeletonStyle"></p>
+        <span class="nothing3 skeletonStyle"></span>
       </div>
     </div>
     `;
@@ -81,6 +140,6 @@ async function getFromAPI(searchForWhat) {
 
   const response = await fetch(API);
   const result = await response.json();
-
+  
   return result;
 }
