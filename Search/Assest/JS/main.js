@@ -17,9 +17,9 @@ const searchQuery = [movie, tv, collection, person, company, keyword]
 
 document.addEventListener('DOMContentLoaded', ()=> {
   countResult(idOfResultCounter, searchQuery)
+  whatShouldBeShown(idOfResultCounter)
 })
 
-eventListener();
 function eventListener() {
   selectUl.addEventListener("click", selectedBg);
 }
@@ -28,6 +28,15 @@ function countResult(array, content) {
   array.forEach((element,index) => {
     content[index].then((result)=> {
       document.getElementById(element).textContent = result.total_results
+    })
+  });
+}
+
+function whatShouldBeShown() {
+  ['movies', 'tvShows', 'collection', 'people', 'companies', 'keywords'].forEach(element => {
+    const selected = document.getElementById(element)
+    selected.addEventListener('click', ()=> {
+      return selected.id
     })
   });
 }
