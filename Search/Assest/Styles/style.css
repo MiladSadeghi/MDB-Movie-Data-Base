@@ -30,14 +30,19 @@ body {
   outline: none;
   padding: 0 20px;
   font-size: 1.2rem;
-  background: rgba(168, 2, 2, 0.527);
+  background: rgb(255 0 0 / 53%);
   color: #fff;
   font-family: "poppins";
-  transition: border-radius 100ms ease-in-out;
+  transition: border-radius 100ms ease-in-out, background 100ms ease-in-out;
 }
 
 .search-bar:focus-within {
   border-radius: 30px;
+  background: rgba(255, 0, 0, 0.863);
+}
+
+.search-bar::placeholder {
+  color: rgb(194, 194, 194);
 }
 
 .fa-search {
@@ -58,15 +63,15 @@ body {
   color: #fff;
   width: 100%;
   height: 100%;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: space-between;
   margin-top: 40px;
 }
 
 .filter {
   width: 25%;
   height: 100%;
-  border: 1px solid #fff;
+  border: 5px solid rgba(255, 0, 0, 0.863);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -74,9 +79,9 @@ body {
 
 .result {
   padding: 20px 20px;
-  background-color: rgba(168, 2, 2, 0.808);
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  background-color: rgba(255, 0, 0, 0.863);
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
 .filter-list {
@@ -112,5 +117,60 @@ body {
 }
 
 .content {
-  width: 75%;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.content-row-img {
+  width: 21.5%;
+  animation: skeletonStyle 3s linear infinite alternate;
+  border-radius: 20px;
+}
+
+.content-row-text {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  flex-direction: column;
+  position: relative;
+}
+
+.nothing1 {
+  width: 40%;
+  height: 20px;
+  animation: skeletonStyle 4s linear infinite alternate;
+  margin: 20px 0 0;
+}
+
+.nothing2 {
+  margin: 20px 0;
+  width: 100%;
+  height: 20px;
+  animation: skeletonStyle 4s linear infinite alternate;
+}
+
+.nothing3 {
+  position: absolute;
+  width: 50px;
+  height: 20px;
+  bottom: 0;
+  right: 20px;
+  animation: skeletonStyle 4s linear infinite alternate;
+}
+
+@keyframes skeletonStyle {
+  from {
+    background: rgb(170, 170, 170);
+  }
+  to {
+    background: rgb(61, 61, 61);
+  }
 }
