@@ -4,17 +4,32 @@ document.querySelector("#search-bar").placeholder = search;
 
 const selectUl = document.querySelector(".filter-list");
 const selectLi = document.querySelectorAll(".lists");
+const idOfResultCounter = ['mCount', 'tCount', 'colCount', 'pCount', 'comCount', 'kCount']
 
 let movie = getFromAPI("movie");
 tv = getFromAPI("tv");
 collection = getFromAPI("collection");
 person = getFromAPI("person");
-collection = getFromAPI("collection");
+company = getFromAPI("company");
 keyword = getFromAPI("keyword");
+
+const searchQuery = [movie, tv, collection, person, company, keyword]
+
+document.addEventListener('DOMContentLoaded', ()=> {
+  countResult(idOfResultCounter, searchQuery)
+})
 
 eventListener();
 function eventListener() {
   selectUl.addEventListener("click", selectedBg);
+}
+
+function countResult(array, content) {
+  array.forEach((element,index) => {
+    content[index].then((result)=> {
+      document.getElementById(element).textContent = result.total_results
+    })
+  });
 }
 
 function selectedBg(e) {
