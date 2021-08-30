@@ -68,31 +68,22 @@ function showContent(ids) {
       id = keyword
       break;
   }
-  let image
-  let classStyle
   
   id.then((e)=> {
     path.innerHTML = ''
     e.results.forEach(element => {
-      if(element.poster_path === null || element.backdrop_path === null) {
-        image = `
-        <object id="svg-object" data="Assest/Images/LoadImage.svg" type="image/svg+xml"></object>
-        `
-        classStyle = 'content-row-img skeletonStyle'
-      } else {
-        image = `<img src="${posterPathURL+ element.poster_path}" alt=""></img>`
-        classStyle = 'content-row-img'
-      }
-      
+      let res = element.overview.split('.',3).join('.').length
+      res = element.overview.slice(0,res)
+
       path.innerHTML += `
       <div class="content-row">
-        <div class="${classStyle}">
-          ${image}
+        <div class="${(element.poster_path === null || element.backdrop_path === null)? 'content-row-img skeletonStyle' : 'content-row-img'}">
+          <img src="${(element.poster_path === null || element.backdrop_path === null)? 'Assest/Images/loadingImage.png' : posterPathURL+ element.poster_path}">
         </div>
         <div class="content-row-text">
-          <h2 class="">${element.title}</h2>
-          <p class="">${element.overview}</p>
-          <span class="">${element.vote_average}</span>
+          <h2 class="title">${(element.title)? element.title : element.original_name}</h2>
+          <p class="overview">${(element.overview === '')? 'No Data': res}</p>
+          <span class="vote">${(element.vote_average === 0)? 'no Vote': element.vote_average}</span>
         </div>
       </div>
       `
@@ -123,7 +114,7 @@ function createSkelton(Number) {
     path.innerHTML += `
     <div class="content-row">
       <div class="content-row-img skeletonStyle">
-        <object id="svg-object" data="Assest/Images/LoadImage.svg" type="image/svg+xml"></object>
+        <img src="Assest/Images/loadingImage.png">
       </div>
       <div class="content-row-text">
         <h2 class="nothing1 skeletonStyle"></h2>
@@ -136,10 +127,10 @@ function createSkelton(Number) {
 }
 
 async function getFromAPI(searchForWhat) {
-  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=lucifer&page=1&include_adult=false`;
+  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=avenger&page=1&include_adult=false`;
 
   const response = await fetch(API);
   const result = await response.json();
-  
+  console.log(result);
   return result;
 }
