@@ -7,6 +7,7 @@ const LI = document.querySelectorAll(".lists");
 
 document.addEventListener("DOMContentLoaded", () => {
   UL.addEventListener("click", selectedBg);
+  resultCounterAndPageMaker()
 });
 
 function selectedBg(e) {
@@ -41,4 +42,35 @@ function createSkelton(Number) {
     </div>
     `;
   }
+}
+
+function resultCounterAndPageMaker(query = "movie") {
+  const counter = document.querySelectorAll(".counter");
+  const pageNation = document.querySelector("#pagenation");
+  pageNation.innerHTML = "";
+  const div = document.createElement("div");
+  div.classList.add("pages");
+  const querySearch = document.querySelectorAll(".lists");
+  querySearch.forEach((element, index) => {
+    getCounterAndPage(element.id).then((e) => {
+      counter[index].innerHTML = e.total_results;
+    });
+  });
+
+  getCounterAndPage(query).then((e) => {
+    for (let i = 1; i <= e.total_pages; i++) {
+      div.innerHTML += `
+        <span class="page" data="${i}">${i}</span>
+      `;
+    }
+    pageNation.appendChild(div);
+  });
+}
+
+async function getCounterAndPage(searchForWhat) {
+  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=avenger`;
+
+  const response = await fetch(API);
+  const result = await response.json();
+  return result;
 }
