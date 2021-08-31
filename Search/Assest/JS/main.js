@@ -24,3 +24,21 @@ function selectedBg(e) {
       break;
   }
 }
+createSkelton(3);
+function createSkelton(Number) {
+  const path = document.getElementById("content");
+  for (let i = 1; i <= Number; i++) {
+    path.innerHTML += `
+    <div class="content-row">
+      <div class="content-row-img skeletonStyle">
+        <img src="Assest/Images/loadingImage.png">
+      </div>
+      <div class="content-row-text">
+        <h2 class="nothing1 skeletonStyle"></h2>
+        <p class="nothing2 skeletonStyle"></p>
+        <span class="nothing3 skeletonStyle"></span>
+      </div>
+    </div>
+    `;
+  }
+}
