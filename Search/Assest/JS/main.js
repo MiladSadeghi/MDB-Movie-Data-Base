@@ -18,10 +18,12 @@ function selectedBg(e) {
   switch (e.target.tagName) {
     case "LI":
       e.target.classList.add("bg-selected");
+      resultCounterAndPageMaker(e.target.id)
       break;
     case "P":
     case "SPAN":
       e.target.parentElement.classList.add("bg-selected");
+      resultCounterAndPageMaker(e.target.parentElement.id)
       break;
   }
 }
