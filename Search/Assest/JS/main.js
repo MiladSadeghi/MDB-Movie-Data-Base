@@ -5,10 +5,12 @@ document.querySelector("#search-bar").placeholder = search;
 const UL = document.querySelector(".filter-list");
 const LI = document.querySelectorAll(".lists");
 
+let query;
+
 document.addEventListener("DOMContentLoaded", () => {
   UL.addEventListener("click", selectedBg);
-  resultCounterAndPageMaker()
-  showDataFromAPI()
+  resultCounterAndPageMaker();
+  showDataFromAPI();
 });
 
 function selectedBg(e) {
@@ -19,12 +21,16 @@ function selectedBg(e) {
   switch (e.target.tagName) {
     case "LI":
       e.target.classList.add("bg-selected");
-      resultCounterAndPageMaker(e.target.id)
+      resultCounterAndPageMaker(e.target.id);
+      query = e.target.id
+      showDataFromAPI(e.target.id);
       break;
     case "P":
     case "SPAN":
       e.target.parentElement.classList.add("bg-selected");
-      resultCounterAndPageMaker(e.target.parentElement.id)
+      resultCounterAndPageMaker(e.target.parentElement.id);
+      query = e.target.parentElement.id
+      showDataFromAPI(e.target.parentElement.id);
       break;
   }
 }
@@ -67,6 +73,7 @@ function resultCounterAndPageMaker(query = "movie") {
       `;
     }
     pageNation.appendChild(div);
+    pageSelector();
   });
 }
 
@@ -122,4 +129,13 @@ async function getFromAPI(searchForWhat, page) {
   const response = await fetch(API);
   const result = await response.json();
   return result;
+}
+
+function pageSelector() {
+  const test = document.querySelectorAll(".page");
+  test.forEach((element) => {
+    element.addEventListener("click", (e) => {
+      showDataFromAPI(query, e.target.getAttribute("data"));
+    });
+  });
 }
