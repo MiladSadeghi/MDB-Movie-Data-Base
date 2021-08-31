@@ -12,6 +12,8 @@ const imagesURL = [
   "https://s4.uupload.ir/files/teen_wolf_cast-wallpaper-1920x1080_vva1.jpg",
 ];
 
+let serches = []
+
 function createCards(path, divNumber, classContent) {
   for (let i = 0; i <= divNumber; i++) {
     path.innerHTML += `
@@ -90,7 +92,8 @@ function search(e) {
       errorContent.remove()
     }, 5000);
   } else {
-    sessionStorage.setItem('search', inputField.value)
+    serches.push(inputField.value)
+    sessionStorage.setItem('search', JSON.stringify(serches))
     window.open('Search', '_blank')
   }
 }
