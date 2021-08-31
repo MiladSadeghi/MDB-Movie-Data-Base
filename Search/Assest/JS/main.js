@@ -78,7 +78,7 @@ function resultCounterAndPageMaker(query = "movie") {
 }
 
 async function getCounterAndPage(searchForWhat) {
-  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=avenger`;
+  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=${search}`;
 
   const response = await fetch(API);
   const result = await response.json();
@@ -124,7 +124,7 @@ function showDataFromAPI(query = "movie", page = 1) {
 }
 
 async function getFromAPI(searchForWhat, page) {
-  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=avenger&page=${page}&include_adult=false`;
+  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=${search}&page=${page}&include_adult=false`;
 
   const response = await fetch(API);
   const result = await response.json();
