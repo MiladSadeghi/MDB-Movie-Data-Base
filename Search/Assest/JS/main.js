@@ -5,6 +5,7 @@ const querySearch = search[search.length - 1]
 
 const UL = document.querySelector(".filter-list");
 const LI = document.querySelectorAll(".lists");
+const searchIcon = document.querySelector('#search')
 
 let query;
 
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   UL.addEventListener("click", selectedBg);
   resultCounterAndPageMaker();
   showDataFromAPI();
+  searchIcon.addEventListener('click', searchInSearchPage)
 });
 
 function selectedBg(e) {
@@ -139,4 +141,15 @@ function pageSelector() {
       showDataFromAPI(query, e.target.getAttribute("data"));
     });
   });
+}
+
+function searchInSearchPage() {
+  const inputField = document.getElementById('search-bar')
+  const search = JSON.parse(sessionStorage.getItem("search"));
+  if (inputField.value !== '') {
+    search.push(inputField.value)
+    console.log(search, inputField.value);
+    sessionStorage.setItem('search', JSON.stringify(search))
+    window.open('/Search', '_blank')
+  }
 }
