@@ -82,6 +82,8 @@ body {
   background-color: rgba(255, 0, 0, 0.863);
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
 .filter-list {
@@ -95,6 +97,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px 20px;
+  background: #000;
 }
 
 .lists p {
