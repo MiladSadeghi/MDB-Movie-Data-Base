@@ -8,6 +8,7 @@ const LI = document.querySelectorAll(".lists");
 document.addEventListener("DOMContentLoaded", () => {
   UL.addEventListener("click", selectedBg);
   resultCounterAndPageMaker()
+  showDataFromAPI()
 });
 
 function selectedBg(e) {
@@ -71,6 +72,52 @@ function resultCounterAndPageMaker(query = "movie") {
 
 async function getCounterAndPage(searchForWhat) {
   const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=avenger`;
+
+  const response = await fetch(API);
+  const result = await response.json();
+  return result;
+}
+
+function showDataFromAPI(query = "movie", page = 1) {
+  const path = document.querySelector("#content");
+  const data = getFromAPI(query, page);
+  let posterPathURL = "https://www.themoviedb.org/t/p/w220_and_h330_face";
+
+  data.then((e) => {
+    path.innerHTML = "";
+    e.results.forEach((element) => {
+      let res = element.overview.split(".", 2).join(".").length;
+      res = element.overview.slice(0, res);
+
+      path.innerHTML += `
+      <div class="content-row">
+        <div class="${
+          element.poster_path === null || element.backdrop_path === null
+            ? "content-row-img skeletonStyle"
+            : "content-row-img"
+        }">
+          <img src="${
+            element.poster_path === null || element.backdrop_path === null
+              ? "Assest/Images/loadingImage.png"
+              : posterPathURL + element.poster_path
+          }">
+        </div>
+        <div class="content-row-text">
+          <h2 class="title">${
+            element.title ? element.title : element.original_name
+          } - <span class="vote">${
+        element.vote_average === 0 ? "no Vote" : element.vote_average
+      }</span></h2>
+          <p class="overview">${element.overview === "" ? "No Data" : res}..</p>
+        </div>
+      </div>
+      `;
+    });
+  });
+}
+
+async function getFromAPI(searchForWhat, page) {
+  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=avenger&page=${page}&include_adult=false`;
 
   const response = await fetch(API);
   const result = await response.json();
