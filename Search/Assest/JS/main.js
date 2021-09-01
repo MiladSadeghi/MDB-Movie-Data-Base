@@ -140,6 +140,20 @@ function showDataFromAPI(query = "movie", page = 1) {
     return true
   }
 
+  if(query === 'keyword') {
+    data.then((e) => {
+      path.innerHTML = "";
+      e.results.forEach(element => {
+        path.innerHTML += `
+        <div class="keyword-row">
+          <h3>${element.name}</h3>
+        </div>
+        `
+      })
+    })
+    return true
+  }
+
   data.then((e) => {
     path.innerHTML = "";
     e.results.forEach((element) => {
