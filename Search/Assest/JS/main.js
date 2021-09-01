@@ -81,7 +81,7 @@ function resultCounterAndPageMaker(query = "movie") {
 }
 
 async function getCounterAndPage(searchForWhat) {
-  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=avenger`;
+  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=Walt Disney`;
 
   const response = await fetch(API);
   const result = await response.json();
@@ -92,8 +92,9 @@ function showDataFromAPI(query = "movie", page = 1) {
   const path = document.querySelector("#content");
   const data = getFromAPI(query, page);
   let posterPathURL = "https://www.themoviedb.org/t/p/w220_and_h330_face";
-  let test1 = 'https://www.themoviedb.org/t/p/w90_and_h90_face/'
-  let test = '';
+  let personPhoto = 'https://www.themoviedb.org/t/p/w90_and_h90_face/'
+  let companyLogo = 'https://www.themoviedb.org/t/p/h30/'
+  let knownFor = '';
   if(query === 'person') {
     data.then((e) => {
       path.innerHTML = "";
@@ -101,24 +102,39 @@ function showDataFromAPI(query = "movie", page = 1) {
         for (const iterator of element.known_for) {
           console.log(iterator);
           if(iterator.title) {
-            test += ` ${iterator.title},`
+            knownFor += ` ${iterator.title},`
           } else {
-            test += ` ${iterator.name},`
+            knownFor += ` ${iterator.name},`
           }
           
         }
         path.innerHTML += `
         <div class="person-row">
           <div class="${(element.profile_path === null) ? "person-row-img skeletonStyle" : "person-row-img"}">
-            <img src="${(element.profile_path === null) ? "Assest/Images/profile.png" : test1 +element.profile_path}">
+            <img src="${(element.profile_path === null) ? "Assest/Images/profile.png" : personPhoto +element.profile_path}">
           </div>
           <div class="person-row-text">
             <h2>${element.name} - <span>${element.known_for_department}</span></h2>
-            <p><span>${test}</span></p>
+            <p><span>${knownFor}</span></p>
           </div>
         </div>
         `
-        test = ''
+      })
+      knownFor = ''
+    })
+    return true
+  }
+
+  if(query === 'company') {
+    data.then((e) => {
+      path.innerHTML = "";
+      e.results.forEach(element => {
+        path.innerHTML += `
+        <div class="company-row">
+          ${(element.logo_path)? `<img src="${companyLogo + element.logo_path}">`: `<h2>${element.name}</h2>`}
+          ${(element.origin_country)? `<span>${element.origin_country}</span>`: `<span>Unknown Country</span>`}
+        </div>
+        `
       })
     })
     return true
@@ -155,7 +171,7 @@ function showDataFromAPI(query = "movie", page = 1) {
 }
 
 async function getFromAPI(searchForWhat, page) {
-  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=avenger&page=${page}&include_adult=false`;
+  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=Walt Disney&page=${page}&include_adult=false`;
 
   const response = await fetch(API);
   const result = await response.json();
