@@ -81,7 +81,7 @@ function resultCounterAndPageMaker(query = "movie") {
 }
 
 async function getCounterAndPage(searchForWhat) {
-  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=${querySearch}`;
+  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=avenger`;
 
   const response = await fetch(API);
   const result = await response.json();
@@ -113,8 +113,8 @@ function showDataFromAPI(query = "movie", page = 1) {
             <img src="${(element.profile_path === null) ? "Assest/Images/profile.png" : test1 +element.profile_path}">
           </div>
           <div class="person-row-text">
-            <h2>${element.name}</h2>
-            <p>${element.known_for_department} &#9679; <span>${test}</span></p>
+            <h2>${element.name} - <span>${element.known_for_department}</span></h2>
+            <p><span>${test}</span></p>
           </div>
         </div>
         `
@@ -129,7 +129,6 @@ function showDataFromAPI(query = "movie", page = 1) {
     e.results.forEach((element) => {
       let res = element.overview.split(".", 2).join(".").length;
       res = element.overview.slice(0, res);
-
       path.innerHTML += `
       <div class="content-row">
         <div class="${
@@ -144,11 +143,9 @@ function showDataFromAPI(query = "movie", page = 1) {
           }">
         </div>
         <div class="content-row-text">
-          <h2 class="title">${
-            element.title ? element.title : element.original_name
-          } - <span class="vote">${
-        element.vote_average === 0 ? "no Vote" : element.vote_average
-      }</span></h2>
+          ${(query === 'collection')? `<h2 class="title">${element.title ? element.title : element.original_name}</h2>` : 
+          `<h2 class="title">${element.title ? element.title : element.original_name} - <span class="vote">${element.vote_average === 0 ? "no Vote" : element.vote_average}</span></h2>`}
+          
           <p class="overview">${element.overview === "" ? "No Data" : res}..</p>
         </div>
       </div>
@@ -158,7 +155,7 @@ function showDataFromAPI(query = "movie", page = 1) {
 }
 
 async function getFromAPI(searchForWhat, page) {
-  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=${querySearch}&page=${page}&include_adult=false`;
+  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=avenger&page=${page}&include_adult=false`;
 
   const response = await fetch(API);
   const result = await response.json();
