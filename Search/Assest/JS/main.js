@@ -70,13 +70,15 @@ function resultCounterAndPageMaker(query = "movie") {
   });
 
   getCounterAndPage(query).then((e) => {
-    for (let i = 1; i <= e.total_pages; i++) {
-      div.innerHTML += `
-        <span class="page" data="${i}">${i}</span>
-      `;
+    if(e.total_pages !== 1) {
+      for (let i = 1; i <= e.total_pages; i++) {
+        div.innerHTML += `
+          <span class="page" data="${i}">${i}</span>
+        `;
+      }
+      pageNation.appendChild(div);
+      pageSelector();
     }
-    pageNation.appendChild(div);
-    pageSelector();
   });
 }
 
