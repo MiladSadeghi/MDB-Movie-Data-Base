@@ -222,6 +222,53 @@ body {
   cursor: pointer;
 }
 
+.person-row {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  border-radius: 17px;
+}
+
+.person-row:hover {
+  background: rgba(255, 0, 0, 0.863);
+}
+
+.person-row:hover .skeletonStyle{
+  animation: none;
+}
+
+.person-row-img {
+  width: 115px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+}
+
+.person-row-img  img {
+  width: 100%;
+  border-radius: 15px;
+}
+
+.person-row-text {
+  width: 100%;
+  padding: 20px;
+}
+
+.person-row-text h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgb(218, 218, 218);
+}
+
+.person-row-text p {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgb(218, 218, 218);
+  line-height: 23px;
+}
+
 .skeletonStyle {
   animation: skeletonStyle 4s linear infinite alternate;
 }
