@@ -13,18 +13,21 @@ const imagesURL = [
 ];
 
 let serches = []
+let movies = []
 
 function createCards(path, divNumber, classContent) {
   for (let i = 0; i <= divNumber; i++) {
     path.innerHTML += `
-    <div class="card item ${classContent}">
-      <div class="image skeletonStyle">
-        <div class="vote"></div>
-        <img src="https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg" alt="">
+    <a href="Movie" target="_blank" data-id="" class="movie-show-detail">
+      <div data-id="" class="card item ${classContent}">
+        <div data-id="" class="image skeletonStyle">
+          <div data-id="" class="vote"></div>
+          <img data-id="" src="https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg" alt="">
+        </div>
+        <h1 data-id="" class="movie-name skeletonStyle"></h1>
+        <p data-id="" class="release-date skeletonStyle"></p>
       </div>
-      <h1 class="movie-name skeletonStyle"></h1>
-      <p class="release-date skeletonStyle"></p>
-    </div>
+    </a>
     `;
   }
 }
@@ -47,6 +50,13 @@ function changeCardCantent(path, result) {
     element.children[0].children[1].src = `${posterPathURL}${result[res].poster_path}`;
     element.children[1].textContent = result[res].title;
     element.children[2].textContent = result[res].release_date;
+    element.parentElement.setAttribute('data-id', result[res].id)
+    element.setAttribute('data-id', result[res].id)
+    element.children[0].setAttribute('data-id', result[res].id)
+    element.children[0].children[0].setAttribute('data-id', result[res].id)
+    element.children[0].children[1].setAttribute('data-id', result[res].id)
+    element.children[1].setAttribute('data-id', result[res].id)
+    element.children[2].setAttribute('data-id', result[res].id)
   });
 }
 
@@ -74,7 +84,6 @@ function search(e) {
   e.preventDefault()
   const inputField = document.querySelector('#searchBox')
   const errorDiv = document.querySelector('#error')
-  const form = document.querySelector('#search')
   const errorContent = document.createElement('div')
   errorContent.classList.add('error-content')
 
@@ -96,6 +105,20 @@ function search(e) {
     sessionStorage.setItem('search', JSON.stringify(serches))
     window.open('Search', '_blank')
   }
+}
+
+function moveToMovieDir() {
+  let movieShowDetail = document.querySelectorAll('.movie-show-detail')
+  movieShowDetail.forEach(element => {
+    element.addEventListener('click', (e)=> {
+      movies.push(e.target.getAttribute('data-id'))
+      sessionStorage.setItem('movie', JSON.stringify(movies))
+    })
+    element.addEventListener('contextmenu', (e) => {
+      movies.push(e.target.getAttribute('data-id'))
+      sessionStorage.setItem('movie', JSON.stringify(movies))
+    });
+  });
 }
 
 const searchSection = document.querySelector(".search");
@@ -122,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   fromSubmit.addEventListener('submit', search)
+  moveToMovieDir()
 });
 
 let owl = $(".owl-carousel");
