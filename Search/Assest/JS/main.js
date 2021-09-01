@@ -1,7 +1,7 @@
-const search = JSON.parse(sessionStorage.getItem("search"));
-document.title = search[search.length - 1] + "- Use Me As Second IMDB";
-document.querySelector("#search-bar").placeholder = search[search.length - 1];
-const querySearch = search[search.length - 1]
+// const search = JSON.parse(sessionStorage.getItem("search"));
+// document.title = search[search.length - 1] + "- Use Me As Second IMDB";
+// document.querySelector("#search-bar").placeholder = search[search.length - 1];
+// const querySearch = search[search.length - 1]
 
 const UL = document.querySelector(".filter-list");
 const LI = document.querySelectorAll(".lists");
@@ -92,6 +92,37 @@ function showDataFromAPI(query = "movie", page = 1) {
   const path = document.querySelector("#content");
   const data = getFromAPI(query, page);
   let posterPathURL = "https://www.themoviedb.org/t/p/w220_and_h330_face";
+  let test1 = 'https://www.themoviedb.org/t/p/w90_and_h90_face/'
+  let test = '';
+  if(query === 'person') {
+    data.then((e) => {
+      path.innerHTML = "";
+      e.results.forEach(element => {
+        for (const iterator of element.known_for) {
+          console.log(iterator);
+          if(iterator.title) {
+            test += ` ${iterator.title},`
+          } else {
+            test += ` ${iterator.name},`
+          }
+          
+        }
+        path.innerHTML += `
+        <div class="person-row">
+          <div class="${(element.profile_path === null) ? "person-row-img skeletonStyle" : "person-row-img"}">
+            <img src="${(element.profile_path === null) ? "Assest/Images/profile.png" : test1 +element.profile_path}">
+          </div>
+          <div class="person-row-text">
+            <h2>${element.name}</h2>
+            <p>${element.known_for_department} &#9679; <span>${test}</span></p>
+          </div>
+        </div>
+        `
+        test = ''
+      })
+    })
+    return true
+  }
 
   data.then((e) => {
     path.innerHTML = "";
@@ -102,12 +133,12 @@ function showDataFromAPI(query = "movie", page = 1) {
       path.innerHTML += `
       <div class="content-row">
         <div class="${
-          element.poster_path === null || element.backdrop_path === null
+          (element.poster_path === null || element.backdrop_path === null)
             ? "content-row-img skeletonStyle"
             : "content-row-img"
         }">
           <img src="${
-            element.poster_path === null || element.backdrop_path === null
+            (element.poster_path === null || element.backdrop_path === null)
               ? "Assest/Images/loadingImage.png"
               : posterPathURL + element.poster_path
           }">
