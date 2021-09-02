@@ -6,10 +6,27 @@
   box-sizing: border-box;
 }
 
+:root {
+  --banner: linear-gradient(90deg, rgba(168, 2, 2, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%) 50% 10%;
+}
+
 a {
   text-decoration: none;
 }
 
 body {
   font-family: "Poppins";
+}
+
+.movie-banner {
+  display: flex;
+  height: 480px;
+  background: var(--banner);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
 }
