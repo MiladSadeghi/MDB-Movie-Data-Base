@@ -6,6 +6,8 @@
 const bgURL = "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces"
 const posterURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2"
 const posterPath = document.querySelector('.img-poster img')
+const headerHead = document.querySelector('.header h1')
+const headerSpan = document.querySelector('.header span')
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const data = getAPIHeader()
@@ -23,8 +25,15 @@ async function getAPIHeader() {
 }
 
 function showHeader(result) {
+  let genres = '';
   result.then((e)=> {
+    for (const iterator of e.genres) {
+      genres += iterator.name + ','
+    }
+    genres = genres.slice(0, genres.length -1)
     document.documentElement.style.setProperty('--banner', `linear-gradient(90deg, rgba(168, 2, 2, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('${bgURL + e.backdrop_path}') no-repeat`)
     posterPath.src = posterURL + e.poster_path
+    headerHead.innerText = e.original_title
+    headerSpan.innerHTML = `${e.release_date.replaceAll('-', '/')}  &#9679;  ${genres}`
   })
 }
