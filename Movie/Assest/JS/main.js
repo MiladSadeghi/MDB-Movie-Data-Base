@@ -8,6 +8,7 @@ const posterURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2"
 const posterPath = document.querySelector('.img-poster img')
 const headerHead = document.querySelector('.header h1')
 const headerSpan = document.querySelector('.header span')
+const stuff = document.querySelector('.movie-stuff')
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const data = getAPIHeader()
@@ -35,5 +36,9 @@ function showHeader(result) {
     posterPath.src = posterURL + e.poster_path
     headerHead.innerText = e.original_title
     headerSpan.innerHTML = `${e.release_date.replaceAll('-', '/')}  &#9679;  ${genres}`
+    stuff.innerHTML = `
+      <span class="tag-line">${e.tagline}</span>
+      
+    `
   })
 }
