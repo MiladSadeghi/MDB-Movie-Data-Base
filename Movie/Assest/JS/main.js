@@ -38,13 +38,13 @@ document.addEventListener('DOMContentLoaded', ()=> {
 })
 
 async function getAPIHeader() {
-  const API = "https://api.themoviedb.org/3/movie/568620?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
+  const API = "https://api.themoviedb.org/3/movie/593910?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
   const response = await fetch(API)
   const result = await response.json()
   return result
 }
 async function getAPICast() {
-  const API = "https://api.themoviedb.org/3/movie/568620/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
+  const API = "https://api.themoviedb.org/3/movie/593910/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
   const response = await fetch(API)
   const result = await response.json()
   return result
@@ -56,13 +56,13 @@ async function getAPILanguage() {
   return result
 }
 async function getAPISocial() {
-  const API = "https://api.themoviedb.org/3/movie/568620/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c"
+  const API = "https://api.themoviedb.org/3/movie/593910/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c"
   const response = await fetch(API)
   const result = await response.json()
   return result
 }
 async function getAPIKeyword() {
-  const API = "https://api.themoviedb.org/3/movie/568620/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c"
+  const API = "https://api.themoviedb.org/3/movie/593910/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c"
   const response = await fetch(API)
   const result = await response.json()
   return result
@@ -108,6 +108,9 @@ function showMain(result, result1) {
       collectionContent.children[0].innerHTML = `Part Of The ${e.belongs_to_collection.name}`
       collectionContent.children[1].innerHTML = `VIEW THE COLLECTION`
     }
+    else {
+      collectionContent.parentElement.style.display = 'none'
+    }
   })
 }
 
@@ -115,8 +118,8 @@ function showSide(result, result1, result2) {
   result.then(e => {
     statusM.innerHTML = e.status
     languageName(e.original_language)
-    budget.innerHTML = formatToCurrency(e.budget)
-    revenue.innerHTML = formatToCurrency(e.revenue)
+    budget.innerHTML = ((e.budget === 0)? '-': formatToCurrency(e.budget))
+    revenue.innerHTML = ((e.budget === 0)? '-': formatToCurrency(e.revenue))
     homePage.href = e.homepage
   });
 
@@ -127,11 +130,17 @@ function showSide(result, result1, result2) {
   })
 
   result2.then((e)=> {
-    e.keywords.forEach(element => {
-      keyword.innerHTML += `
-      <a href="#" data-id="${element.id}">${element.name}</a>
-      `
-    });
+    if(e.keywords.length !== 0) {
+      e.keywords.forEach(element => {
+        keyword.innerHTML += `
+        <a href="#" data-id="${element.id}">${element.name}</a>
+        `
+      });
+    } else {
+      keyword.innerHTML = `
+        <p class="not">No keywords have been added.</p>
+        `
+    }
   })
 }
 
