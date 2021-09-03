@@ -19,13 +19,20 @@ const revenue = document.querySelector('.revenue')
 const formatToCurrency = amount => {
   return "$" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
 };
+const homePage = document.querySelector('.fa-home').parentElement
+const facebook = document.querySelector('.fa-facebook-square').parentElement
+const twitter = document.querySelector('.fa-instagram').parentElement
+const instagram = document.querySelector('.fa-twitter-square').parentElement
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
+  const dataSocial = getAPISocial()
   showHeader(dataHeader)
+  showSide(dataHeader, dataSocial)
   const dataCast = getAPICast()
-  showCast(dataCast)
+  showMain(dataCast)
 })
+
 async function getAPIHeader() {
   const API = "https://api.themoviedb.org/3/movie/568620?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
   const response = await fetch(API)
@@ -44,6 +51,12 @@ async function getAPILanguage() {
   const result = await response.json()
   return result
 }
+async function getAPISocial() {
+  const API = "https://api.themoviedb.org/3/movie/568620/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c"
+  const response = await fetch(API)
+  const result = await response.json()
+  return result
+}
 
 function showHeader(result) {
   let genres = '';
@@ -58,14 +71,10 @@ function showHeader(result) {
     headerSpan.innerHTML = `${e.release_date.replaceAll('-', '/')}  &#9679;  ${genres} &#9679; <span class="vote">${e.vote_average}</span>`
     tagLine.innerText = `"${e.tagline}"`
     overview.innerText = e.overview
-    statusM.innerHTML = e.status
-    languageName(e.original_language)
-    budget.innerHTML = formatToCurrency(e.budget)
-    revenue.innerHTML = formatToCurrency(e.revenue)
   })
 }
 
-function showCast(result) {
+function showMain(result) {
   result.then((e)=> {
     e.cast.forEach(element => {
       if(element.order <= 10) {
@@ -82,6 +91,23 @@ function showCast(result) {
     `
     Carousel()
   })
+}
+
+function showSide(result, result1) {
+  result.then(e => {
+    statusM.innerHTML = e.status
+    languageName(e.original_language)
+    budget.innerHTML = formatToCurrency(e.budget)
+    revenue.innerHTML = formatToCurrency(e.revenue)
+    homePage.href = e.homepage
+  });
+
+  result1.then((e)=> {
+    facebook.href =  'https://www.facebook.com/' + e.facebook_id
+    instagram.href =  'https://www.instagram.com/' + e.instagram_id
+    twitter.href =  'https://www.twitter.com/' + e.twitter_id
+  })
+
 }
 
 function languageName(lang) {
