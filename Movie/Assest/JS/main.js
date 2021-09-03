@@ -23,12 +23,14 @@ const homePage = document.querySelector('.fa-home').parentElement
 const facebook = document.querySelector('.fa-facebook-square').parentElement
 const twitter = document.querySelector('.fa-instagram').parentElement
 const instagram = document.querySelector('.fa-twitter-square').parentElement
+const keyword = document.querySelector('.keywords-content')
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
   const dataSocial = getAPISocial()
+  const dataKeywords = getAPIKeyword()
   showHeader(dataHeader)
-  showSide(dataHeader, dataSocial)
+  showSide(dataHeader, dataSocial, dataKeywords)
   const dataCast = getAPICast()
   showMain(dataCast)
 })
@@ -53,6 +55,12 @@ async function getAPILanguage() {
 }
 async function getAPISocial() {
   const API = "https://api.themoviedb.org/3/movie/568620/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c"
+  const response = await fetch(API)
+  const result = await response.json()
+  return result
+}
+async function getAPIKeyword() {
+  const API = "https://api.themoviedb.org/3/movie/568620/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c"
   const response = await fetch(API)
   const result = await response.json()
   return result
@@ -93,7 +101,7 @@ function showMain(result) {
   })
 }
 
-function showSide(result, result1) {
+function showSide(result, result1, result2) {
   result.then(e => {
     statusM.innerHTML = e.status
     languageName(e.original_language)
@@ -108,6 +116,13 @@ function showSide(result, result1) {
     twitter.href =  'https://www.twitter.com/' + e.twitter_id
   })
 
+  result2.then((e)=> {
+    e.keywords.forEach(element => {
+      keyword.innerHTML += `
+      <a href="#" data-id="${element.id}">${element.name}</a>
+      `
+    });
+  })
 }
 
 function languageName(lang) {
