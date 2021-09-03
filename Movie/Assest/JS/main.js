@@ -10,19 +10,26 @@ const headerHead = document.querySelector('.header h1')
 const headerSpan = document.querySelector('.header span')
 const tagLine = document.querySelector('.tagline')
 const overview = document.querySelector('.movie-stuff p')
+const cast = document.querySelector('#cast')
+const profileURL = 'https://www.themoviedb.org/t/p/w138_and_h175_face'
 
 document.addEventListener('DOMContentLoaded', ()=> {
-  const data = getAPIHeader()
-  showHeader(data)
-  
+  const dataHeader = getAPIHeader()
+  showHeader(dataHeader)
+  const dataCast = getAPICast()
+  showCast(dataCast)
 })
 
 async function getAPIHeader() {
   const API = "https://api.themoviedb.org/3/movie/568620?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
-
   const response = await fetch(API)
   const result = await response.json()
-
+  return result
+}
+async function getAPICast() {
+  const API = "https://api.themoviedb.org/3/movie/568620/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
+  const response = await fetch(API)
+  const result = await response.json()
   return result
 }
 
@@ -39,5 +46,41 @@ function showHeader(result) {
     headerSpan.innerHTML = `${e.release_date.replaceAll('-', '/')}  &#9679;  ${genres} &#9679; <span class="vote">${e.vote_average}</span>`
     tagLine.innerText = `"${e.tagline}"`
     overview.innerText = e.overview
+  })
+}
+
+function showCast(result) {
+  result.then((e)=> {
+    e.cast.forEach(element => {
+      if(element.order <= 10) {
+        cast.innerHTML += `
+        <div class="item cast-card">
+          <img src="${profileURL + element.profile_path}">
+          <div class="cast-card-content">${element.name}</div>
+        </div>
+        `
+      }
+    });
+    cast.innerHTML += `
+      <div class="item last">view more ...</div>
+    `
+    Carousel()
+  })
+}
+
+function Carousel() {
+  $('.owl-carousel').owlCarousel({
+    dots: true,
+    responsive:{
+        0:{
+            items:1
+        },
+        600:{
+            items:3
+        },
+        1000:{
+            items:6
+        }
+    }
   })
 }
