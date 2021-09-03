@@ -24,6 +24,8 @@ const facebook = document.querySelector('.fa-facebook-square').parentElement
 const twitter = document.querySelector('.fa-instagram').parentElement
 const instagram = document.querySelector('.fa-twitter-square').parentElement
 const keyword = document.querySelector('.keywords-content')
+const backdroupURL = 'https://www.themoviedb.org/t/p/w1440_and_h320_multi_faces'
+const collectionContent = document.querySelector('.collection-content')
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
@@ -32,7 +34,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
   showHeader(dataHeader)
   showSide(dataHeader, dataSocial, dataKeywords)
   const dataCast = getAPICast()
-  showMain(dataCast)
+  showMain(dataCast, dataHeader)
 })
 
 async function getAPIHeader() {
@@ -82,7 +84,7 @@ function showHeader(result) {
   })
 }
 
-function showMain(result) {
+function showMain(result, result1) {
   result.then((e)=> {
     e.cast.forEach(element => {
       if(element.order <= 10) {
@@ -98,6 +100,14 @@ function showMain(result) {
       <div class="item last">view more ...</div>
     `
     Carousel()
+  })
+
+  result1.then((e)=> {
+    if(e.belongs_to_collection !== null) {
+      document.documentElement.style.setProperty('--collection-image', `url(${backdroupURL + e.belongs_to_collection.backdrop_path})`)
+      collectionContent.children[0].innerHTML = `Part Of The ${e.belongs_to_collection.name}`
+      collectionContent.children[1].innerHTML = `VIEW THE COLLECTION`
+    }
   })
 }
 
