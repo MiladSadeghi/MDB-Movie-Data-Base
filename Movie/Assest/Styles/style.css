@@ -108,6 +108,10 @@ body {
   padding: 50px 0;
 }
 
+.top-cast {
+  width: 70%;
+}
+
 .top-cast h2 {
   color: #fff;
   margin-bottom: 30px;
@@ -116,7 +120,7 @@ body {
 }
 
 .owl {
-  width: 75%;
+  width: 100%;
 }
 
 .owl-item {
@@ -157,4 +161,37 @@ body {
   justify-content: center;
   align-items: center;
   padding: 93px 0;
+}
+
+.main {
+  display: flex;
+  justify-content: space-between;
+}
+
+.side {
+  width: 27%;;
+}
+
+.facts h2 {
+  color: #fff;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.facts-content {
+  padding: 14px;
+}
+
+.facts-content h2 {
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.facts-content h2 span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #bdbdbd;
 }
