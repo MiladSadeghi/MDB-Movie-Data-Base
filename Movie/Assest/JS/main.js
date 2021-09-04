@@ -28,6 +28,12 @@ const backdroupURL = 'https://www.themoviedb.org/t/p/w1440_and_h320_multi_faces'
 const collectionContent = document.querySelector('.collection-content')
 const recommendImgURL = 'https://www.themoviedb.org/t/p/w250_and_h141_face'
 const recommend = document.querySelector('#recommend')
+const mediaPopular = document.querySelector('#popular')
+const mediaVideos = document.querySelector('#videos')
+const mediaBackdrops = document.querySelector('#backdrops')
+const mediaPosters = document.querySelector('#posters')
+
+const mediaURL = 'https://www.themoviedb.org/t/p/w533_and_h300_bestv2'
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
@@ -38,6 +44,13 @@ document.addEventListener('DOMContentLoaded', ()=> {
   const dataCast = getAPICast()
   const dataRecommend = getAPIRecommendation()
   showMain(dataCast, dataHeader, dataRecommend)
+  const dataImage = getAPIImages()
+  const dataVideo = getAPIVideos()
+  showMedia('popular', dataImage, getAPIVideos())
+  mediaPopular.addEventListener('click', ()=> {showMedia('popular', dataImage, getAPIVideos())})
+  mediaVideos.addEventListener('click', ()=> {showVideo(getAPIVideos())})
+  mediaBackdrops.addEventListener('click', ()=> {showMedia('backdrops', dataImage)})
+  mediaPosters.addEventListener('click', ()=> {showMedia('posters', dataImage)})
 })
 
 async function getAPIHeader() {
@@ -76,6 +89,18 @@ async function getAPIRecommendation() {
   const result = await response.json()
   return result
 }
+async function getAPIVideos() {
+  const API = "https://api.themoviedb.org/3/movie/568620/videos?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
+  const response = await fetch(API)
+  const result = await response.json()
+  return result
+}
+async function getAPIImages() {
+  const API = "https://api.themoviedb.org/3/movie/568620/images?api_key=75c8aed355937ba0502f74d9a1aed11c#"
+  const response = await fetch(API)
+  const result = await response.json()
+  return result
+}
 
 function showHeader(result) {
   let genres = '';
@@ -93,7 +118,7 @@ function showHeader(result) {
   })
 }
 
-function showMain(result, result1, result2) {
+function showMain(result, result1, result2, result3) {
   result.then((e)=> {
     e.cast.forEach(element => {
       if(element.order <= 10) {
@@ -128,7 +153,6 @@ function showMain(result, result1, result2) {
     return parseFloat( parseFloat( number ).toFixed( precision ) );
     }
     e.results.forEach(element => {
-      console.log(element);
       recommend.innerHTML += `
         <div class="item recommend-card">
           <img src="${recommendImgURL +element.backdrop_path}">
@@ -181,6 +205,51 @@ function languageName(lang) {
       }
     });
   })
+}
+
+function showMedia(choice ,data, data1) {
+  clearForCarousel()
+  const media = document.querySelector('#media')
+    data1.then((e)=> {
+      media.innerHTML += `
+      <div class="item iframes">
+        <iframe src="https://www.youtube.com/embed/${e.results[e.results.length -1].key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      `
+      data.then((e)=> {
+        media.innerHTML += `
+        <div class="item">
+          <img src="${mediaURL + e.backdrops[0].file_path}">
+        </div>
+        <div class="item">
+          <img src="${mediaURL + e.posters[0].file_path}">
+        </div>
+        `
+        Carousel('.owl2',1,2,2)
+      })
+    })
+  }
+
+function showVideo(data) {
+  clearForCarousel()
+  const media = document.querySelector('#media')
+  data.then((e)=> {
+    e.results.forEach(element => {
+      media.innerHTML += `
+        <iframe class="item iframe-videos" src="https://www.youtube.com/embed/${element.key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      `
+    });
+    Carousel('.owl2',1,2,1)
+  })
+}
+
+function clearForCarousel() {
+  const mediaContent = document.querySelector('.media-S-content')
+  mediaContent.innerHTML = ''
+  const carousel = document.createElement('div')
+  carousel.classList.add('owl-carousel' ,'owl-theme', 'owl2')
+  carousel.id = "media"
+  mediaContent.appendChild(carousel)
 }
 
 function Carousel(path,responsive1,responsive2,responsive3) {

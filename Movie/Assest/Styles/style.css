@@ -131,7 +131,7 @@ body {
   font-weight: 600;
 }
 
-.owl, .owl1 {
+.owl, .owl1, .owl2 {
   width: 100%;
 }
 
@@ -370,4 +370,52 @@ body {
 .vote-main {
   color: rgb(117, 0, 0);
   font-weight: 600;
+}
+
+.media-S {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.media-menu {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.media-menu h2 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-right: 50px;
+}
+
+.media-panel {
+  display: flex;
+}
+
+.media-panel h3 {
+  color: #fff;
+  margin-right: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.iframes {
+  width: 100%;
+  height: 239.52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iframe-videos {
+  height: 330px;
 }
