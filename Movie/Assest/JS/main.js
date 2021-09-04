@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
   const dataVideo = getAPIVideos()
   showMedia('popular', dataImage, getAPIVideos())
   mediaPopular.addEventListener('click', ()=> {showMedia('popular', dataImage, getAPIVideos())})
-  mediaVideos.addEventListener('click', ()=> {showVideo(getAPIVideos())})
+  mediaVideos.addEventListener('click', ()=> {showMedia('videos' ,getAPIVideos())})
   mediaBackdrops.addEventListener('click', ()=> {showMedia('backdrops', dataImage)})
   mediaPosters.addEventListener('click', ()=> {showMedia('posters', dataImage)})
 })
@@ -210,6 +210,7 @@ function languageName(lang) {
 function showMedia(choice ,data, data1) {
   clearForCarousel()
   const media = document.querySelector('#media')
+  if(choice === 'popular'){
     data1.then((e)=> {
       media.innerHTML += `
       <div class="item iframes">
@@ -229,18 +230,16 @@ function showMedia(choice ,data, data1) {
       })
     })
   }
-
-function showVideo(data) {
-  clearForCarousel()
-  const media = document.querySelector('#media')
-  data.then((e)=> {
-    e.results.forEach(element => {
-      media.innerHTML += `
-        <iframe class="item iframe-videos" src="https://www.youtube.com/embed/${element.key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      `
-    });
-    Carousel('.owl2',1,2,1)
-  })
+  if(choice === 'videos') {
+    data.then((e)=> {
+      e.results.forEach(element => {
+        media.innerHTML += `
+          <iframe class="item iframe-videos" src="https://www.youtube.com/embed/${element.key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        `
+      });
+      Carousel('.owl2',1,2,1)
+    })
+  }
 }
 
 function clearForCarousel() {
