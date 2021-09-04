@@ -1,7 +1,5 @@
-// const search = JSON.parse(sessionStorage.getItem("movie"));
-// document.title = search[search.length - 1] + "- Use Me As Second IMDB";
-// document.querySelector("#search-bar").placeholder = search[search.length - 1];
-// const querySearch = search[search.length - 1]
+const search = JSON.parse(sessionStorage.getItem("movie"));
+const querySearch = search[search.length - 1]
 
 const bgURL = "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces"
 const posterURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2"
@@ -54,49 +52,49 @@ document.addEventListener('DOMContentLoaded', ()=> {
 })
 
 async function getAPIHeader() {
-  const API = "https://api.themoviedb.org/3/movie/568620?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
+  const API = `https://api.themoviedb.org/3/movie/${querySearch}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
   const response = await fetch(API)
   const result = await response.json()
   return result
 }
 async function getAPICast() {
-  const API = "https://api.themoviedb.org/3/movie/568620/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
+  const API = `https://api.themoviedb.org/3/movie/${querySearch}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
   const response = await fetch(API)
   const result = await response.json()
   return result
 }
 async function getAPILanguage() {
-  const API = "https://api.themoviedb.org/3/configuration/languages?api_key=75c8aed355937ba0502f74d9a1aed11c"
+  const API = `https://api.themoviedb.org/3/configuration/languages?api_key=75c8aed355937ba0502f74d9a1aed11c`
   const response = await fetch(API)
   const result = await response.json()
   return result
 }
 async function getAPISocial() {
-  const API = "https://api.themoviedb.org/3/movie/568620/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c"
+  const API = `https://api.themoviedb.org/3/movie/${querySearch}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`
   const response = await fetch(API)
   const result = await response.json()
   return result
 }
 async function getAPIKeyword() {
-  const API = "https://api.themoviedb.org/3/movie/568620/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c"
+  const API = `https://api.themoviedb.org/3/movie/${querySearch}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`
   const response = await fetch(API)
   const result = await response.json()
   return result
 }
 async function getAPIRecommendation() {
-  const API = "https://api.themoviedb.org/3/movie/568620/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&page=1"
+  const API = `https://api.themoviedb.org/3/movie/${querySearch}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&page=1`
   const response = await fetch(API)
   const result = await response.json()
   return result
 }
 async function getAPIVideos() {
-  const API = "https://api.themoviedb.org/3/movie/568620/videos?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
+  const API = `https://api.themoviedb.org/3/movie/${querySearch}/videos?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
   const response = await fetch(API)
   const result = await response.json()
   return result
 }
 async function getAPIImages() {
-  const API = "https://api.themoviedb.org/3/movie/568620/images?api_key=75c8aed355937ba0502f74d9a1aed11c#"
+  const API = `https://api.themoviedb.org/3/movie/${querySearch}/images?api_key=75c8aed355937ba0502f74d9a1aed11c#`
   const response = await fetch(API)
   const result = await response.json()
   return result
@@ -148,22 +146,26 @@ function showMain(result, result1, result2, result3) {
   })
 
   result2.then((e)=> {
-    let round = function ( number, precision ){
-    precision = precision || 0;
-    return parseFloat( parseFloat( number ).toFixed( precision ) );
-    }
-    e.results.forEach(element => {
-      recommend.innerHTML += `
-        <div class="item recommend-card">
-          <img src="${recommendImgURL +element.backdrop_path}">
-          <div class="recommend-card-content">
-            <h5>${element.title}</h5>
-            <span class="vote-main">${round(element.vote_average, 1)}</span>
+    if(e.results.length === 0) {
+      recommend.parentElement.parentElement.remove()
+    } else {
+      let round = function ( number, precision ){
+      precision = precision || 0;
+      return parseFloat( parseFloat( number ).toFixed( precision ) );
+      }
+      e.results.forEach(element => {
+        recommend.innerHTML += `
+          <div class="item recommend-card">
+            <img src="${recommendImgURL +element.backdrop_path}">
+            <div class="recommend-card-content">
+              <h5>${element.title}</h5>
+              <span class="vote-main">${round(element.vote_average, 1)}</span>
+            </div>
           </div>
-        </div>
-      `
-    });
-    Carousel('.owl1',1,2,3)
+        `
+      });
+      Carousel('.owl1',1,2,3)
+    }
   })
 }
 
