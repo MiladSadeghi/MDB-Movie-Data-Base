@@ -33,6 +33,7 @@ const mediaVideos = document.querySelector('#videos')
 const mediaBackdrops = document.querySelector('#backdrops')
 const mediaPosters = document.querySelector('#posters')
 const mediaURL = 'https://www.themoviedb.org/t/p/w533_and_h300_bestv2'
+const mediaPostersURL = 'https://www.themoviedb.org/t/p/w220_and_h330_face'
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
@@ -242,12 +243,21 @@ function showMedia(choice ,data, data1) {
   if(choice === 'backdrops') {
     data.then((e)=> {
       e.backdrops.forEach((e)=> {
-        console.log(e);
         media.innerHTML += `
-          <img class="images" src="${mediaURL + e.file_path}">
+          <img src="${mediaURL + e.file_path}">
         `
       })
       Carousel('.owl2',1,2,2)
+    })
+  }
+  if(choice === 'posters') {
+    data.then((e)=> {
+      e.posters.forEach((e)=> {
+        media.innerHTML += `
+          <img class="images" src="${mediaPostersURL + e.file_path}">
+        `
+      })
+      Carousel('.owl2',1,2,5)
     })
   }
 }
