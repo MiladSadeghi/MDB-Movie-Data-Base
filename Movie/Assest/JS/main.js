@@ -26,6 +26,8 @@ const instagram = document.querySelector('.fa-twitter-square').parentElement
 const keyword = document.querySelector('.keywords-content')
 const backdroupURL = 'https://www.themoviedb.org/t/p/w1440_and_h320_multi_faces'
 const collectionContent = document.querySelector('.collection-content')
+const recommendImgURL = 'https://www.themoviedb.org/t/p/w250_and_h141_face'
+const recommend = document.querySelector('#recommend')
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
@@ -34,17 +36,18 @@ document.addEventListener('DOMContentLoaded', ()=> {
   showHeader(dataHeader)
   showSide(dataHeader, dataSocial, dataKeywords)
   const dataCast = getAPICast()
-  showMain(dataCast, dataHeader)
+  const dataRecommend = getAPIRecommendation()
+  showMain(dataCast, dataHeader, dataRecommend)
 })
 
 async function getAPIHeader() {
-  const API = "https://api.themoviedb.org/3/movie/593910?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
+  const API = "https://api.themoviedb.org/3/movie/568620?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
   const response = await fetch(API)
   const result = await response.json()
   return result
 }
 async function getAPICast() {
-  const API = "https://api.themoviedb.org/3/movie/593910/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
+  const API = "https://api.themoviedb.org/3/movie/568620/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US"
   const response = await fetch(API)
   const result = await response.json()
   return result
@@ -56,13 +59,19 @@ async function getAPILanguage() {
   return result
 }
 async function getAPISocial() {
-  const API = "https://api.themoviedb.org/3/movie/593910/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c"
+  const API = "https://api.themoviedb.org/3/movie/568620/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c"
   const response = await fetch(API)
   const result = await response.json()
   return result
 }
 async function getAPIKeyword() {
-  const API = "https://api.themoviedb.org/3/movie/593910/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c"
+  const API = "https://api.themoviedb.org/3/movie/568620/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c"
+  const response = await fetch(API)
+  const result = await response.json()
+  return result
+}
+async function getAPIRecommendation() {
+  const API = "https://api.themoviedb.org/3/movie/568620/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&page=1"
   const response = await fetch(API)
   const result = await response.json()
   return result
@@ -84,7 +93,7 @@ function showHeader(result) {
   })
 }
 
-function showMain(result, result1) {
+function showMain(result, result1, result2) {
   result.then((e)=> {
     e.cast.forEach(element => {
       if(element.order <= 10) {
@@ -99,7 +108,7 @@ function showMain(result, result1) {
     cast.innerHTML += `
       <div class="item last">view more ...</div>
     `
-    Carousel()
+    Carousel('.owl',1,3,6)
   })
 
   result1.then((e)=> {
@@ -111,6 +120,26 @@ function showMain(result, result1) {
     else {
       collectionContent.parentElement.style.display = 'none'
     }
+  })
+
+  result2.then((e)=> {
+    let round = function ( number, precision ){
+    precision = precision || 0;
+    return parseFloat( parseFloat( number ).toFixed( precision ) );
+    }
+    e.results.forEach(element => {
+      console.log(element);
+      recommend.innerHTML += `
+        <div class="item recommend-card">
+          <img src="${recommendImgURL +element.backdrop_path}">
+          <div class="recommend-card-content">
+            <h5>${element.title}</h5>
+            <span class="vote-main">${round(element.vote_average, 1)}</span>
+          </div>
+        </div>
+      `
+    });
+    Carousel('.owl1',1,2,3)
   })
 }
 
@@ -154,18 +183,18 @@ function languageName(lang) {
   })
 }
 
-function Carousel() {
-  $('.owl-carousel').owlCarousel({
+function Carousel(path,responsive1,responsive2,responsive3) {
+  $(path).owlCarousel({
     dots: true,
     responsive:{
         0:{
-            items:1
+            items:responsive1
         },
         600:{
-            items:3
+            items:responsive2
         },
         1000:{
-            items:6
+            items:responsive3
         }
     }
   })

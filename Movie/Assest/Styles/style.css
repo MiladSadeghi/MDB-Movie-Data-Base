@@ -131,7 +131,7 @@ body {
   font-weight: 600;
 }
 
-.owl {
+.owl, .owl1 {
   width: 100%;
 }
 
@@ -141,7 +141,7 @@ body {
   justify-content: center;
 }
 
-.cast-card {
+.cast-card, .recommend-card {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -327,4 +327,47 @@ body {
 
 .not {
   color: #fff;
+}
+
+.recommendations {
+  margin-top: 60px;
+}
+
+.recommendations h2 {
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.recommend-card {
+  width: 95%;
+}
+
+.recommend-card img {
+  border-top-right-radius: 55px;
+  border-top-left-radius: 20px;
+}
+
+.recommend-card-content {
+  display: flex;
+  color: #000;
+  width: 100%;
+  padding: 20px;
+  height: 50px;
+  background: #fff;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+.recommend-card-content h5 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.vote-main {
+  color: rgb(117, 0, 0);
+  font-weight: 600;
 }
