@@ -113,10 +113,12 @@ function moveToMovieDir() {
     element.addEventListener('click', (e)=> {
       movies.push(e.target.getAttribute('data-id'))
       sessionStorage.setItem('movie', JSON.stringify(movies))
+      window.open('Movie', '_blank')
     })
     element.addEventListener('contextmenu', (e) => {
       movies.push(e.target.getAttribute('data-id'))
       sessionStorage.setItem('movie', JSON.stringify(movies))
+      window.open('Movie', '_blank')
     });
   });
 }

@@ -110,6 +110,7 @@ function showHeader(result) {
     document.documentElement.style.setProperty('--banner', `linear-gradient(90deg, rgba(168, 2, 2, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('${bgURL + e.backdrop_path}') no-repeat`)
     posterPath.src = posterURL + e.poster_path
     headerHead.innerText = e.original_title
+    document.title = e.original_title + ' - Im Second IMDB!'
     headerSpan.innerHTML = `${e.release_date.replaceAll('-', '/')}  &#9679;  ${genres} &#9679; <span class="vote">${e.vote_average}</span>`
     tagLine.innerText = `"${e.tagline}"`
     overview.innerText = e.overview
