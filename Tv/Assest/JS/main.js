@@ -57,7 +57,7 @@ async function getAPIHeader() {
   return result
 }
 async function getAPISeriesCast() {
-  const API = `https://api.themoviedb.org/3/tv/${querySearch}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
+  const API = `https://api.themoviedb.org/3/tv/${querySearch}/aggregate_credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
   const response = await fetch(API)
   const result = await response.json()
   return result
@@ -118,12 +118,13 @@ function showHeader(result) {
 
 function showMain(data, data1, data2) {
   data.then((e)=> {
-    e.cast.forEach(element => {
+    console.log(e);
+    e.cast.forEach((element, index) => {
       if(element.order <= 10) {
         cast.innerHTML += `
         <div class="item cast-card">
           <img src="${seriesCastURL + element.profile_path}">
-          <div class="cast-card-content">${element.name}</div>
+          <div class="cast-card-content"> <h4>${element.name}</h4> <h5>${element.roles[0].episode_count} Episodes</h5></div>
         </div>
         `
       }
