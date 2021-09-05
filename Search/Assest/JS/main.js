@@ -1,13 +1,19 @@
-// const search = JSON.parse(sessionStorage.getItem("search"));
-// document.title = search[search.length - 1] + "- Use Me As Second IMDB";
-// document.querySelector("#search-bar").placeholder = search[search.length - 1];
-// const querySearch = search[search.length - 1]
+const search = JSON.parse(sessionStorage.getItem("search"));
+document.title = search[search.length - 1] + "- Use Me As Second IMDB";
+document.querySelector("#search-bar").placeholder = search[search.length - 1];
+const querySearch = search[search.length - 1]
 
 const UL = document.querySelector(".filter-list");
 const LI = document.querySelectorAll(".lists");
 const searchIcon = document.querySelector('#search')
 
 let query;
+let movies = []
+let tv =[]
+let collection = []
+let person = []
+let company = []
+let keyword = []
 
 document.addEventListener("DOMContentLoaded", () => {
   UL.addEventListener("click", selectedBg);
@@ -83,8 +89,7 @@ function resultCounterAndPageMaker(query = "movie") {
 }
 
 async function getCounterAndPage(searchForWhat) {
-  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=Walt Disney`;
-
+  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=${querySearch}`;
   const response = await fetch(API);
   const result = await response.json();
   return result;
@@ -102,7 +107,6 @@ function showDataFromAPI(query = "movie", page = 1) {
       path.innerHTML = "";
       e.results.forEach(element => {
         for (const iterator of element.known_for) {
-          console.log(iterator);
           if(iterator.title) {
             knownFor += ` ${iterator.title},`
           } else {
@@ -116,13 +120,17 @@ function showDataFromAPI(query = "movie", page = 1) {
             <img src="${(element.profile_path === null) ? "Assest/Images/profile.png" : personPhoto +element.profile_path}">
           </div>
           <div class="person-row-text">
-            <h2>${element.name} - <span>${element.known_for_department}</span></h2>
+            <div class="title-top">
+              <h2>${element.name} - <span>${element.known_for_department}</span></h2>
+              <a class="view-more" target="_blank" data-id="${element.id}">View More</a>
+            </div>
             <p><span>${knownFor}</span></p>
           </div>
         </div>
         `
       })
       knownFor = ''
+      moveToPage(person, 'person', '/Person')
     })
     return true
   }
@@ -133,11 +141,15 @@ function showDataFromAPI(query = "movie", page = 1) {
       e.results.forEach(element => {
         path.innerHTML += `
         <div class="company-row">
+          <div class="title-top">
           ${(element.logo_path)? `<img src="${companyLogo + element.logo_path}">`: `<h2>${element.name}</h2>`}
           ${(element.origin_country)? `<span>${element.origin_country}</span>`: `<span>Unknown Country</span>`}
+          </div>
+          <a class="view-more" target="_blank" data-id="${element.id}">View More</a>
         </div>
         `
       })
+      moveToPage(company, 'company', '/Company')
     })
     return true
   }
@@ -148,10 +160,14 @@ function showDataFromAPI(query = "movie", page = 1) {
       e.results.forEach(element => {
         path.innerHTML += `
         <div class="keyword-row">
-          <h3>${element.name}</h3>
+          <div class="title-top">
+            <h3>${element.name}</h3>
+            <a class="view-more" target="_blank" data-id="${element.id}">View More</a>
+          </div>
         </div>
         `
       })
+      moveToPage(keyword, 'keyword', '/Keyword')
     })
     return true
   }
@@ -175,19 +191,32 @@ function showDataFromAPI(query = "movie", page = 1) {
           }">
         </div>
         <div class="content-row-text">
-          ${(query === 'collection')? `<h2 class="title">${element.title ? element.title : element.original_name}</h2>` : 
-          `<h2 class="title">${element.title ? element.title : element.original_name} - <span class="vote">${element.vote_average === 0 ? "no Vote" : element.vote_average}</span></h2>`}
+          <div class="title-top">
+            ${(query === 'collection')? `<h2 class="title">${element.title ? element.title : element.original_name}</h2>` : 
+            `<h2 class="title">${element.title ? element.title : element.original_name} - <span class="vote">${element.vote_average === 0 ? "no Vote" : element.vote_average}</span></h2>`}
+            <a class="view-more" target="_blank" data-id="${element.id}">View More</a>
+          </div>
           
           <p class="overview">${element.overview === "" ? "No Data" : res}..</p>
         </div>
       </div>
       `;
     });
+    if(query === 'movie') {
+      moveToPage(movies, 'movie', '/Movie')
+    }
+    if(query === 'tv') {
+      moveToPage(tv, 'tv', '/Tv')
+    }
+    if(query === 'collection') {
+      moveToPage(collection, 'colletion', '/Collection')
+    }
   });
+
 }
 
 async function getFromAPI(searchForWhat, page) {
-  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=Walt Disney&page=${page}&include_adult=false`;
+  const API = `https://api.themoviedb.org/3/search/${searchForWhat}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=${querySearch}&page=${page}&include_adult=false`;
 
   const response = await fetch(API);
   const result = await response.json();
@@ -208,8 +237,19 @@ function searchInSearchPage() {
   const search = JSON.parse(sessionStorage.getItem("search"));
   if (inputField.value !== '') {
     search.push(inputField.value)
-    console.log(search, inputField.value);
     sessionStorage.setItem('search', JSON.stringify(search))
     window.open('/Search', '_blank')
   }
+}
+
+function moveToPage(query, storage, path) {
+  const viewMoreBtn = document.querySelectorAll('.view-more')
+  viewMoreBtn.forEach(element => {
+    element.addEventListener('click',(e)=> {
+      e.preventDefault()
+      query.push(e.target.getAttribute('data-id'))
+      sessionStorage.setItem(storage, JSON.stringify(query))
+      window.open(path, '_blank')
+    })
+  });
 }
