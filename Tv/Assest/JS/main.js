@@ -10,10 +10,16 @@ const tagLine = document.querySelector('.tagline')
 const overview = document.querySelector('.movie-stuff p')
 const cast = document.querySelector('#cast')
 const seriesCastURL = 'https://www.themoviedb.org/t/p/w138_and_h175_face'
+const networkImgURL = 'https://www.themoviedb.org/t/p/h30'
+const statusM = document.querySelector('.status')
+const language = document.querySelector('.language')
+const network = document.querySelector('.network')
+const type = document.querySelector('.type')
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
   showHeader(dataHeader)
+  showSide(dataHeader)
   const dataSeriesCast = getAPISeriesCast()
   showMain(dataSeriesCast)
 })
@@ -26,6 +32,12 @@ async function getAPIHeader() {
 }
 async function getAPISeriesCast() {
   const API = `https://api.themoviedb.org/3/tv/${querySearch}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
+  const response = await fetch(API)
+  const result = await response.json()
+  return result
+}
+async function getAPILanguage() {
+  const API = `https://api.themoviedb.org/3/configuration/languages?api_key=75c8aed355937ba0502f74d9a1aed11c`
   const response = await fetch(API)
   const result = await response.json()
   return result
@@ -65,6 +77,30 @@ function showMain(data) {
       <div class="item last">view more ...</div>
     `
     Carousel('.owl',1,3,6)
+  })
+}
+
+function showSide(data) {
+  data.then(e => {
+    e.networks.forEach(element => {
+      network.innerHTML = `
+      <img src="${networkImgURL + element.logo_path}">
+      `
+    });
+    statusM.innerHTML = e.status
+    languageName(e.original_language)
+    type.innerHTML = e.type
+
+  });
+}
+
+function languageName(lang) {
+  getAPILanguage().then((e)=> {
+    e.forEach(element => {
+      if (element.iso_639_1 === lang) {
+        language.innerHTML = element.english_name
+      }
+    });
   })
 }
 

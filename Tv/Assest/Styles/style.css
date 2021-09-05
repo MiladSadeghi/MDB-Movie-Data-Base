@@ -175,3 +175,44 @@ a {
   align-items: center;
   padding: 93px 0;
 }
+
+.side {
+  width: 27%;;
+}
+
+.facts h2 {
+  color: #fff;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.facts-content {
+  padding: 14px;
+}
+
+.facts-content h2 {
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.facts-content h2 span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #bdbdbd;
+}
+
+.network {
+  display: flex;
+}
+
+.network-parent {
+  display: flex;
+  flex-direction: column;
+}
+
+.network img {
+  background: #fff;
+}
