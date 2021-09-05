@@ -25,6 +25,7 @@ currentSeasonContentImg = document.querySelector('.current-season-content img')
 seasons = document.querySelector('.current-season-text h4')
 seasonsOverview = document.querySelector('.current-season-text p')
 currentSeasonContentImgURL = 'https://www.themoviedb.org/t/p/w130_and_h195_bestv2'
+recommendImgURL = 'https://www.themoviedb.org/t/p/w250_and_h141_face'
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
@@ -33,7 +34,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
   const dataKeywords = getAPIKeyword()
   showSide(dataHeader, dataSocial, dataKeywords)
   const dataSeriesCast = getAPISeriesCast()
-  showMain(dataSeriesCast, dataHeader)
+  const dataRecommend = getAPIRecommendation()
+  showMain(dataSeriesCast, dataHeader, dataRecommend)
 })
 
 async function getAPIHeader() {
@@ -66,6 +68,12 @@ async function getAPIKeyword() {
   const result = await response.json()
   return result
 }
+async function getAPIRecommendation() {
+  const API = `https://api.themoviedb.org/3/movie/${querySearch}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&page=1`
+  const response = await fetch(API)
+  const result = await response.json()
+  return result
+}
 
 function showHeader(result) {
   let genres = '';
@@ -84,7 +92,7 @@ function showHeader(result) {
   })
 }
 
-function showMain(data, data1) {
+function showMain(data, data1, data2) {
   data.then((e)=> {
     e.cast.forEach(element => {
       if(element.order <= 10) {
@@ -108,6 +116,29 @@ function showMain(data, data1) {
     seasons.innerHTML = `${data.name} <span>${data.episode_count} Episode</span>`
     seasonsOverview.innerText = data.overview
   });
+
+  data2.then((e)=> {
+    if(e.results.length === 0) {
+      recommend.parentElement.parentElement.remove()
+    } else {
+      let round = function ( number, precision ){
+      precision = precision || 0;
+      return parseFloat( parseFloat( number ).toFixed( precision ) );
+      }
+      e.results.forEach(element => {
+        recommend.innerHTML += `
+          <div class="item recommend-card">
+            <img src="${recommendImgURL +element.backdrop_path}">
+            <div class="recommend-card-content">
+              <h5>${element.title}</h5>
+              <span class="vote-main">${round(element.vote_average, 1)}</span>
+            </div>
+          </div>
+        `
+      });
+      Carousel('.owl1',1,2,3)
+    }
+  })
 }
 
 function showSide(data, data1, data2) {
