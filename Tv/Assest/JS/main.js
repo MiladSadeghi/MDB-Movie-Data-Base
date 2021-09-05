@@ -15,11 +15,17 @@ const statusM = document.querySelector('.status')
 const language = document.querySelector('.language')
 const network = document.querySelector('.network')
 const type = document.querySelector('.type')
+const homePage = document.querySelector('.fa-home').parentElement
+const facebook = document.querySelector('.fa-facebook-square').parentElement
+const twitter = document.querySelector('.fa-instagram').parentElement
+const instagram = document.querySelector('.fa-twitter-square').parentElement
+const justWatch = document.querySelector('.just-watch').parentElement
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
+  const dataSocial = getAPISocial()
   showHeader(dataHeader)
-  showSide(dataHeader)
+  showSide(dataHeader, dataSocial)
   const dataSeriesCast = getAPISeriesCast()
   showMain(dataSeriesCast)
 })
@@ -38,6 +44,12 @@ async function getAPISeriesCast() {
 }
 async function getAPILanguage() {
   const API = `https://api.themoviedb.org/3/configuration/languages?api_key=75c8aed355937ba0502f74d9a1aed11c`
+  const response = await fetch(API)
+  const result = await response.json()
+  return result
+}
+async function getAPISocial() {
+  const API = `https://api.themoviedb.org/3/tv/${querySearch}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`
   const response = await fetch(API)
   const result = await response.json()
   return result
@@ -80,7 +92,7 @@ function showMain(data) {
   })
 }
 
-function showSide(data) {
+function showSide(data, data1) {
   data.then(e => {
     e.networks.forEach(element => {
       network.innerHTML = `
@@ -90,8 +102,16 @@ function showSide(data) {
     statusM.innerHTML = e.status
     languageName(e.original_language)
     type.innerHTML = e.type
-
+    homePage.href = e.homepage
+    justWatch.href = 'https://www.justwatch.com/us/tv-show/' + e.name.replaceAll(' ', '-')
   });
+  data1.then((e)=> {
+    console.log(e);
+    facebook.href =  'https://www.facebook.com/' + e.facebook_id
+    instagram.href =  'https://www.instagram.com/' + e.instagram_id
+    twitter.href =  'https://www.twitter.com/' + e.twitter_id
+    
+  })
 }
 
 function languageName(lang) {
