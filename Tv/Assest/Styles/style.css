@@ -289,3 +289,56 @@ a {
   text-transform: capitalize;
   border: 4px solid #484848;
 }
+
+.current-season {
+  margin-top: 60px;
+}
+
+.current-season h2 {
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.current-season-content {
+  display: flex;
+  border: 3px solid #5f5f5f;
+  border-radius: 20px;
+}
+
+.current-season-content img {
+  height: 100%;
+  border-top-left-radius: 18px;
+}
+
+.current-season-text {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  justify-content: space-between;
+}
+
+.current-season-text h4 {
+  display: flex;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.current-season-text h4 span{
+  color: #fff;
+  font-weight: 400;
+  margin-left: 30px;
+  font-size: 1.2rem;
+}
+
+.current-season-text p {
+  color: #fff;
+}
+
+.current-season-text p br {
+  display: none;
+}

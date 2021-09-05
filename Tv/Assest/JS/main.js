@@ -21,6 +21,10 @@ twitter = document.querySelector('.fa-instagram').parentElement
 instagram = document.querySelector('.fa-twitter-square').parentElement
 justWatch = document.querySelector('.just-watch').parentElement
 keyword = document.querySelector('.keywords-content')
+currentSeasonContentImg = document.querySelector('.current-season-content img')
+seasons = document.querySelector('.current-season-text h4')
+seasonsOverview = document.querySelector('.current-season-text p')
+currentSeasonContentImgURL = 'https://www.themoviedb.org/t/p/w130_and_h195_bestv2'
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
@@ -29,7 +33,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
   const dataKeywords = getAPIKeyword()
   showSide(dataHeader, dataSocial, dataKeywords)
   const dataSeriesCast = getAPISeriesCast()
-  showMain(dataSeriesCast)
+  showMain(dataSeriesCast, dataHeader)
 })
 
 async function getAPIHeader() {
@@ -66,7 +70,6 @@ async function getAPIKeyword() {
 function showHeader(result) {
   let genres = '';
   result.then((e)=> {
-    console.log(e);
     for (const iterator of e.genres) {
       genres += iterator.name + ', '
     }
@@ -81,7 +84,7 @@ function showHeader(result) {
   })
 }
 
-function showMain(data) {
+function showMain(data, data1) {
   data.then((e)=> {
     e.cast.forEach(element => {
       if(element.order <= 10) {
@@ -98,6 +101,13 @@ function showMain(data) {
     `
     Carousel('.owl',1,3,6)
   })
+
+  data1.then(e => {
+    let data = e.seasons[e.seasons.length -1];
+    currentSeasonContentImg.src = currentSeasonContentImgURL + data.poster_path
+    seasons.innerHTML = `${data.name} <span>${data.episode_count} Episode</span>`
+    seasonsOverview.innerText = data.overview
+  });
 }
 
 function showSide(data, data1, data2) {
@@ -115,7 +125,6 @@ function showSide(data, data1, data2) {
   });
 
   data1.then((e)=> {
-    console.log(e);
     facebook.href =  'https://www.facebook.com/' + e.facebook_id
     instagram.href =  'https://www.instagram.com/' + e.instagram_id
     twitter.href =  'https://www.twitter.com/' + e.twitter_id
