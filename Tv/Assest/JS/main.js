@@ -2,30 +2,32 @@ const search = JSON.parse(sessionStorage.getItem("tv"));
 const querySearch = search[search.length - 1]
 
 const bgURL = "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces"
-const posterURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2"
-const posterPath = document.querySelector('.img-poster img')
-const headerHead = document.querySelector('.header h1')
-const headerSpan = document.querySelector('.header span')
-const tagLine = document.querySelector('.tagline')
-const overview = document.querySelector('.movie-stuff p')
-const cast = document.querySelector('#cast')
-const seriesCastURL = 'https://www.themoviedb.org/t/p/w138_and_h175_face'
-const networkImgURL = 'https://www.themoviedb.org/t/p/h30'
-const statusM = document.querySelector('.status')
-const language = document.querySelector('.language')
-const network = document.querySelector('.network')
-const type = document.querySelector('.type')
-const homePage = document.querySelector('.fa-home').parentElement
-const facebook = document.querySelector('.fa-facebook-square').parentElement
-const twitter = document.querySelector('.fa-instagram').parentElement
-const instagram = document.querySelector('.fa-twitter-square').parentElement
-const justWatch = document.querySelector('.just-watch').parentElement
+posterURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2"
+posterPath = document.querySelector('.img-poster img')
+headerHead = document.querySelector('.header h1')
+headerSpan = document.querySelector('.header span')
+tagLine = document.querySelector('.tagline')
+overview = document.querySelector('.movie-stuff p')
+cast = document.querySelector('#cast')
+seriesCastURL = 'https://www.themoviedb.org/t/p/w138_and_h175_face'
+networkImgURL = 'https://www.themoviedb.org/t/p/h30'
+statusM = document.querySelector('.status')
+language = document.querySelector('.language')
+network = document.querySelector('.network')
+type = document.querySelector('.type')
+homePage = document.querySelector('.fa-home').parentElement
+facebook = document.querySelector('.fa-facebook-square').parentElement
+twitter = document.querySelector('.fa-instagram').parentElement
+instagram = document.querySelector('.fa-twitter-square').parentElement
+justWatch = document.querySelector('.just-watch').parentElement
+keyword = document.querySelector('.keywords-content')
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
   const dataSocial = getAPISocial()
   showHeader(dataHeader)
-  showSide(dataHeader, dataSocial)
+  const dataKeywords = getAPIKeyword()
+  showSide(dataHeader, dataSocial, dataKeywords)
   const dataSeriesCast = getAPISeriesCast()
   showMain(dataSeriesCast)
 })
@@ -50,6 +52,12 @@ async function getAPILanguage() {
 }
 async function getAPISocial() {
   const API = `https://api.themoviedb.org/3/tv/${querySearch}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`
+  const response = await fetch(API)
+  const result = await response.json()
+  return result
+}
+async function getAPIKeyword() {
+  const API = `https://api.themoviedb.org/3/movie/${querySearch}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`
   const response = await fetch(API)
   const result = await response.json()
   return result
@@ -92,7 +100,7 @@ function showMain(data) {
   })
 }
 
-function showSide(data, data1) {
+function showSide(data, data1, data2) {
   data.then(e => {
     e.networks.forEach(element => {
       network.innerHTML = `
@@ -105,12 +113,26 @@ function showSide(data, data1) {
     homePage.href = e.homepage
     justWatch.href = 'https://www.justwatch.com/us/tv-show/' + e.name.replaceAll(' ', '-')
   });
+
   data1.then((e)=> {
     console.log(e);
     facebook.href =  'https://www.facebook.com/' + e.facebook_id
     instagram.href =  'https://www.instagram.com/' + e.instagram_id
     twitter.href =  'https://www.twitter.com/' + e.twitter_id
-    
+  })
+
+  data2.then((e)=> {
+    if(e.keywords.length !== 0) {
+      e.keywords.forEach(element => {
+        keyword.innerHTML += `
+        <a href="#" data-id="${element.id}">${element.name}</a>
+        `
+      });
+    } else {
+      keyword.innerHTML = `
+        <p class="not">No keywords have been added.</p>
+        `
+    }
   })
 }
 
