@@ -26,6 +26,12 @@ seasons = document.querySelector('.current-season-text h4')
 seasonsOverview = document.querySelector('.current-season-text p')
 currentSeasonContentImgURL = 'https://www.themoviedb.org/t/p/w130_and_h195_bestv2'
 recommendImgURL = 'https://www.themoviedb.org/t/p/w250_and_h141_face'
+mediaPopular = document.querySelector('#popular')
+mediaVideos = document.querySelector('#videos')
+mediaBackdrops = document.querySelector('#backdrops')
+mediaPosters = document.querySelector('#posters')
+mediaURL = 'https://www.themoviedb.org/t/p/w533_and_h300_bestv2'
+mediaPostersURL = 'https://www.themoviedb.org/t/p/w220_and_h330_face'
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
@@ -36,6 +42,12 @@ document.addEventListener('DOMContentLoaded', ()=> {
   const dataSeriesCast = getAPISeriesCast()
   const dataRecommend = getAPIRecommendation()
   showMain(dataSeriesCast, dataHeader, dataRecommend)
+  const dataImage = getAPIImages()
+  showMedia('popular', dataImage, getAPIVideos())
+  mediaPopular.addEventListener('click', ()=> {showMedia('popular', dataImage, getAPIVideos())})
+  mediaVideos.addEventListener('click', ()=> {showMedia('videos' ,getAPIVideos())})
+  mediaBackdrops.addEventListener('click', ()=> {showMedia('backdrops', dataImage)})
+  mediaPosters.addEventListener('click', ()=> {showMedia('posters', dataImage)})
 })
 
 async function getAPIHeader() {
@@ -63,13 +75,25 @@ async function getAPISocial() {
   return result
 }
 async function getAPIKeyword() {
-  const API = `https://api.themoviedb.org/3/movie/${querySearch}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`
+  const API = `https://api.themoviedb.org/3/tv/${querySearch}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`
   const response = await fetch(API)
   const result = await response.json()
   return result
 }
 async function getAPIRecommendation() {
-  const API = `https://api.themoviedb.org/3/movie/${querySearch}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&page=1`
+  const API = `https://api.themoviedb.org/3/tv/${querySearch}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&page=1`
+  const response = await fetch(API)
+  const result = await response.json()
+  return result
+}
+async function getAPIVideos() {
+  const API = `https://api.themoviedb.org/3/tv/${querySearch}/videos?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
+  const response = await fetch(API)
+  const result = await response.json()
+  return result
+}
+async function getAPIImages() {
+  const API = `https://api.themoviedb.org/3/tv/${querySearch}/images?api_key=75c8aed355937ba0502f74d9a1aed11c#`
   const response = await fetch(API)
   const result = await response.json()
   return result
@@ -162,8 +186,8 @@ function showSide(data, data1, data2) {
   })
 
   data2.then((e)=> {
-    if(e.keywords.length !== 0) {
-      e.keywords.forEach(element => {
+    if(e.results.length !== 0) {
+      e.results.forEach(element => {
         keyword.innerHTML += `
         <a href="#" data-id="${element.id}">${element.name}</a>
         `
@@ -184,6 +208,70 @@ function languageName(lang) {
       }
     });
   })
+}
+
+function showMedia(choice ,data, data1) {
+  clearForCarousel()
+  const media = document.querySelector('#media')
+  if(choice === 'popular'){
+    data1.then((e)=> {
+      media.innerHTML += `
+      <div class="item iframes">
+        <iframe src="https://www.youtube.com/embed/${e.results[e.results.length -1].key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      `
+      data.then((e)=> {
+        media.innerHTML += `
+        <div class="item">
+          <img src="${mediaURL + e.backdrops[0].file_path}">
+        </div>
+        <div class="item">
+          <img src="${mediaURL + e.posters[0].file_path}">
+        </div>
+        `
+        Carousel('.owl2',1,2,2)
+      })
+    })
+  }
+  if(choice === 'videos') {
+    data.then((e)=> {
+      e.results.forEach(element => {
+        media.innerHTML += `
+          <iframe class="item iframe-videos" src="https://www.youtube.com/embed/${element.key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        `
+      });
+      Carousel('.owl2',1,2,1)
+    })
+  }
+  if(choice === 'backdrops') {
+    data.then((e)=> {
+      e.backdrops.forEach((e)=> {
+        media.innerHTML += `
+          <img src="${mediaURL + e.file_path}">
+        `
+      })
+      Carousel('.owl2',1,2,2)
+    })
+  }
+  if(choice === 'posters') {
+    data.then((e)=> {
+      e.posters.forEach((e)=> {
+        media.innerHTML += `
+          <img class="images" src="${mediaPostersURL + e.file_path}">
+        `
+      })
+      Carousel('.owl2',1,2,5)
+    })
+  }
+}
+
+function clearForCarousel() {
+  const mediaContent = document.querySelector('.media-S-content')
+  mediaContent.innerHTML = ''
+  const carousel = document.createElement('div')
+  carousel.classList.add('owl-carousel' ,'owl-theme', 'owl2')
+  carousel.id = "media"
+  mediaContent.appendChild(carousel)
 }
 
 function Carousel(path,responsive1,responsive2,responsive3) {
