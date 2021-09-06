@@ -11,7 +11,8 @@ const search = JSON.parse(sessionStorage.getItem("collection"));
       formatToCurrency = amount => {
         return "$" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
       };
-
+      featuredCastContent = document.querySelector('.featured-cast-content')
+      featuredCastContentImg = 'https://www.themoviedb.org/t/p/w64_and_h64_face'
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataAll = getAPIAll()
@@ -32,6 +33,12 @@ async function getAPIkeywords() {
 }
 async function getAPIRevenue(id) {
   const API = `https://api.themoviedb.org/3/movie/${id}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
+  const response = await fetch(API)
+  const result = await response.json()
+  return result
+}
+async function getAPICast(id) {
+  const API = `https://api.themoviedb.org/3/movie/${id}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
   const response = await fetch(API)
   const result = await response.json()
   return result
@@ -65,6 +72,8 @@ function showHeader(data) {
       genre.push(...element.genre_ids)
       movie.push(element.id)
     });
+    let cast = e.parts[e.parts.length - 1].id
+    showFeaturedCast(cast)
     showKeywords(genre)
     showRevenue(movie)
     document.documentElement.style.setProperty('--banner', `linear-gradient(90deg, rgba(168, 2, 2, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('${bgURL + e.backdrop_path}') no-repeat`)
@@ -76,6 +85,7 @@ function showHeader(data) {
     movieNumber.innerHTML = `${e.parts.length}`
   })
 }
+
 function showRevenue(id) {
   let revenueMoney = 0
   for (const iterator of id) {
@@ -84,4 +94,22 @@ function showRevenue(id) {
       revenue.innerHTML = `${formatToCurrency(revenueMoney)}`
     })
   }
+}
+
+function showFeaturedCast(cast) {
+  getAPICast(cast).then((e)=> {
+    e.cast.forEach(element => {
+      if(element.order < 14) {
+        featuredCastContent.innerHTML += `
+        <div class="card">
+          <img src="${featuredCastContentImg + element.profile_path}">
+          <div>
+            <h5>${element.name}</h5>
+            <p>${element.character}</p>
+          </div>
+        </div>
+        `
+      }
+    });
+  })
 }
