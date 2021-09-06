@@ -1,37 +1,39 @@
 const search = JSON.parse(sessionStorage.getItem("movie"));
-const querySearch = search[search.length - 1]
+querySearch = search[search.length - 1]
 
-const bgURL = "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces"
-const posterURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2"
-const posterPath = document.querySelector('.img-poster img')
-const headerHead = document.querySelector('.header h1')
-const headerSpan = document.querySelector('.header span')
-const tagLine = document.querySelector('.tagline')
-const overview = document.querySelector('.movie-stuff p')
-const cast = document.querySelector('#cast')
-const profileURL = 'https://www.themoviedb.org/t/p/w138_and_h175_face'
-const statusM = document.querySelector('.status')
-const language = document.querySelector('.language')
-const budget = document.querySelector('.budget')
-const revenue = document.querySelector('.revenue')
-const formatToCurrency = amount => {
+collection = []
+
+bgURL = "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces"
+posterURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2"
+posterPath = document.querySelector('.img-poster img')
+headerHead = document.querySelector('.header h1')
+headerSpan = document.querySelector('.header span')
+tagLine = document.querySelector('.tagline')
+overview = document.querySelector('.movie-stuff p')
+cast = document.querySelector('#cast')
+profileURL = 'https://www.themoviedb.org/t/p/w138_and_h175_face'
+statusM = document.querySelector('.status')
+language = document.querySelector('.language')
+budget = document.querySelector('.budget')
+revenue = document.querySelector('.revenue')
+formatToCurrency = amount => {
   return "$" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
 };
-const homePage = document.querySelector('.fa-home').parentElement
-const facebook = document.querySelector('.fa-facebook-square').parentElement
-const twitter = document.querySelector('.fa-instagram').parentElement
-const instagram = document.querySelector('.fa-twitter-square').parentElement
-const keyword = document.querySelector('.keywords-content')
-const backdroupURL = 'https://www.themoviedb.org/t/p/w1440_and_h320_multi_faces'
-const collectionContent = document.querySelector('.collection-content')
-const recommendImgURL = 'https://www.themoviedb.org/t/p/w250_and_h141_face'
-const recommend = document.querySelector('#recommend')
-const mediaPopular = document.querySelector('#popular')
-const mediaVideos = document.querySelector('#videos')
-const mediaBackdrops = document.querySelector('#backdrops')
-const mediaPosters = document.querySelector('#posters')
-const mediaURL = 'https://www.themoviedb.org/t/p/w533_and_h300_bestv2'
-const mediaPostersURL = 'https://www.themoviedb.org/t/p/w220_and_h330_face'
+homePage = document.querySelector('.fa-home').parentElement
+facebook = document.querySelector('.fa-facebook-square').parentElement
+twitter = document.querySelector('.fa-instagram').parentElement
+instagram = document.querySelector('.fa-twitter-square').parentElement
+keyword = document.querySelector('.keywords-content')
+backdroupURL = 'https://www.themoviedb.org/t/p/w1440_and_h320_multi_faces'
+collectionContent = document.querySelector('.collection-content')
+recommendImgURL = 'https://www.themoviedb.org/t/p/w250_and_h141_face'
+recommend = document.querySelector('#recommend')
+mediaPopular = document.querySelector('#popular')
+mediaVideos = document.querySelector('#videos')
+mediaBackdrops = document.querySelector('#backdrops')
+mediaPosters = document.querySelector('#posters')
+mediaURL = 'https://www.themoviedb.org/t/p/w533_and_h300_bestv2'
+mediaPostersURL = 'https://www.themoviedb.org/t/p/w220_and_h330_face'
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
@@ -139,7 +141,8 @@ function showMain(result, result1, result2, result3) {
     if(e.belongs_to_collection !== null) {
       document.documentElement.style.setProperty('--collection-image', `url(${backdroupURL + e.belongs_to_collection.backdrop_path})`)
       collectionContent.children[0].innerHTML = `Part Of The ${e.belongs_to_collection.name}`
-      collectionContent.children[1].innerHTML = `VIEW THE COLLECTION`
+      collectionContent.innerHTML += `<a class="view-more" target="_blank" data-id="${e.belongs_to_collection.id}">VIEW THE COLLECTION</a>`
+      moveToPage(collection, 'collection', '/Collection')
     }
     else {
       collectionContent.parentElement.style.display = 'none'
@@ -265,7 +268,6 @@ function showMedia(choice ,data, data1) {
   }
 }
 
-
 function clearForCarousel() {
   const mediaContent = document.querySelector('.media-S-content')
   mediaContent.innerHTML = ''
@@ -273,6 +275,18 @@ function clearForCarousel() {
   carousel.classList.add('owl-carousel' ,'owl-theme', 'owl2')
   carousel.id = "media"
   mediaContent.appendChild(carousel)
+}
+
+function moveToPage(query, storage, path) {
+  const viewMoreBtn = document.querySelectorAll('.view-more')
+  viewMoreBtn.forEach(element => {
+    element.addEventListener('click',(e)=> {
+      e.preventDefault()
+      query.push(e.target.getAttribute('data-id'))
+      sessionStorage.setItem(storage, JSON.stringify(query))
+      window.open(path, '_blank')
+    })
+  });
 }
 
 function Carousel(path,responsive1,responsive2,responsive3) {

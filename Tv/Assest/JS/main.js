@@ -118,7 +118,6 @@ function showHeader(result) {
 
 function showMain(data, data1, data2) {
   data.then((e)=> {
-    console.log(e);
     e.cast.forEach((element, index) => {
       if(element.order <= 10) {
         cast.innerHTML += `
@@ -155,7 +154,7 @@ function showMain(data, data1, data2) {
           <div class="item recommend-card">
             <img src="${recommendImgURL +element.backdrop_path}">
             <div class="recommend-card-content">
-              <h5>${element.title}</h5>
+              <h5>${element.title || element.original_name}</h5>
               <span class="vote-main">${round(element.vote_average, 1)}</span>
             </div>
           </div>

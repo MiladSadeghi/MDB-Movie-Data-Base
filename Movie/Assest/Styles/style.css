@@ -307,6 +307,7 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px 1px #000;
   transition: box-shadow 300ms ease-in-out;
+  cursor: pointer;
 }
 
 .collection-content a:hover {
