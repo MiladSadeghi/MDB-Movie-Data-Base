@@ -183,7 +183,7 @@ body {
 }
 
 .card:hover {
-  transform: scale(1.1);
+  transform: scale(1.03);
   border-radius: 10px;
   background: rgba(114, 114, 114, 0.52);
 }
@@ -224,4 +224,60 @@ body {
 
 .featured-crew-content .card:nth-child(odd) {
   margin: 0;
+}
+
+.movies {
+  padding-bottom: 50px;
+  background: #000;
+}
+
+.movie-header {
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  background: rgba(41, 41, 41, 52%);
+  border-radius: 10px;
+  transition: background 150ms ease-in-out;
+}
+
+.row:hover {
+  background: rgba(114, 114, 114, 0.52);
+}
+
+.row-content {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  justify-content: space-between;
+}
+
+.row:hover  img {
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.row-content h2 {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 30px;
+}
+
+.row-content span span{
+  color: rgb(158 158 158);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.row-content p {
+  color: #fff;
+  font-size: 1rem;
+  line-height: 22px;
 }

@@ -14,6 +14,9 @@ formatToCurrency = (amount) => {
 featuredSectionContentImg = "https://www.themoviedb.org/t/p/w64_and_h64_face";
 featuredCastContent = document.querySelector(".featured-cast-content");
 featuredCrewContent = document.querySelector(".featured-crew-content");
+movieHeader = document.querySelector('.movie-header')
+moviesContent = document.querySelector('.movies-content')
+moviesContentImg = 'https://www.themoviedb.org/t/p/w94_and_h141_bestv2'
 
 document.addEventListener("DOMContentLoaded", () => {
   const dataAll = getAPIAll();
@@ -72,6 +75,19 @@ function showHeader(data) {
       voteAverage += element.vote_average;
       genre.push(...element.genre_ids);
       movie.push(element.id);
+
+      moviesContent.innerHTML += `
+      <div class="row">
+        <img src="${moviesContentImg + element.poster_path}">
+        <div class="row-content">
+          <span>
+            <h2>${element.title}</h2>
+            <span>${element.release_date.replaceAll('-','/')}</span>
+          </span>
+            <p>${element.overview}</p>
+        </div>
+      </div>
+      `
     });
     let cast = e.parts[e.parts.length - 1].id;
     showFeaturedSection(cast);
@@ -84,6 +100,9 @@ function showHeader(data) {
     detail.innerHTML += `<span class="genre"></span>  	&#9679;  <span class="vote">${voteAverage / e.parts.length}</span>`;
     overview.innerText = e.overview;
     movieNumber.innerHTML = `${e.parts.length}`;
+    movieHeader.innerHTML = `${e.parts.length} Movies`
+
+    
   });
 }
 
