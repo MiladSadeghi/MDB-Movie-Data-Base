@@ -103,7 +103,7 @@ function showFeaturedSection(cast) {
       if (element.order < 14) {
         featuredCastContent.innerHTML += `
           <div class="card">
-            <img src="${featuredSectionContentImg + element.profile_path}">
+          <img src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}">
             <div>
               <h5>${element.name}</h5>
               <p>${element.character}</p>
@@ -121,7 +121,7 @@ function showFeaturedSection(cast) {
             } else {
               featuredCrewContent.innerHTML += `
                 <div class="card">
-                  <img src="${featuredSectionContentImg + element.profile_path}">
+                  <img src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}">
                   <div>
                     <h5>${element.name}</h5>
                     <p>${element.department}</p>
@@ -132,7 +132,7 @@ function showFeaturedSection(cast) {
           } else {
             featuredCrewContent.innerHTML += `
                 <div class="card">
-                  <img src="${featuredSectionContentImg + element.profile_path}">
+                <img src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}">
                   <div>
                     <h5>${element.name}</h5>
                     <p>${element.department}</p>

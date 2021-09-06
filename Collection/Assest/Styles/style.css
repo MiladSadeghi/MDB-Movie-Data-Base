@@ -188,6 +188,10 @@ body {
   background: rgba(114, 114, 114, 0.52);
 }
 
+.card img {
+  width: 60px;
+}
+
 .card div {
   display: flex;
   flex-direction: column;
