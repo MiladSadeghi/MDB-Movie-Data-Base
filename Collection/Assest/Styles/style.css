@@ -18,3 +18,122 @@ a {
 body {
   font-family: "Poppins";
 }
+
+.movie-banner {
+  display: flex;
+  height: 480px;
+  background: var(--banner);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.banner {
+  display: flex;
+  height: 100%;
+}
+
+.img-poster {
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.img-poster img {
+  border-radius: 15px;
+  box-shadow: 0 0 20px 10px #000;
+  transition: box-shadow 300ms ease-in-out;
+}
+
+.img-poster img:hover {
+  box-shadow: 0 0 20px 10px rgba(168, 2, 2, 1);
+}
+
+.movie-name {
+  color: #fff;
+  font-size: 3.2rem;
+  line-height: 75px;
+  font-weight: 700;
+  text-shadow: 0 0 20px black;
+}
+
+.movie-content {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.movie-stuff h5 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 30px 0 10px;
+}
+
+.movie-stuff p {
+  font-size: 1rem;
+  color: #fff;
+  line-height: 23px;
+}
+
+.movie-number {
+  color: #fff;
+  margin: 30px 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+.movie-number h4 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.movie-number span {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #bdbdbd;
+  align-self: center;
+}
+
+.vote {
+  padding: 1px 11px;
+  background: #fff;
+  color: #000;
+  border-radius: 7px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.vote:hover {
+  color: rgba(168, 2, 2, 1);
+}
+
+.detail {
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.revenue {
+  margin: 30px 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+.revenue h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.revenue span {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #bdbdbd;
+  align-self: center;
+}
