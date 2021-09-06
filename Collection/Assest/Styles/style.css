@@ -138,19 +138,19 @@ body {
   align-self: center;
 }
 
-.featured-cast {
+.featured-cast, .featured-crew {
   background: #000;
   padding: 50px 0;
 }
 
-.featured-cast h2 {
+.featured-cast h2, .featured-crew h2 {
   color: #fff;
   margin-bottom: 30px;
   font-size: 1.5rem;
   font-weight: 600;
 }
 
-.featured-cast-content {
+.featured-cast-content, .featured-crew-content {
   height: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -204,4 +204,20 @@ body {
   font-size: 0.8rem;
   font-weight: 500;
   margin-top: 10px;
+}
+
+.featured-crew {
+  padding-top: 0;
+}
+
+.featured-crew-content .card {
+  width: calc(67% / 3);
+}
+
+.featured-crew-content .card:nth-child(even) {
+  margin: 0 30px 30px 30px;
+}
+
+.featured-crew-content .card:nth-child(odd) {
+  margin: 0;
 }
