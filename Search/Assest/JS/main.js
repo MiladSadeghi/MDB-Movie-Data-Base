@@ -209,7 +209,8 @@ function showDataFromAPI(query = "movie", page = 1) {
       moveToPage(tv, 'tv', '/Tv')
     }
     if(query === 'collection') {
-      moveToPage(collection, 'colletion', '/Collection')
+      console.log(query);
+      moveToPage(collection, 'collection', '/Collection')
     }
   });
 
