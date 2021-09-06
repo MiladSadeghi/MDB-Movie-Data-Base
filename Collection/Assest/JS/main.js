@@ -97,7 +97,7 @@ function showHeader(data) {
     posterPath.src = posterURL + e.poster_path;
     headerHead.innerText = e.name;
     document.title = e.name + " - Im Second IMDB!";
-    detail.innerHTML += `<span class="genre"></span>  	&#9679;  <span class="vote">${voteAverage / e.parts.length}</span>`;
+    detail.innerHTML += `<span class="genre"></span>  	&#9679;  <span class="vote">${(voteAverage / e.parts.length).toFixed(1)}</span>`;
     overview.innerText = e.overview;
     movieNumber.innerHTML = `${e.parts.length}`;
     movieHeader.innerHTML = `${e.parts.length} Movies`
@@ -130,13 +130,13 @@ function showFeaturedSection(cast) {
           </div>`;
       }
     });
+    let loopCounter = 0;
     e.crew.forEach((element) => {
-      let loopCounter = 0;
-      if (loopCounter < 3) {
+      if (loopCounter <= 3) {
         if (element.department === "Directing" || element.department === "Writing") {
           if (featuredCrewContent.innerHTML.trim()) {
-            if (element.name === featuredCrewContent.children[loopCounter].children[1].children[0].textContent) {
-              featuredCrewContent.children[loopCounter].children[1].children[1].textContent += `, ${element.department}`;
+            if (element.name === featuredCrewContent.children[loopCounter - 1].children[1].children[0].textContent) {
+              featuredCrewContent.children[loopCounter - 1].children[1].children[1].textContent += `, ${element.department}`;
             } else {
               featuredCrewContent.innerHTML += `
                 <div class="card">
@@ -146,21 +146,21 @@ function showFeaturedSection(cast) {
                     <p>${element.department}</p>
                   </div>
                 </div>`;
-              loopCounter++;
+                loopCounter++;
             }
           } else {
             featuredCrewContent.innerHTML += `
-                <div class="card">
-                <img src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}">
-                  <div>
-                    <h5>${element.name}</h5>
-                    <p>${element.department}</p>
-                  </div>
-                </div>`;
+              <div class="card">
+              <img src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}">
+                <div>
+                  <h5>${element.name}</h5>
+                  <p>${element.department}</p>
+                </div>
+              </div>`;
               loopCounter++;
           }
         }
       }
     });
   });
-}
+  }

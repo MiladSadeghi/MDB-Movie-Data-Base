@@ -89,12 +89,12 @@ body {
 }
 
 .movie-number h4 {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
 }
 
 .movie-number span {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 400;
   color: #bdbdbd;
   align-self: center;
@@ -126,13 +126,13 @@ body {
 }
 
 .revenue h4 {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #fff;
 }
 
 .revenue span {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 400;
   color: #bdbdbd;
   align-self: center;
@@ -189,7 +189,8 @@ body {
 }
 
 .card img {
-  width: 60px;
+  width: 64px;
+  height: 64px;
 }
 
 .card div {
@@ -200,7 +201,7 @@ body {
 }
 
 .card div h5 {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -240,7 +241,6 @@ body {
 
 .row {
   display: flex;
-  justify-content: center;
   margin-bottom: 30px;
   background: rgba(41, 41, 41, 52%);
   border-radius: 10px;
