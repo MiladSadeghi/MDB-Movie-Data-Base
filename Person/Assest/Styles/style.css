@@ -99,3 +99,48 @@ body {
 .top a:hover {
   text-shadow: 0 0 15px #fff;
 }
+
+.main {
+  height: 100%;
+  padding: 50px 0;
+  background: #000;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+
+.known-for h2 {
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.card {
+  width: 128px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card img {
+  border-radius: 10px;
+}
+
+.card span {
+  display: flex;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  height: 62px;
+  padding-top: 9px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  align-items: start;
+  line-height: 17px;
+  justify-content: center;
+}
