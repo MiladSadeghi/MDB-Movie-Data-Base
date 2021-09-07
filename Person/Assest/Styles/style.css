@@ -19,15 +19,83 @@ body {
   font-family: "Poppins";
 }
 
-.movie-banner {
-  display: flex;
-  height: 480px;
-  background: var(--banner);
-  background-size: cover;
-  background-repeat: no-repeat;
+.person-header {
+  background: linear-gradient(90deg, rgba(168, 2, 2, 1) 0%, rgba(0, 0, 0, 1) 100%) 50% 10%;
+  padding: 30px 0;
 }
 
 .container {
   width: 90%;
   margin: 0 auto;
+}
+
+.person-content {
+  display: flex;
+}
+
+.person-content img {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.person-content-text {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #fff;
+}
+
+.person-content-text h2 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.top {
+  position: relative;
+}
+
+.bg::after {
+  position: absolute;
+  content: '';
+  bottom: -10px;
+  left: 0%;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(90deg,transparent 35%, rgba(0,0,0) 90%);
+  z-index: 5;
+}
+
+.top h4{
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 50px;
+}
+
+.top p {
+  font-size: 1rem;
+  margin-top: 10px;
+  line-height: 25px;
+  white-space: break-spaces;
+  text-align: justify;
+  position: relative;
+  height: 294px;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.top a {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 8;
+  color: #fff;
+  font-weight: 600;
+  transition: text-shadow 300ms ease-in-out;
+}
+
+.top a:hover {
+  text-shadow: 0 0 15px #fff;
 }
