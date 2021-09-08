@@ -5,7 +5,8 @@ const personImg = document.querySelector('.person-img'),
       viewMoreBtn = document.querySelector('#view-more'),
       knownFor = document.querySelector('#known'),
       knownForImageURL = 'https://www.themoviedb.org/t/p/w150_and_h225_bestv2',
-      activeContent = document.querySelector('.active-content')
+      activeContent = document.querySelector('.active-content'),
+      productionContent = document.querySelector('.production-content')
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
@@ -45,6 +46,7 @@ function showHeader(result) {
 function showMain(result) {
   let knownForMovie = []
   let acting = []
+  let production = []
   let border = ''
   result.then(e => {
     e.cast.forEach((element, index) => {
@@ -77,8 +79,7 @@ function showMain(result) {
       }
     }
 
-    acting.sort().reverse().forEach((element, index) => {
-      
+    acting.sort().reverse().forEach((element) => {
       for (let i = 0; i < e.cast.length; i++) {
         if(element !== "" && element === e.cast[i].release_date) {
           activeContent.innerHTML += `
@@ -92,6 +93,37 @@ function showMain(result) {
       }
       border = element.slice(0,4)
     })
+
+    e.crew.forEach((element) => {
+      production.push(element.release_date)
+    })
+    for (let i = 0; i < e.crew.length; i++) {
+      if(e.crew[i].release_date === "" && e.crew[i].department === "Production") {
+        productionContent.innerHTML += `
+          <div class="product-row">
+            <h6 class="year"> — </h6>
+            <span> <span class="product-row-movie">${e.crew[i].title}</span> <span class="product-row-job">
+              ${(e.crew[i].job)? `<as>as</as> ${e.crew[i].job}`: ''}</span></span>
+          </div>
+        `
+      }
+    }
+
+    production.sort().reverse().forEach((element) => {
+      for (let i = 0; i < e.crew.length; i++) {
+        if(element !== "" && element === e.crew[i].release_date) {
+          productionContent.innerHTML += `
+            <div class="product-row ${(element.slice(0,4) === border)? '': 'border'}">
+              <h6 class="year">${element.slice(0,4)}</h6>
+              <span> <span class="product-row-movie">${e.crew[i].title}</span> <span class="product-row-job">
+              ${(e.crew[i].job)? `<as>as</as> ${e.crew[i].job}`: ''}</span></span>
+            </div>
+          `
+        }
+      }
+      border = element.slice(0,4)
+    })
+
     Carousel('.owl1',1,4,5)
   })
 }

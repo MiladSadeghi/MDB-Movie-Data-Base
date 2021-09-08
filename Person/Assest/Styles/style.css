@@ -152,36 +152,48 @@ body {
   font-weight: 600;
 }
 
-.acting-row {
-  color: #fff;
+.acting-row, .product-row {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   background: rgb(64 64 64 / 38%);
   padding: 20px 0;
   border-radius: 10px;
   transition: background 200ms ease-in;
 }
 
-.acting-row:hover {
+.acting-row:hover, .product-row:hover {
   background: rgb(105 105 105 / 50%);
 }
 
 as {
   color: rgb(255 255 255 / 47%);
+  font-weight: 400;
 }
 
 .year {
   padding: 0 30px;
+  color: #fff;
+  font-weight: 500;
 }
 
-.acting-row-movie {
-  color: #fff !important;
+.acting-row-movie, .product-row-movie {
+  color: #fff;
+  font-weight: 600;
 }
 
-.acting-row-character {
-  color: #fff !important;
+.acting-row-character, .product-row-job {
+  color: #fff;
+  font-weight: 600;
 }
 
 .border {
   border-top: 5px solid #fff;
+}
+
+.production h2 {
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 50px;
 }
