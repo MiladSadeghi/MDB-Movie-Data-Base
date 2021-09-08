@@ -6,7 +6,8 @@ const personImg = document.querySelector('.person-img'),
       knownFor = document.querySelector('#known'),
       knownForImageURL = 'https://www.themoviedb.org/t/p/w150_and_h225_bestv2',
       activeContent = document.querySelector('.active-content'),
-      productionContent = document.querySelector('.production-content')
+      productionContent = document.querySelector('.production-content'),
+      crewContent = document.querySelector('.crew-content')
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
@@ -111,8 +112,16 @@ function showMain(result) {
 
     production.sort().reverse().forEach((element) => {
       for (let i = 0; i < e.crew.length; i++) {
-        if(element !== "" && element === e.crew[i].release_date) {
+        if(element !== "" && element === e.crew[i].release_date && e.crew[i].department === "Production") {
           productionContent.innerHTML += `
+            <div class="product-row ${(element.slice(0,4) === border)? '': 'border'}">
+              <h6 class="year">${element.slice(0,4)}</h6>
+              <span> <span class="product-row-movie">${e.crew[i].title}</span> <span class="product-row-job">
+              ${(e.crew[i].job)? `<as>as</as> ${e.crew[i].job}`: ''}</span></span>
+            </div>
+          `
+        } else if (element !== "" && element === e.crew[i].release_date && e.crew[i].department === "Crew") {
+          crewContent.innerHTML += `
             <div class="product-row ${(element.slice(0,4) === border)? '': 'border'}">
               <h6 class="year">${element.slice(0,4)}</h6>
               <span> <span class="product-row-movie">${e.crew[i].title}</span> <span class="product-row-job">
@@ -121,6 +130,7 @@ function showMain(result) {
           `
         }
       }
+      console.log(border);
       border = element.slice(0,4)
     })
 

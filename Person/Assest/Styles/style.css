@@ -195,5 +195,16 @@ as {
   margin-bottom: 30px;
   font-size: 1.5rem;
   font-weight: 600;
+
+}
+
+.crew, .production {
   margin-top: 50px;
+}
+
+.crew h2 {
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
