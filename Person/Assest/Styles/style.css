@@ -208,3 +208,40 @@ as {
   font-size: 1.5rem;
   font-weight: 600;
 }
+
+.mains {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.side-content {
+  width: 27%;
+}
+
+.personal-info h2 {
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.personal-info-content {
+  padding: 14px;
+}
+
+.personal-info-content p {
+  margin-bottom: 50px;
+  color: #bdbdbd;
+  font-size: 1rem;
+  letter-spacing: 0.7px;
+  display: flex;
+  flex-direction: column;
+  line-height: 20px;
+}
+
+.personal-info-content strong {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+}

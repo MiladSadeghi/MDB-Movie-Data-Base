@@ -7,7 +7,13 @@ const personImg = document.querySelector('.person-img'),
       knownForImageURL = 'https://www.themoviedb.org/t/p/w150_and_h225_bestv2',
       activeContent = document.querySelector('.active-content'),
       productionContent = document.querySelector('.production-content'),
-      crewContent = document.querySelector('.crew-content')
+      crewContent = document.querySelector('.crew-content'),
+      knownForDepartment = document.querySelector('#known-for-department'),
+      knownCredits = document.querySelector('#known-credits'),
+      gender = document.querySelector('#gender'),
+      birthDay = document.querySelector('#birth-day'),
+      placeOfBirth = document.querySelector('#place-of-birth'),
+      nowTime = new Date().getFullYear()
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
@@ -41,6 +47,10 @@ function showHeader(result) {
     personImg.src = personImgURL + e.profile_path
     personName.textContent = e.name
     personBiography.textContent = e.biography
+    knownForDepartment.innerHTML += e.known_for_department
+    gender.innerHTML += (e.gender === 2)? 'Male': (e.gender === 1)? 'Female':'Non Binary' 
+    birthDay.innerHTML += `${e.birthday.replaceAll('-','/')} (${nowTime - e.birthday.slice(0,4)} Years Old)`
+    placeOfBirth.innerHTML += e.place_of_birth
   })
 }
 
@@ -50,6 +60,7 @@ function showMain(result) {
   let production = []
   let border = ''
   result.then(e => {
+    knownCredits.innerHTML += e.cast.length + e.crew.length
     e.cast.forEach((element, index) => {
       acting.push(element.release_date)
       if(element.character !== 'Himself' && element.character.indexOf('/') === -1 && element.character.indexOf('(') === -1 && element.character !== 'Self' && element.vote_average >= 5 && element.popularity >= 30 && element.character.indexOf("\n") === -1) {
@@ -133,7 +144,6 @@ function showMain(result) {
       console.log(border);
       border = element.slice(0,4)
     })
-
     Carousel('.owl1',1,4,5)
   })
 }
