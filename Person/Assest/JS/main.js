@@ -14,13 +14,16 @@ const personImg = document.querySelector('.person-img'),
       birthDay = document.querySelector('#birth-day'),
       placeOfBirth = document.querySelector('#place-of-birth'),
       nowTime = new Date().getFullYear(),
-      knownAsContent = document.querySelector('.known-as-content')
+      knownAsContent = document.querySelector('.known-as-content'),
+      socialContent = document.querySelector('.social-content')
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
   showHeader(dataHeader)
   const dataKnownFor = getAPIKnownFor()
   showMain(dataKnownFor)
+  const dataSocial = getAPISocial()
+  showSocial(dataSocial)
 
   viewMoreBtn.addEventListener('click', (e)=> {
     e.preventDefault()
@@ -31,13 +34,19 @@ document.addEventListener('DOMContentLoaded', ()=> {
 })
 
 async function getAPIHeader() {
-  const API = 'https://api.themoviedb.org/3/person/287?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US'
+  const API = 'https://api.themoviedb.org/3/person/192?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US'
   response = await fetch(API)
   result = await response.json()
   return result
 }
 async function getAPIKnownFor() {
-  const API = 'https://api.themoviedb.org/3/person/287/movie_credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US'
+  const API = 'https://api.themoviedb.org/3/person/192/movie_credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US'
+  response = await fetch(API)
+  result = await response.json()
+  return result
+}
+async function getAPISocial() {
+  const API = 'https://api.themoviedb.org/3/person/192/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US'
   response = await fetch(API)
   result = await response.json()
   return result
@@ -52,6 +61,7 @@ function showHeader(result) {
     });
     personImg.src = personImgURL + e.profile_path
     personName.textContent = e.name
+    document.title = e.name + ' - Im Second IMDB!'
     personBiography.textContent = e.biography
     knownForDepartment.innerHTML += e.known_for_department
     gender.innerHTML += (e.gender === 2)? 'Male': (e.gender === 1)? 'Female':'Non Binary' 
@@ -151,6 +161,18 @@ function showMain(result) {
       border = element.slice(0,4)
     })
     Carousel('.owl1',1,4,5)
+  })
+}
+
+function showSocial(result) {
+  result.then(e => {
+    if((e.facebook_id && e.instagram_id && e.twitter_id) !== null) {
+      socialContent.innerHTML += `${(e.facebook_id)? `<a href="https://www.facebook.com/${e.facebook_id}"" target="_blank""><i class="fab fa-facebook-square"></i></a>`: ''}`
+      socialContent.innerHTML += `${(e.instagram_id)? `<a href="https://www.instagram.com/${e.instagram_id}"" target="_blank""><i class="fab fa-instagram"></i></a>`: ''}`
+      socialContent.innerHTML += `${(e.instagram_id)? `<a href="https://www.twitter.com/${e.twitter_id}"" target="_blank""><i class="fab fa-twitter-square"></i></a>`: ''}`
+    } else {
+      socialContent.parentElement.remove()
+    }
   })
 }
 
