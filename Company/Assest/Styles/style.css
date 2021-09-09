@@ -25,17 +25,6 @@ body {
   margin: 0 auto;
 }
 
-.company {
-  padding: 50px 0;
-}
-
-.company h2 {
-  color: #fff;
-  margin-bottom: 30px;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
 .row {
   display: flex;
   margin-bottom: 30px;
@@ -65,8 +54,9 @@ body {
 
 .row-content div h2 {
   color: #fff;
-  margin: 0;
   line-height: 37px;
+  font-weight: 800;
+  font-size: 1.2rem;
 }
 
 .row-content div span {
@@ -92,4 +82,25 @@ body {
 
 .bg {
   background: rgba(60,60,60);
+}
+
+.company-information {
+  display: flex;
+  margin: 30px 0;
+  justify-content: space-between;
+  align-items: center;
+  padding: 17px 28px;
+  background: #9b0005;
+  border-radius: 25px;
+}
+
+.company-information h2, .company-information span  {
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+}
+
+.fas {
+  font-size: 1rem;
 }
