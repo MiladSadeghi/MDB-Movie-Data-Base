@@ -13,7 +13,8 @@ const personImg = document.querySelector('.person-img'),
       gender = document.querySelector('#gender'),
       birthDay = document.querySelector('#birth-day'),
       placeOfBirth = document.querySelector('#place-of-birth'),
-      nowTime = new Date().getFullYear()
+      nowTime = new Date().getFullYear(),
+      knownAsContent = document.querySelector('.known-as-content')
 
 document.addEventListener('DOMContentLoaded', ()=> {
   const dataHeader = getAPIHeader()
@@ -44,6 +45,11 @@ async function getAPIKnownFor() {
 
 function showHeader(result) {
   result.then(e => {
+    e.also_known_as.forEach(element => {
+      knownAsContent.innerHTML += `
+      <div class="known">${element}</div>
+    `
+    });
     personImg.src = personImgURL + e.profile_path
     personName.textContent = e.name
     personBiography.textContent = e.biography
@@ -51,6 +57,7 @@ function showHeader(result) {
     gender.innerHTML += (e.gender === 2)? 'Male': (e.gender === 1)? 'Female':'Non Binary' 
     birthDay.innerHTML += `${e.birthday.replaceAll('-','/')} (${nowTime - e.birthday.slice(0,4)} Years Old)`
     placeOfBirth.innerHTML += e.place_of_birth
+    
   })
 }
 
@@ -141,7 +148,6 @@ function showMain(result) {
           `
         }
       }
-      console.log(border);
       border = element.slice(0,4)
     })
     Carousel('.owl1',1,4,5)
