@@ -1,3 +1,6 @@
+const search = JSON.parse(sessionStorage.getItem("person"));
+querySearch = search[search.length - 1]
+
 const personImg = document.querySelector('.person-img'),
       personName = document.querySelector('.person-name'),
       personBiography = document.querySelector('.biography'),
@@ -34,19 +37,19 @@ document.addEventListener('DOMContentLoaded', ()=> {
 })
 
 async function getAPIHeader() {
-  const API = 'https://api.themoviedb.org/3/person/192?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US'
+  const API = `https://api.themoviedb.org/3/person/${querySearch}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
   response = await fetch(API)
   result = await response.json()
   return result
 }
 async function getAPIKnownFor() {
-  const API = 'https://api.themoviedb.org/3/person/192/movie_credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US'
+  const API = `https://api.themoviedb.org/3/person/${querySearch}/movie_credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
   response = await fetch(API)
   result = await response.json()
   return result
 }
 async function getAPISocial() {
-  const API = 'https://api.themoviedb.org/3/person/192/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US'
+  const API = `https://api.themoviedb.org/3/person/${querySearch}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
   response = await fetch(API)
   result = await response.json()
   return result
