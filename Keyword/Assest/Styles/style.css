@@ -12,6 +12,7 @@ a {
 
 body {
   font-family: "Poppins";
+  background: #000;
 }
 
 .error {
@@ -24,4 +25,63 @@ body {
 .container {
   width: 90%;
   margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  margin-bottom: 30px;
+  background: rgba(41, 41, 41, 52%);
+  border-radius: 10px;
+  transition: background 200ms ease-in;
+}
+
+.row:hover {
+  background: rgba(114, 114, 114, 0.52);
+}
+
+.row-content {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.row img {
+  width: 94px;
+  height: 141px;
+  object-fit: contain;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.row-content div h2 {
+  color: #fff;
+  line-height: 37px;
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.row-content div span {
+  color: rgb(187, 187, 187);
+  font-size: 0.83rem;
+  font-weight: 500;
+  margin-left: 3px;
+}
+
+.row-content p {
+  color: #fff;
+  font-size: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin: 0;
+  line-height: 18px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.bg {
+  background: rgba(60,60,60);
 }
