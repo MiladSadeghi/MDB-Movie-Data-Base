@@ -106,8 +106,8 @@ body {
 
 .keyword-content {
   display: flex;
-  align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 .keyword-content h3 {

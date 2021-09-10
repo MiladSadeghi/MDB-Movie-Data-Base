@@ -75,18 +75,19 @@ function showHeader(data) {
       voteAverage += element.vote_average;
       genre.push(...element.genre_ids);
       movie.push(element.id);
-
       moviesContent.innerHTML += `
-      <div class="row">
-        <img src="${moviesContentImg + element.poster_path}">
-        <div class="row-content">
-          <span>
-            <h2>${element.title}</h2>
-            <span>${element.release_date.replaceAll('-','/')}</span>
-          </span>
-            <p>${element.overview}</p>
+      <a href="#" class="row move" data-id="${element.id}">
+        <div data-id="${element.id}">
+          <img data-id="${element.id}" src="${moviesContentImg + element.poster_path}">
+          <div data-id="${element.id}" class="row-content">
+            <span data-id="${element.id}">
+              <h2 data-id="${element.id}">${element.title}</h2>
+              <span data-id="${element.id}">${element.release_date.replaceAll('-','/')}</span>
+            </span data-id="${element.id}">
+              <p data-id="${element.id}">${element.overview}</p>
+          </div>
         </div>
-      </div>
+      </a>
       `
     });
     let cast = e.parts[e.parts.length - 1].id;
@@ -101,8 +102,7 @@ function showHeader(data) {
     overview.innerText = e.overview;
     movieNumber.innerHTML = `${e.parts.length}`;
     movieHeader.innerHTML = `${e.parts.length} Movies`
-
-    
+    moveToPage('movie', '/Movie')
   });
 }
 
@@ -121,46 +121,69 @@ function showFeaturedSection(cast) {
     e.cast.forEach((element) => {
       if (element.order < 14) {
         featuredCastContent.innerHTML += `
-          <div class="card">
-          <img src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}">
-            <div>
-              <h5>${element.name}</h5>
-              <p>${element.character}</p>
+        <a href="#" class="card move" data-id="${element.id}">
+          <div data-id="${element.id}">
+          <img src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}" data-id="${element.id}">
+            <div class="card-content" data-id="${element.id}">
+              <h5 data-id="${element.id}">${element.name}</h5 >
+              <p data-id="${element.id}">${element.character}</p>
             </div>
-          </div>`;
+          </div>
+        </a>
+      `;
       }
+      moveToPage('person', '/Person')
     });
     let loopCounter = 0;
     e.crew.forEach((element) => {
       if (loopCounter <= 3) {
         if (element.department === "Directing" || element.department === "Writing") {
           if (featuredCrewContent.innerHTML.trim()) {
-            if (element.name === featuredCrewContent.children[loopCounter - 1].children[1].children[0].textContent) {
-              featuredCrewContent.children[loopCounter - 1].children[1].children[1].textContent += `, ${element.department}`;
+            if (element.name === featuredCrewContent.children[loopCounter - 1].children[0].children[1].children[0].textContent) {
+              featuredCrewContent.children[loopCounter - 1].children[0].children[1].children[1].textContent += `, ${element.department}`;
             } else {
               featuredCrewContent.innerHTML += `
-                <div class="card">
-                  <img src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}">
-                  <div>
-                    <h5>${element.name}</h5>
-                    <p>${element.department}</p>
+              <a href="#" class="card move" data-id="${element.id}">
+                <div>
+                  <img src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}" data-id="${element.id}">
+                  <div class="card-content" data-id="${element.id}">
+                    <h5 data-id="${element.id}">${element.name}</h5>
+                    <p data-id="${element.id}">${element.department}</p>
                   </div>
-                </div>`;
+                </div>
+              </a>`;
                 loopCounter++;
             }
           } else {
             featuredCrewContent.innerHTML += `
-              <div class="card">
-              <img src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}">
-                <div>
-                  <h5>${element.name}</h5>
-                  <p>${element.department}</p>
+            <a href="#" class="card move" data-id="${element.id}">
+              <div>
+              <img data-id="${element.id}" src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}">
+                <div class="card-content" data-id="${element.id}">
+                  <h5 data-id="${element.id}">${element.name}</h5>
+                  <p data-id="${element.id}">${element.department}</p>
                 </div>
-              </div>`;
+              </div>
+            </a>`;
               loopCounter++;
           }
         }
       }
+      moveToPage('person', '/Person')
     });
   });
-  }
+}
+
+function moveToPage(storage, path) {
+  let lists = []
+  const move = document.querySelectorAll('.move')
+  move.forEach(element => {
+    element.addEventListener('click',(e)=> {
+      e.preventDefault()
+      console.log(e.target);
+      lists.push(e.target.getAttribute('data-id'))
+      sessionStorage.setItem(storage, JSON.stringify(lists))
+      window.open(path, '_blank')
+    })
+  });
+}

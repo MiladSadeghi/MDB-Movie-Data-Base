@@ -81,7 +81,7 @@ function showMain(result) {
   let border = ''
   result.then(e => {
     knownCredits.innerHTML += e.cast.length + e.crew.length
-    e.cast.forEach((element, index) => {
+    e.cast.forEach(element => {
       acting.push(element.release_date)
       if(element.character !== 'Himself' && element.character.indexOf('/') === -1 && element.character.indexOf('(') === -1 && element.character !== 'Self' && element.vote_average >= 5 && element.popularity >= 30 && element.character.indexOf("\n") === -1) {
         knownForMovie.push(element.release_date)
@@ -92,8 +92,10 @@ function showMain(result) {
         if(element === e.cast[i].release_date) {
           knownFor.innerHTML += `
           <div class="card item">
-            <img src="${knownForImageURL + e.cast[i].poster_path}">
-            <span>${e.cast[i].original_title}</span>
+            <a href="#" class="move" data-id="${e.cast[i].id}">
+              <img src="${knownForImageURL + e.cast[i].poster_path}" data-id="${e.cast[i].id}">
+              <span data-id="${e.cast[i].id}">${e.cast[i].original_title}</span>
+            </a>
           </div>
           `
         }
@@ -163,6 +165,7 @@ function showMain(result) {
       }
       border = element.slice(0,4)
     })
+    moveToPage('movie','/Movie')
     Carousel('.owl1',1,4,5)
   })
 }
@@ -177,6 +180,19 @@ function showSocial(result) {
       socialContent.parentElement.remove()
     }
   })
+}
+
+function moveToPage(storage, path) {
+  const classes = document.querySelectorAll('.move')
+  let query = []
+  classes.forEach(element => {
+    element.addEventListener('click',(e)=> {
+      e.preventDefault()
+      query.push(e.target.getAttribute('data-id'))
+      sessionStorage.setItem(storage, JSON.stringify(query))
+      window.open(path, '_blank')
+    })
+  });
 }
 
 function Carousel(path,responsive1,responsive2,responsive3) {

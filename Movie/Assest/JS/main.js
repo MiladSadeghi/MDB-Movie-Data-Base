@@ -1,38 +1,39 @@
-const search = JSON.parse(sessionStorage.getItem("movie"));
-querySearch = search[search.length - 1]
-
-collection = []
-
-bgURL = "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces"
-posterURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2"
-posterPath = document.querySelector('.img-poster img')
-headerHead = document.querySelector('.header h1')
-headerSpan = document.querySelector('.header span')
-tagLine = document.querySelector('.tagline')
-overview = document.querySelector('.movie-stuff p')
-cast = document.querySelector('#cast')
-profileURL = 'https://www.themoviedb.org/t/p/w138_and_h175_face'
-statusM = document.querySelector('.status')
-language = document.querySelector('.language')
-budget = document.querySelector('.budget')
-revenue = document.querySelector('.revenue')
+const search = JSON.parse(sessionStorage.getItem("movie")),
+querySearch = search[search.length - 1],
+collection = [],
+person = [],
+movie = [],
+keywordMove = [],
+bgURL = "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces",
+posterURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2",
+posterPath = document.querySelector('.img-poster img'),
+headerHead = document.querySelector('.header h1'),
+headerSpan = document.querySelector('.header span'),
+tagLine = document.querySelector('.tagline'),
+overview = document.querySelector('.movie-stuff p'),
+cast = document.querySelector('#cast'),
+profileURL = 'https://www.themoviedb.org/t/p/w138_and_h175_face',
+statusM = document.querySelector('.status'),
+language = document.querySelector('.language'),
+budget = document.querySelector('.budget'),
+revenue = document.querySelector('.revenue'),
 formatToCurrency = amount => {
   return "$" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
-};
-homePage = document.querySelector('.fa-home').parentElement
-facebook = document.querySelector('.fa-facebook-square').parentElement
-twitter = document.querySelector('.fa-instagram').parentElement
-instagram = document.querySelector('.fa-twitter-square').parentElement
-keyword = document.querySelector('.keywords-content')
-backdroupURL = 'https://www.themoviedb.org/t/p/w1440_and_h320_multi_faces'
-collectionContent = document.querySelector('.collection-content')
-recommendImgURL = 'https://www.themoviedb.org/t/p/w250_and_h141_face'
-recommend = document.querySelector('#recommend')
-mediaPopular = document.querySelector('#popular')
-mediaVideos = document.querySelector('#videos')
-mediaBackdrops = document.querySelector('#backdrops')
-mediaPosters = document.querySelector('#posters')
-mediaURL = 'https://www.themoviedb.org/t/p/w533_and_h300_bestv2'
+},
+homePage = document.querySelector('.fa-home').parentElement,
+facebook = document.querySelector('.fa-facebook-square').parentElement,
+twitter = document.querySelector('.fa-instagram').parentElement,
+instagram = document.querySelector('.fa-twitter-square').parentElement,
+keyword = document.querySelector('.keywords-content'),
+backdroupURL = 'https://www.themoviedb.org/t/p/w1440_and_h320_multi_faces',
+collectionContent = document.querySelector('.collection-content'),
+recommendImgURL = 'https://www.themoviedb.org/t/p/w250_and_h141_face',
+recommend = document.querySelector('#recommend'),
+mediaPopular = document.querySelector('#popular'),
+mediaVideos = document.querySelector('#videos'),
+mediaBackdrops = document.querySelector('#backdrops'),
+mediaPosters = document.querySelector('#posters'),
+mediaURL = 'https://www.themoviedb.org/t/p/w533_and_h300_bestv2',
 mediaPostersURL = 'https://www.themoviedb.org/t/p/w220_and_h330_face'
 
 document.addEventListener('DOMContentLoaded', ()=> {
@@ -106,7 +107,7 @@ function showHeader(result) {
   let genres = '';
   result.then((e)=> {
     for (const iterator of e.genres) {
-      genres += iterator.name + ','
+      genres += iterator.name + ', '
     }
     genres = genres.slice(0, genres.length -1)
     document.documentElement.style.setProperty('--banner', `linear-gradient(90deg, rgba(168, 2, 2, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('${bgURL + e.backdrop_path}') no-repeat`)
@@ -114,26 +115,29 @@ function showHeader(result) {
     headerHead.innerText = e.original_title
     document.title = e.original_title + ' - Im Second IMDB!'
     headerSpan.innerHTML = `${e.release_date.replaceAll('-', '/')}  &#9679;  ${genres} &#9679; <span class="vote">${e.vote_average}</span>`
-    tagLine.innerText = `"${e.tagline}"`
+    tagLine.innerText = (e.tagLine)? `"${e.tagline}"`: ''
     overview.innerText = e.overview
   })
 }
 
-function showMain(result, result1, result2, result3) {
+function showMain(result, result1, result2) {
   result.then((e)=> {
     e.cast.forEach(element => {
       if(element.order <= 10) {
         cast.innerHTML += `
-        <div class="item cast-card">
-          <img src="${profileURL + element.profile_path}">
-          <div class="cast-card-content">${element.name}</div>
-        </div>
+        <a href="#" class="item move" data-id="${element.id}">
+          <div class="item cast-card" data-id="${element.id}">
+            <img src="${profileURL + element.profile_path}" data-id="${element.id}">
+            <div class="cast-card-content" data-id="${element.id}">${element.name}</div>
+          </div>
+        </a>
         `
       }
     });
     cast.innerHTML += `
       <div class="item last">view more ...</div>
     `
+    moveToPage('move',person,'person','/Person')
     Carousel('.owl',1,3,6)
   })
 
@@ -142,7 +146,7 @@ function showMain(result, result1, result2, result3) {
       document.documentElement.style.setProperty('--collection-image', `url(${backdroupURL + e.belongs_to_collection.backdrop_path})`)
       collectionContent.children[0].innerHTML = `Part Of The ${e.belongs_to_collection.name}`
       collectionContent.innerHTML += `<a class="view-more" target="_blank" data-id="${e.belongs_to_collection.id}">VIEW THE COLLECTION</a>`
-      moveToPage(collection, 'collection', '/Collection')
+      moveToPage('view-more' , collection, 'collection', '/Collection')
     }
     else {
       collectionContent.parentElement.style.display = 'none'
@@ -159,15 +163,18 @@ function showMain(result, result1, result2, result3) {
       }
       e.results.forEach(element => {
         recommend.innerHTML += `
-          <div class="item recommend-card">
-            <img src="${recommendImgURL +element.backdrop_path}">
-            <div class="recommend-card-content">
-              <h5>${element.title}</h5>
-              <span class="vote-main">${round(element.vote_average, 1)}</span>
+        <div class="recommend-card item" data-id="${element.id}">
+          <a href="#" class="move" data-id="${element.id}">
+            <img src="${recommendImgURL +element.backdrop_path}" data-id="${element.id}">
+            <div class="recommend-card-content" data-id="${element.id}">
+              <h5 data-id="${element.id}">${element.title}</h5>
+              <span class="vote-main" data-id="${element.id}">${round(element.vote_average, 1)}</span>
             </div>
+            </a>
           </div>
         `
       });
+      moveToPage('move', movie, 'movie', '/Movie')
       Carousel('.owl1',1,2,3)
     }
   })
@@ -183,18 +190,19 @@ function showSide(result, result1, result2) {
   });
 
   result1.then((e)=> {
-    facebook.href =  'https://www.facebook.com/' + e.facebook_id
-    instagram.href =  'https://www.instagram.com/' + e.instagram_id
-    twitter.href =  'https://www.twitter.com/' + e.twitter_id
+    ((e.facebook_id !== null)? facebook.href =  'https://www.facebook.com/' + e.facebook_id : facebook.remove()),
+    ((e.instagram_id !== null)? instagram.href =  'https://www.instagram.com/' + e.instagram_id : instagram.remove()),
+    ((e.twitter_id !== null)? twitter.href =  'https://www.twitter.com/' + e.twitter_id : twitter.remove())
   })
 
   result2.then((e)=> {
     if(e.keywords.length !== 0) {
       e.keywords.forEach(element => {
         keyword.innerHTML += `
-        <a href="#" data-id="${element.id}">${element.name}</a>
+        <a href="#" class="move" data-id="${element.id}">${element.name}</a>
         `
       });
+      moveToPage('move', keywordMove, 'keyword', '/Keyword')
     } else {
       keyword.innerHTML = `
         <p class="not">No keywords have been added.</p>
@@ -218,21 +226,27 @@ function showMedia(choice ,data, data1) {
   const media = document.querySelector('#media')
   if(choice === 'popular'){
     data1.then((e)=> {
-      media.innerHTML += `
-      <div class="item iframes">
-        <iframe src="https://www.youtube.com/embed/${e.results[e.results.length -1].key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-      `
-      data.then((e)=> {
+      if(e.results.length !== 0) {
         media.innerHTML += `
-        <div class="item">
-          <img src="${mediaURL + e.backdrops[0].file_path}">
-        </div>
-        <div class="item">
-          <img src="${mediaURL + e.posters[0].file_path}">
+        <div class="item iframes">
+          <iframe src="https://www.youtube.com/embed/${e.results[e.results.length -1].key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         `
-        Carousel('.owl2',1,2,2)
+      }
+      data.then((e)=> {
+        if(e.backdrops.length !== 0) {
+          media.innerHTML += `
+            <div class="item">
+              <img src="${mediaURL + e.backdrops[0].file_path}">
+            </div>`
+          }
+        if(e.posters.length !== 0) {
+          media.innerHTML += `
+            <div class="item">
+              <img src="${mediaURL + e.posters[0].file_path}">
+            </div>`
+          Carousel('.owl2',1,2,2)
+        } 
       })
     })
   }
@@ -277,9 +291,9 @@ function clearForCarousel() {
   mediaContent.appendChild(carousel)
 }
 
-function moveToPage(query, storage, path) {
-  const viewMoreBtn = document.querySelectorAll('.view-more')
-  viewMoreBtn.forEach(element => {
+function moveToPage(whichClass, query, storage, path) {
+  const classes = document.querySelectorAll(`.${whichClass}`)
+  classes.forEach(element => {
     element.addEventListener('click',(e)=> {
       e.preventDefault()
       query.push(e.target.getAttribute('data-id'))

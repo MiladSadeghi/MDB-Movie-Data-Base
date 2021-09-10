@@ -33,18 +33,21 @@ function showMain(result) {
     }
     e.results.forEach(element => {
       keywordContent.innerHTML += `
-      <div class="row">
-      <img class="${(element.poster_path)? '': 'bg'}" src="${(element.poster_path)? keywordMovieImgURL + element.poster_path: 'Assest/Images/loadingImage.png'}">
-      <div class="row-content">
-        <div>
-          <h2>${element.original_title}</h2>
-          <span>${element.release_date.replaceAll('-','/')}</span>
+      <a href="#" class="move" data-id="${element.id}">
+        <div class="row" data-id="${element.id}">
+          <img class="${(element.poster_path)? '': 'bg'}" src="${(element.poster_path)? keywordMovieImgURL + element.poster_path: 'Assest/Images/loadingImage.png'}" data-id="${element.id}">
+          <div class="row-content" data-id="${element.id}">
+            <div data-id="${element.id}">
+              <h2 data-id="${element.id}">${element.original_title}</h2>
+              <span data-id="${element.id}">${element.release_date.replaceAll('-','/')}</span>
+            </div>
+            <p data-id="${element.id}">${element.overview}</p>
+          </div>
         </div>
-        <p>${element.overview}</p>
-      </div>
-    </div>
-    `
+      </a>
+      `
     });
+    moveToPage('movie', '/Movie')
   })
 }
 
@@ -53,4 +56,17 @@ function showKeywordName(result) {
     document.title = e.name + ' - Use Me As Second IMDB!'
     keywordName.innerHTML = e.name
   })
+}
+
+function moveToPage(storage, path) {
+  let lists = []
+  const move = document.querySelectorAll('.move')
+  move.forEach(element => {
+    element.addEventListener('click',(e)=> {
+      e.preventDefault()
+      lists.push(e.target.getAttribute('data-id'))
+      sessionStorage.setItem(storage, JSON.stringify(lists))
+      window.open(path, '_blank')
+    })
+  });
 }

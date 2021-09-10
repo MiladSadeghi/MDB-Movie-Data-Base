@@ -34,18 +34,21 @@ function showContent(result) {
     movieCounter.innerHTML = e.results.length + ' Movie'
     e.results.forEach(element => {
       companyContent.innerHTML += `
-      <div class="row">
-        <img class="${(element.poster_path)? '': 'bg'}" src="${(element.poster_path)? companyMovieImgURL + element.poster_path: 'Assest/Images/loadingImage.png'}">
-        <div class="row-content">
-          <div>
-            <h2>${element.original_title}</h2>
-            <span>${element.release_date.replaceAll('-','/')}</span>
+      <a href="#" class="move" data-id="${element.id}">
+        <div class="row" data-id="${element.id}">
+          <img class="${(element.poster_path)? '': 'bg'}" src="${(element.poster_path)? companyMovieImgURL + element.poster_path: 'Assest/Images/loadingImage.png'}" data-id="${element.id}">
+          <div class="row-content" data-id="${element.id}">
+            <div data-id="${element.id}">
+              <h2 data-id="${element.id}">${element.original_title}</h2>
+              <span data-id="${element.id}">${element.release_date.replaceAll('-','/')}</span>
+            </div>
+            <p data-id="${element.id}">${element.overview}</p>
           </div>
-          <p>${element.overview}</p>
         </div>
-      </div>
+      </a>
       `
     });
+    moveToPage('movie', '/Movie') 
   })
 }
 
@@ -56,4 +59,18 @@ function showCompany(result) {
     headQuarters.innerHTML += e.headquarters
     country.innerHTML += e.origin_country
   })
+}
+
+function moveToPage(storage, path) {
+  let lists = []
+  const move = document.querySelectorAll('.move')
+  move.forEach(element => {
+    element.addEventListener('click',(e)=> {
+      e.preventDefault()
+      console.log(e.target);
+      lists.push(e.target.getAttribute('data-id'))
+      sessionStorage.setItem(storage, JSON.stringify(lists))
+      window.open(path, '_blank')
+    })
+  });
 }

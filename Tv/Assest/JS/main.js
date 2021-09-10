@@ -1,36 +1,35 @@
-const search = JSON.parse(sessionStorage.getItem("tv"));
-const querySearch = search[search.length - 1]
-
-const bgURL = "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces"
-posterURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2"
-posterPath = document.querySelector('.img-poster img')
-headerHead = document.querySelector('.header h1')
-headerSpan = document.querySelector('.header span')
-tagLine = document.querySelector('.tagline')
-overview = document.querySelector('.movie-stuff p')
-cast = document.querySelector('#cast')
-seriesCastURL = 'https://www.themoviedb.org/t/p/w138_and_h175_face'
-networkImgURL = 'https://www.themoviedb.org/t/p/h30'
-statusM = document.querySelector('.status')
-language = document.querySelector('.language')
-network = document.querySelector('.network')
-type = document.querySelector('.type')
-homePage = document.querySelector('.fa-home').parentElement
-facebook = document.querySelector('.fa-facebook-square').parentElement
-twitter = document.querySelector('.fa-instagram').parentElement
-instagram = document.querySelector('.fa-twitter-square').parentElement
-justWatch = document.querySelector('.just-watch').parentElement
-keyword = document.querySelector('.keywords-content')
-currentSeasonContentImg = document.querySelector('.current-season-content img')
-seasons = document.querySelector('.current-season-text h4')
-seasonsOverview = document.querySelector('.current-season-text p')
-currentSeasonContentImgURL = 'https://www.themoviedb.org/t/p/w130_and_h195_bestv2'
-recommendImgURL = 'https://www.themoviedb.org/t/p/w250_and_h141_face'
-mediaPopular = document.querySelector('#popular')
-mediaVideos = document.querySelector('#videos')
-mediaBackdrops = document.querySelector('#backdrops')
-mediaPosters = document.querySelector('#posters')
-mediaURL = 'https://www.themoviedb.org/t/p/w533_and_h300_bestv2'
+const search = JSON.parse(sessionStorage.getItem("tv")),
+querySearch = search[search.length - 1],
+bgURL = "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces",
+posterURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2",
+posterPath = document.querySelector('.img-poster img'),
+headerHead = document.querySelector('.header h1'),
+headerSpan = document.querySelector('.header span'),
+tagLine = document.querySelector('.tagline'),
+overview = document.querySelector('.movie-stuff p'),
+cast = document.querySelector('#cast'),
+seriesCastURL = 'https://www.themoviedb.org/t/p/w138_and_h175_face',
+networkImgURL = 'https://www.themoviedb.org/t/p/h30',
+statusM = document.querySelector('.status'),
+language = document.querySelector('.language'),
+network = document.querySelector('.network'),
+type = document.querySelector('.type'),
+homePage = document.querySelector('.fa-home').parentElement,
+facebook = document.querySelector('.fa-facebook-square').parentElement,
+twitter = document.querySelector('.fa-instagram').parentElement,
+instagram = document.querySelector('.fa-twitter-square').parentElement,
+justWatch = document.querySelector('.just-watch').parentElement,
+keyword = document.querySelector('.keywords-content'),
+currentSeasonContentImg = document.querySelector('.current-season-content img'),
+seasons = document.querySelector('.current-season-text h4'),
+seasonsOverview = document.querySelector('.current-season-text p'),
+currentSeasonContentImgURL = 'https://www.themoviedb.org/t/p/w130_and_h195_bestv2',
+recommendImgURL = 'https://www.themoviedb.org/t/p/w250_and_h141_face',
+mediaPopular = document.querySelector('#popular'),
+mediaVideos = document.querySelector('#videos'),
+mediaBackdrops = document.querySelector('#backdrops'),
+mediaPosters = document.querySelector('#posters'),
+mediaURL = 'https://www.themoviedb.org/t/p/w533_and_h300_bestv2',
 mediaPostersURL = 'https://www.themoviedb.org/t/p/w220_and_h330_face'
 
 document.addEventListener('DOMContentLoaded', ()=> {
@@ -118,12 +117,14 @@ function showHeader(result) {
 
 function showMain(data, data1, data2) {
   data.then((e)=> {
-    e.cast.forEach((element, index) => {
+    e.cast.forEach(element => {
       if(element.order <= 10) {
         cast.innerHTML += `
         <div class="item cast-card">
-          <img src="${seriesCastURL + element.profile_path}">
-          <div class="cast-card-content"> <h4>${element.name}</h4> <h5>${element.roles[0].episode_count} Episodes</h5></div>
+          <a href="#" class="move" data-id="${element.id}">
+            <img src="${seriesCastURL + element.profile_path}" data-id="${element.id}">
+            <div class="cast-card-content" data-id="${element.id}"> <h4 data-id="${element.id}">${element.name}</h4> <h5 data-id="${element.id}">${element.roles[0].episode_count} Episodes</h5></div>
+          </a>
         </div>
         `
       }
@@ -131,6 +132,7 @@ function showMain(data, data1, data2) {
     cast.innerHTML += `
       <div class="item last">view more ...</div>
     `
+    moveToPage('person', '/Person')
     Carousel('.owl',1,3,6)
   })
 
@@ -189,9 +191,10 @@ function showSide(data, data1, data2) {
     if(e.results.length !== 0) {
       e.results.forEach(element => {
         keyword.innerHTML += `
-        <a href="#" data-id="${element.id}">${element.name}</a>
+        <a href="#" class="move" data-id="${element.id}">${element.name}</a>
         `
       });
+      moveToPage('keyword', '/Keyword')
     } else {
       keyword.innerHTML = `
         <p class="not">No keywords have been added.</p>
@@ -215,24 +218,31 @@ function showMedia(choice ,data, data1) {
   const media = document.querySelector('#media')
   if(choice === 'popular'){
     data1.then((e)=> {
-      media.innerHTML += `
-      <div class="item iframes">
-        <iframe src="https://www.youtube.com/embed/${e.results[e.results.length -1].key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-      `
-      data.then((e)=> {
+      if(e.results.length !== 0) {
         media.innerHTML += `
-        <div class="item">
-          <img src="${mediaURL + e.backdrops[0].file_path}">
-        </div>
-        <div class="item">
-          <img src="${mediaURL + e.posters[0].file_path}">
+        <div class="item iframes">
+          <iframe src="https://www.youtube.com/embed/${e.results[e.results.length -1].key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         `
-        Carousel('.owl2',1,2,2)
+      }
+      data.then((e)=> {
+        if(e.backdrops.length !== 0) {
+          media.innerHTML += `
+            <div class="item">
+              <img src="${mediaURL + e.backdrops[0].file_path}">
+            </div>`
+          }
+        if(e.posters.length !== 0) {
+          media.innerHTML += `
+            <div class="item">
+              <img src="${mediaURL + e.posters[0].file_path}">
+            </div>`
+          Carousel('.owl2',1,2,2)
+        } 
       })
     })
   }
+
   if(choice === 'videos') {
     data.then((e)=> {
       e.results.forEach(element => {
@@ -272,6 +282,19 @@ function clearForCarousel() {
   carousel.classList.add('owl-carousel' ,'owl-theme', 'owl2')
   carousel.id = "media"
   mediaContent.appendChild(carousel)
+}
+
+function moveToPage(storage, path) {
+  const classes = document.querySelectorAll('.move')
+  let query = []
+  classes.forEach(element => {
+    element.addEventListener('click',(e)=> {
+      e.preventDefault()
+      query.push(e.target.getAttribute('data-id'))
+      sessionStorage.setItem(storage, JSON.stringify(query))
+      window.open(path, '_blank')
+    })
+  });
 }
 
 function Carousel(path,responsive1,responsive2,responsive3) {

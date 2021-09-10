@@ -169,11 +169,15 @@ body {
   transition: all 300ms ease-in-out;
 }
 
-.card img {
+.card div {
+  display: flex;
+}
+
+.card div img {
   transition: all 300ms ease-in-out;
 }
 
-.card:hover img {
+.card:hover div img {
   border-radius: 10px;
   
 }
@@ -188,24 +192,24 @@ body {
   background: rgba(114, 114, 114, 0.52);
 }
 
-.card img {
+.card div img {
   width: 64px;
   height: 64px;
 }
 
-.card div {
+.card .card-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 10px;
 }
 
-.card div h5 {
+.card .card-content h5 {
   font-size: 1rem;
   font-weight: 600;
 }
 
-.card div p {
+.card .card-content p {
   font-size: 0.8rem;
   font-weight: 500;
   margin-top: 10px;
@@ -247,6 +251,10 @@ body {
   transition: background 150ms ease-in-out;
 }
 
+.row div {
+  display: flex;
+}
+
 .row:hover {
   background: rgba(114, 114, 114, 0.52);
 }
@@ -277,7 +285,13 @@ body {
 }
 
 .row-content p {
-  color: #fff;
   font-size: 1rem;
   line-height: 22px;
+  color: #fff;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin: 0;
 }
