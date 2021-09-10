@@ -117,7 +117,7 @@ function showDataFromAPI(query = "movie", page = 1) {
         path.innerHTML += `
         <div class="person-row">
           <div class="${(element.profile_path === null) ? "person-row-img skeletonStyle" : "person-row-img"}">
-            <img src="${(element.profile_path === null) ? "Assest/Images/profile.png" : personPhoto +element.profile_path}">
+            <img src="${(element.profile_path !== null) ? personPhoto + element.profile_path : (element.gender === 1)?"Assest/Images/profile.png":(element.gender === 2)? "Assest/Images/profile2.png": "Assest/Images/non-binary.png"}">
           </div>
           <div class="person-row-text">
             <div class="title-top">
@@ -175,8 +175,6 @@ function showDataFromAPI(query = "movie", page = 1) {
   data.then((e) => {
     path.innerHTML = "";
     e.results.forEach((element) => {
-      let res = element.overview.split(".", 2).join(".").length;
-      res = element.overview.slice(0, res);
       path.innerHTML += `
       <div class="content-row">
         <div class="${
@@ -197,7 +195,7 @@ function showDataFromAPI(query = "movie", page = 1) {
             <a class="view-more" target="_blank" data-id="${element.id}">View More</a>
           </div>
           
-          <p class="overview">${element.overview === "" ? "No Data" : res}..</p>
+          <p class="overview">${element.overview === "" ? "No Data" : element.overview}..</p>
         </div>
       </div>
       `;

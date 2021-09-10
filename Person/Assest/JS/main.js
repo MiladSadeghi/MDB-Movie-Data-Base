@@ -62,13 +62,25 @@ function showHeader(result) {
       <div class="known">${element}</div>
     `
     });
-    personImg.src = personImgURL + e.profile_path
+    console.log(e);
+    if(e.profile_path) {
+      personImg.src = personImgURL + e.profile_path
+    } else if(e.gender === 1) {
+      personImg.src = 'Assest/Images/profile.png'
+      personImg.classList.add('bgColor')
+    } else if(e.gender === 2) {
+      personImg.src = 'Assest/Images/profile2.png'
+      personImg.classList.add('bgColor')
+    } else {
+      personImg.src = 'Assest/Images/non-binary.png'
+      personImg.classList.add('bgColor')
+    }
     personName.textContent = e.name
     document.title = e.name + ' - Im Second IMDB!'
     personBiography.textContent = e.biography
     knownForDepartment.innerHTML += e.known_for_department
     gender.innerHTML += (e.gender === 2)? 'Male': (e.gender === 1)? 'Female':'Non Binary' 
-    birthDay.innerHTML += `${e.birthday.replaceAll('-','/')} (${nowTime - e.birthday.slice(0,4)} Years Old)`
+    birthDay.innerHTML += `${e.birthday.replaceAll('-','/')} (${((e.deathday)? e.deathday.slice(0,4):nowTime) - e.birthday.slice(0,4)} Years Old)`
     placeOfBirth.innerHTML += e.place_of_birth
     
   })
@@ -93,7 +105,7 @@ function showMain(result) {
           knownFor.innerHTML += `
           <div class="card item">
             <a href="#" class="move" data-id="${e.cast[i].id}">
-              <img src="${knownForImageURL + e.cast[i].poster_path}" data-id="${e.cast[i].id}">
+              <img src="${(e.cast[i].poster_path)? knownForImageURL + e.cast[i].poster_path : 'Assest/Images/loadingImage.png'}" data-id="${e.cast[i].id}">
               <span data-id="${e.cast[i].id}">${e.cast[i].original_title}</span>
             </a>
           </div>

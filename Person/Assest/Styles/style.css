@@ -326,3 +326,8 @@ as {
 .fa-twitter-square {
   color: #1DA1F2;
 }
+
+.bgColor {
+  background: rgba(60,60,60);
+  object-fit: contain;
+}

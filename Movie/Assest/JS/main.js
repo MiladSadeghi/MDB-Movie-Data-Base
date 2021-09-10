@@ -111,10 +111,10 @@ function showHeader(result) {
     }
     genres = genres.slice(0, genres.length -1)
     document.documentElement.style.setProperty('--banner', `linear-gradient(90deg, rgba(168, 2, 2, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('${bgURL + e.backdrop_path}') no-repeat`)
-    posterPath.src = posterURL + e.poster_path
+    if(e.poster_path) {posterPath.src = posterURL + e.poster_path} else {posterPath.src = 'Assest/Images/loadingImage.png';posterPath.parentElement.classList.add('bg');}
     headerHead.innerText = e.original_title
     document.title = e.original_title + ' - Im Second IMDB!'
-    headerSpan.innerHTML = `${e.release_date.replaceAll('-', '/')}  &#9679;  ${genres} &#9679; <span class="vote">${e.vote_average}</span>`
+    headerSpan.innerHTML = `${e.release_date.replaceAll('-', '/')}  &#9679;  ${genres.slice(0, genres.lastIndexOf(','))} &#9679; <span class="vote">${e.vote_average}</span>`
     tagLine.innerText = (e.tagLine)? `"${e.tagline}"`: ''
     overview.innerText = e.overview
   })
@@ -127,7 +127,7 @@ function showMain(result, result1, result2) {
         cast.innerHTML += `
         <a href="#" class="item move" data-id="${element.id}">
           <div class="item cast-card" data-id="${element.id}">
-            <img src="${profileURL + element.profile_path}" data-id="${element.id}">
+          <img src="${(element.profile_path)? profileURL + element.profile_path: (element.gender === 1)? 'Assest/Images/profile.png':(element.gender === 2)? 'Assest/Images/profile2.png':'Assest/Images/non-binary.png'}" data-id="${element.id}">
             <div class="cast-card-content" data-id="${element.id}">${element.name}</div>
           </div>
         </a>
@@ -164,8 +164,8 @@ function showMain(result, result1, result2) {
       e.results.forEach(element => {
         recommend.innerHTML += `
         <div class="recommend-card item" data-id="${element.id}">
-          <a href="#" class="move" data-id="${element.id}">
-            <img src="${recommendImgURL +element.backdrop_path}" data-id="${element.id}">
+          <a href="#" class="move ${(element.backdrop_path)? '': 'recommendImg'}" data-id="${element.id}">
+            <img src="${(element.backdrop_path)? recommendImgURL +element.backdrop_path: 'Assest/Images/loadingImage.png'}" data-id="${element.id}">
             <div class="recommend-card-content" data-id="${element.id}">
               <h5 data-id="${element.id}">${element.title}</h5>
               <span class="vote-main" data-id="${element.id}">${round(element.vote_average, 1)}</span>

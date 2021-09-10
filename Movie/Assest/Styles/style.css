@@ -342,7 +342,7 @@ body {
 }
 
 .recommend-card {
-  width: 95%;
+  width: 250px;
 }
 
 .recommend-card img {
@@ -447,4 +447,30 @@ iframe {
 
 .iframe-videos {
   height: 330px;
+}
+
+.recommendImg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: skeletonStyle 4s linear infinite alternate;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+  border-top-right-radius: 55px;
+  border-top-left-radius: 20px;
+}
+
+.recommendImg img {
+  object-fit: contain;
+  width: 70% !important;
+}
+
+@keyframes skeletonStyle {
+  from {
+    background: rgb(170, 170, 170);
+  }
+  to {
+    background: rgb(61, 61, 61);
+  }
 }
