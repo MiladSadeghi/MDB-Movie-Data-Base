@@ -99,8 +99,34 @@ body {
   font-size: 1.05rem;
   font-weight: 500;
   letter-spacing: 0.6px;
+  width: 100%;
+  text-align: center;
 }
 
 .fas {
   font-size: 1rem;
+}
+
+@media screen and (max-width: 500px) {
+  .company-information {
+    flex-wrap: wrap;
+  }
+  .company-information h2, .company-information span {
+    flex-basis: 50%;
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+  .company-information span:nth-child(3), .company-information span:nth-child(4){
+    margin-top: 10px;
+  }
+  .row-content div h2 {
+    line-height: 24px;
+    font-size: 1rem;
+  }
+  .row-content p {
+    font-size: 0.8rem;
+  }
+  .row-content div span {
+    font-size: 0.8rem;
+  }
 }
