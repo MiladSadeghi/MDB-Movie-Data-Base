@@ -265,7 +265,7 @@ body {
 }
 
 .owl1 .owl-nav button.owl-next, .owl2 .owl-nav button.owl-next{
-  left: 100%;
+  right: -3.5%;
   top: 50%;
   position: absolute;
   transform: translateY(-50%);
@@ -296,5 +296,40 @@ body {
   }
   to {
     background: rgb(82, 82, 82);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .owl1 .owl-nav button.owl-next, .owl2 .owl-nav button.owl-next {
+    right: -4%;
+  }
+  .search .search-Texts h2 {
+    font-size: 1.3rem;
+  }
+  .card {
+    align-items: center;
+    text-align: center;
+  }
+  .movie-name{
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .owl1 .owl-nav button.owl-next, .owl2 .owl-nav button.owl-next {
+    right: -4%;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .search .btn {
+    padding: 8px 29px;
+  }
+  .search .searchBox[type="text"] {
+    font-size: 1rem;
+  }
+  .search .search-Texts h1 {
+  line-height: 55px;
   }
 }

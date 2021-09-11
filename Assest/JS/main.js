@@ -170,11 +170,17 @@ $(".owl1, .owl2").owlCarousel({
     0: {
       items: 1,
     },
-    600: {
+    500: {
+      items: 2,
+    },
+    700: {
       items: 3,
     },
+    800: {
+      items: 4,
+    },
     1000: {
-      items: 6,
+      items: 5,
     },
   },
 });

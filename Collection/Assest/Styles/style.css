@@ -295,3 +295,136 @@ body {
   overflow: hidden;
   margin: 0;
 }
+
+
+@media screen and (min-width: 750px) { 
+  .card {
+    width: calc(88% / 3);
+  }
+}
+
+@media screen and (max-width: 820px) { 
+  .movie-name {
+    font-size: 2.5rem;
+    line-height: 50px;
+  }
+  .detail {
+    line-height: 26px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .movie-name {
+    font-size: 2.3rem;
+    line-height: 48px;
+  }
+  .detail {
+    font-size: 0.9rem;
+    line-height: 25px;
+  }
+  .card {
+    width: calc(88% / 3);
+  }
+  .card-content {
+    padding: 8px;
+  }
+  .card .card-content h5 {
+    font-size: 0.9rem;
+  }
+  .card .card-content p {
+    font-size: 0.7rem;
+  }
+  .featured-crew-content .card {
+    width: calc(90% / 3);
+  }
+  .movie-stuff h5 {
+    font-size: 1.3rem;
+  }
+  .movie-stuff p {
+    font-size: 1rem;
+  }
+  .movie-number h4, .revenue h4 {
+    font-size: 1rem;
+  }
+  .revenue span {
+    font-size: 0.9rem;
+  }
+  .img-poster {
+    width: 78%;
+  }
+  .img-poster img {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .banner {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .movie-banner {
+    height: 100%;
+  }
+  .img-poster {
+    width: 50%;
+    padding: 20px;
+  }
+  .movie-stuff {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .movie-content {
+    padding: 4px;
+  }
+  .movie-name {
+    font-size: 2.2rem;
+  }
+  .vote {
+    font-size: 1rem;
+  }
+  .card {
+    margin-bottom: 10px !important;
+    flex-basis: 47%;
+  }
+  .card:nth-child(3n-1) {
+    margin: 0;
+  }
+  .featured-cast-content, .featured-crew-content {
+    justify-content: space-between;
+  }
+  .featured-crew-content .card:nth-child(even) {
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 400px) { 
+  .card {
+    flex-basis: 100%;
+  }
+  .img-poster {
+    width: 75%;
+  }
+  .movie-name {
+    font-size: 1.8rem;
+    line-height: 38px;
+  }
+  .movie-stuff p {
+    font-size: 0.95rem;
+  }
+  .row-content p {
+    font-size: 0.9rem;
+  }
+  .row-content h2 {
+    font-size: 1rem;
+    line-height: 23px;
+  }
+}
