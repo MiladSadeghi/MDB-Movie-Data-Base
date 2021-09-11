@@ -134,10 +134,13 @@ body {
   width: 21.5%;
   border-radius: 20px;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .content-row-img img {
   width: 100%;
+  border-radius: 30px;
 }
 
 .content-row-text {
@@ -197,10 +200,6 @@ body {
   font-size: 1rem;
   color: #000;
   white-space: pre;
-}
-
-.content-row-img img{
-  border-radius: 30px;
 }
 
 .content-row:hover {
@@ -351,7 +350,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
+  text-align: center;
   color: #fff;
   padding: 4px 17px;
   border: 4px solid #fff;
@@ -382,5 +381,51 @@ body {
   }
   to {
     background: rgb(61, 61, 61);
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .title {
+    font-size: 1.1rem;
+  }
+  .overview {
+    font-size: 0.9rem;
+    line-height: 20px;
+  }
+  .view-more {
+    font-size: 0.9rem;
+  }
+  .vote {
+    padding: 1px 10px;
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+  .filter {
+    width: 100%;
+  }
+  .content {
+    margin-top: 50px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .title {
+    font-size: 1rem;
+  }
+  .overview {
+    line-height: 17px;
+    font-size: 0.85rem;
+  }
+  .view-more{
+    padding: 4px 12px;
+  }
+  .vote {
+    padding: 1px 8px;
   }
 }
