@@ -212,10 +212,13 @@ function Carousel(path,responsive1,responsive2,responsive3) {
     dots: true,
     responsive:{
         0:{
-            items:responsive1
+            items:2
         },
         600:{
-            items:responsive2
+            items:3
+        },
+        800: {
+          items: 3
         },
         1000:{
             items:responsive3

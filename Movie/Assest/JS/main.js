@@ -314,7 +314,7 @@ function Carousel(path,responsive1,responsive2,responsive3) {
             items:responsive2
         },
         1000:{
-            items:responsive3
+            items:5
         }
     }
   })

@@ -331,3 +331,37 @@ as {
   background: rgba(60,60,60);
   object-fit: contain;
 }
+
+@media screen and (max-width: 650px) {
+  .person-content {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .person-name {
+    text-align: center;
+  }
+  .top h4 {
+    margin-top: 30px;
+  }
+  .mains {
+    flex-direction: column-reverse;
+  }
+  .main-content {
+    width: 100%;
+  }
+  .side-content {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  .personal-info-content {
+    padding: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .personal-info-content p {
+    flex-basis: 50%;
+  }
+}

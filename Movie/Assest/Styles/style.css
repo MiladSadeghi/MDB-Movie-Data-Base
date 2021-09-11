@@ -474,3 +474,74 @@ iframe {
     background: rgb(61, 61, 61);
   }
 }
+@media screen and (max-width: 920px) {
+
+  .movie-name {
+    font-size: 2.2rem;
+    line-height: 50px;
+  }
+  .movie-stuff p {
+    font-size: 0.95rem;
+  }
+  .detail {
+    line-height: 22px;
+  }
+  .media-menu h2 {
+    margin-right: 20px;
+    font-size: 1.3rem;
+  }
+  .media-panel h3 {
+    margin-right: 15px;
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .movie-name {
+    font-size: 1.7rem;
+    line-height: 35px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .banner {
+    flex-direction: column;
+    align-items: center;
+  }
+  .movie-banner {
+    height: 100%;
+  }
+  .img-poster {
+    padding: 20px;
+    justify-content: center;
+  }
+  .img-poster img {
+    width: 90%;
+  }
+  .movie-content {
+    align-items: center;
+  }
+  .detail {
+    align-items: center;
+  }
+  .movie-stuff {
+    align-items: center;
+    text-align: center;
+  }
+  .header {
+    text-align: center;
+  }
+  .movie-name {
+    line-height: 43px;
+  }
+  .media-content {
+    flex-direction: column;
+  }
+  .main {
+    width: 100%;
+  }
+  .side {
+    width: 100%;
+    margin-top: 30px;
+  }
+}
