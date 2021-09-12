@@ -130,7 +130,7 @@ function showDataFromAPI(query = "movie", page = 1) {
         `
       })
       knownFor = ''
-      moveToPage(person, 'person', '/Person')
+      moveToPage(person, 'person', 'Person')
     })
     return true
   }
@@ -149,7 +149,7 @@ function showDataFromAPI(query = "movie", page = 1) {
         </div>
         `
       })
-      moveToPage(company, 'company', '/Company')
+      moveToPage(company, 'company', 'Company')
     })
     return true
   }
@@ -167,7 +167,7 @@ function showDataFromAPI(query = "movie", page = 1) {
         </div>
         `
       })
-      moveToPage(keyword, 'keyword', '/Keyword')
+      moveToPage(keyword, 'keyword', 'Keyword')
     })
     return true
   }
@@ -201,14 +201,14 @@ function showDataFromAPI(query = "movie", page = 1) {
       `;
     });
     if(query === 'movie') {
-      moveToPage(movies, 'movie', '/Movie')
+      moveToPage(movies, 'movie', 'Movie')
     }
     if(query === 'tv') {
-      moveToPage(tv, 'tv', '/Tv')
+      moveToPage(tv, 'tv', 'Tv')
     }
     if(query === 'collection') {
       console.log(query);
-      moveToPage(collection, 'collection', '/Collection')
+      moveToPage(collection, 'collection', 'Collection')
     }
   });
 
@@ -237,7 +237,7 @@ function searchInSearchPage() {
   if (inputField.value !== '') {
     search.push(inputField.value)
     sessionStorage.setItem('search', JSON.stringify(search))
-    window.open('/Search', '_blank')
+    window.open('../Search', '_blank')
   }
 }
 
@@ -248,7 +248,7 @@ function moveToPage(query, storage, path) {
       e.preventDefault()
       query.push(e.target.getAttribute('data-id'))
       sessionStorage.setItem(storage, JSON.stringify(query))
-      window.open(path, '_blank')
+      window.open(`../${path}`, '_blank')
     })
   });
 }

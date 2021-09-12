@@ -148,7 +148,7 @@ function showMain(data, data1, data2) {
     cast.innerHTML += `
       <div class="item last">view more ...</div>
     `;
-    moveToPage("person", "/Person");
+    moveToPage("person", "Person");
     Carousel(".owl", 1, 3, 6);
   });
 
@@ -180,7 +180,7 @@ function showMain(data, data1, data2) {
           </div>
         `;
       });
-      moveToPage('tv','/Tv')
+      moveToPage('tv','Tv')
       Carousel(".owl1", 1, 2, 3);
     }
   });
@@ -211,7 +211,7 @@ function showSide(data, data1, data2) {
       e.results.forEach((element) => {
         keyword.innerHTML += `<a href="#" class="move" data-id="${element.id}">${element.name}</a>`;
       });
-      moveToPage("keyword", "/Keyword");
+      moveToPage("keyword", "Keyword");
     } else {
       keyword.innerHTML = `<p class="not">No keywords have been added.</p>`;
     }
@@ -309,7 +309,7 @@ function moveToPage(storage, path) {
       e.preventDefault();
       query.push(e.target.getAttribute("data-id"));
       sessionStorage.setItem(storage, JSON.stringify(query));
-      window.open(path, "_blank");
+      window.open(`../${path}`, "_blank");
     });
   });
 }

@@ -102,7 +102,7 @@ function showHeader(data) {
     overview.innerText = e.overview;
     movieNumber.innerHTML = `${e.parts.length}`;
     movieHeader.innerHTML = `${e.parts.length} Movies`
-    moveToPage('movie', '/Movie')
+    moveToPage('movie', 'Movie')
   });
 }
 
@@ -132,7 +132,7 @@ function showFeaturedSection(cast) {
         </a>
       `;
       }
-      moveToPage('person', '/Person')
+      moveToPage('person', 'Person')
     });
     let loopCounter = 0;
     e.crew.forEach((element) => {
@@ -169,7 +169,7 @@ function showFeaturedSection(cast) {
           }
         }
       }
-      moveToPage('person', '/Person')
+      moveToPage('person', 'Person')
     });
   });
 }
@@ -183,7 +183,7 @@ function moveToPage(storage, path) {
       console.log(e.target);
       lists.push(e.target.getAttribute('data-id'))
       sessionStorage.setItem(storage, JSON.stringify(lists))
-      window.open(path, '_blank')
+      window.open(`../${path}`, '_blank')
     })
   });
 }

@@ -137,7 +137,7 @@ function showMain(result, result1, result2) {
     cast.innerHTML += `
       <div class="item last">view more ...</div>
     `
-    moveToPage('move',person,'person','/Person')
+    moveToPage('move',person,'person','Person')
     Carousel('.owl',1,3,6)
   })
 
@@ -146,7 +146,7 @@ function showMain(result, result1, result2) {
       document.documentElement.style.setProperty('--collection-image', `url(${backdroupURL + e.belongs_to_collection.backdrop_path})`)
       collectionContent.children[0].innerHTML = `Part Of The ${e.belongs_to_collection.name}`
       collectionContent.innerHTML += `<a class="view-more" target="_blank" data-id="${e.belongs_to_collection.id}">VIEW THE COLLECTION</a>`
-      moveToPage('view-more' , collection, 'collection', '/Collection')
+      moveToPage('view-more' , collection, 'collection', 'Collection')
     }
     else {
       collectionContent.parentElement.style.display = 'none'
@@ -174,7 +174,7 @@ function showMain(result, result1, result2) {
           </div>
         `
       });
-      moveToPage('move', movie, 'movie', '/Movie')
+      moveToPage('move', movie, 'movie', 'Movie')
       Carousel('.owl1',1,2,3)
     }
   })
@@ -202,7 +202,7 @@ function showSide(result, result1, result2) {
         <a href="#" class="move" data-id="${element.id}">${element.name}</a>
         `
       });
-      moveToPage('move', keywordMove, 'keyword', '/Keyword')
+      moveToPage('move', keywordMove, 'keyword', 'Keyword')
     } else {
       keyword.innerHTML = `
         <p class="not">No keywords have been added.</p>
@@ -298,7 +298,7 @@ function moveToPage(whichClass, query, storage, path) {
       e.preventDefault()
       query.push(e.target.getAttribute('data-id'))
       sessionStorage.setItem(storage, JSON.stringify(query))
-      window.open(path, '_blank')
+      window.open(`../${path}`, '_blank')
     })
   });
 }
@@ -314,7 +314,7 @@ function Carousel(path,responsive1,responsive2,responsive3) {
             items:responsive2
         },
         1000:{
-            items:5
+            items:responsive3
         }
     }
   })

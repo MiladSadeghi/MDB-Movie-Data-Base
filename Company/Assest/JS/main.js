@@ -48,7 +48,7 @@ function showContent(result) {
       </a>
       `
     });
-    moveToPage('movie', '/Movie') 
+    moveToPage('movie', 'Movie') 
   })
 }
 
@@ -70,7 +70,7 @@ function moveToPage(storage, path) {
       console.log(e.target);
       lists.push(e.target.getAttribute('data-id'))
       sessionStorage.setItem(storage, JSON.stringify(lists))
-      window.open(path, '_blank')
+      window.open(`../${path}`, '_blank')
     })
   });
 }

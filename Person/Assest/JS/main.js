@@ -177,7 +177,7 @@ function showMain(result) {
       }
       border = element.slice(0,4)
     })
-    moveToPage('movie','/Movie')
+    moveToPage('movie','Movie')
     Carousel('.owl1',1,4,5)
   })
 }
@@ -202,7 +202,7 @@ function moveToPage(storage, path) {
       e.preventDefault()
       query.push(e.target.getAttribute('data-id'))
       sessionStorage.setItem(storage, JSON.stringify(query))
-      window.open(path, '_blank')
+      window.open(`../${path}`, '_blank')
     })
   });
 }
