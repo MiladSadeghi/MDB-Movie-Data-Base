@@ -425,6 +425,8 @@ a {
   display: flex;
   align-items: center;
   margin-bottom: 30px;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .media-menu h2 {
@@ -437,6 +439,7 @@ a {
 .media-panel {
   display: flex;
   position: relative;
+  flex-wrap: wrap;
 }
 
 .test {
@@ -563,9 +566,6 @@ iframe {
     font-size: 1.7rem;
     line-height: 35px;
   }
-}
-
-@media screen and (max-width: 768px) {
   .banner {
     flex-direction: column;
     align-items: center;
@@ -605,5 +605,14 @@ iframe {
   .side {
     width: 100%;
     margin-top: 30px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .current-season-text h4 {
+    flex-direction: column;
+  }
+  .current-season-text h4 span {
+    margin-left: 0;
   }
 }

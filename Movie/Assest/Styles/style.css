@@ -383,6 +383,8 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 30px;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .media-menu h2 {
@@ -429,7 +431,7 @@ body {
   margin-right: 30px;
   font-weight: 600;
   cursor: pointer;
-  padding: 10px;
+  padding: 10px 0px;
 }
 
 iframe {
@@ -491,7 +493,7 @@ iframe {
     font-size: 1.3rem;
   }
   .media-panel h3 {
-    margin-right: 15px;
+    margin-right: 11px;
     font-size: 0.9rem;
   }
 }
@@ -501,9 +503,6 @@ iframe {
     font-size: 1.7rem;
     line-height: 35px;
   }
-}
-
-@media screen and (max-width: 768px) {
   .banner {
     flex-direction: column;
     align-items: center;

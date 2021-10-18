@@ -159,7 +159,35 @@ $(".owl-prev").click(function () {
   owl.trigger("prev.owl.carousel");
 });
 
-$(".owl1, .owl2").owlCarousel({
+$(".owl1").owlCarousel({
+  dots: false,
+  nav: true,
+  navText: [
+    "<i class='fas fa-chevron-left'></i>",
+    "<i class='fas fa-chevron-right'></i>",
+  ],
+  responsiveClass:true,
+  responsive: {
+    0: {
+      items: 1,
+    },
+    500: {
+      items: 2,
+    },
+    700: {
+      items: 3,
+    },
+    800: {
+      items: 4,
+    },
+    1000: {
+      items: 5,
+    },
+  },
+});
+
+
+$(".owl2").owlCarousel({
   dots: false,
   nav: true,
   navText: [
