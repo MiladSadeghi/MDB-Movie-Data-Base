@@ -2,73 +2,36 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
-    integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
-    integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
-    integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta name="title" content="im Second IMDB">
+  <meta name="description"
+    content="An open source project, which can be used as the second IMDB without storing any informations.">
+  <meta name="keywords" content="imdb, movie, series, tv, movie detail, open source">
+  <meta name="robots" content="index, follow">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="language" content="English">
+  <meta name="author" content="Milad Sadeghi">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="Assest/Styles/style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
-    integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
   <script defer src="Assest/JS/main.js"></script>
-  <title>Movies Details</title>
+  <title>im Second IMDB</title>
 </head>
 
 <body>
-  <div class="error" id="error"></div>
-  <section class="search">
+  <nav class="py-3">
     <div class="container">
-      <div class="search-Texts">
-        <h1>Hello.</h1>
-        <h2>Movies, Tv Shows,and people to find out. Just Give me a Name</h2>
+      <div class="logo">
       </div>
-
-      <form action="#" id="search" class="form">
-        <label>
-          <input type="text" class="searchBox" id="searchBox" placeholder="movies,tv shows, person and ...">
-        </label>
-        <button type="submit" class="btn" id="search-btn">search</button>
-      </form>
-    </div>
-  </section>
-
-  <section class="trend">
-    <div class="container">
-      <h1 class="head">Trending</h1>
-      <div class="wave">
-        <svg id="wave" style="transform:rotate(0deg); transition: 0.3s" viewBox="0 0 1440 490" version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sw-gradient-0" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(168, 2, 2, 1)" offset="0%"></stop><stop stop-color="rgba(0, 0, 0, 1)" offset="100%"></stop></linearGradient></defs><path style="transform:translate(0, 0px); opacity:1" fill="url(#sw-gradient-0)" d="M0,147L21.8,130.7C43.6,114,87,82,131,106.2C174.5,131,218,212,262,261.3C305.5,310,349,327,393,294C436.4,261,480,180,524,122.5C567.3,65,611,33,655,65.3C698.2,98,742,196,785,253.2C829.1,310,873,327,916,351.2C960,376,1004,408,1047,424.7C1090.9,441,1135,441,1178,408.3C1221.8,376,1265,310,1309,261.3C1352.7,212,1396,180,1440,138.8C1483.6,98,1527,49,1571,57.2C1614.5,65,1658,131,1702,163.3C1745.5,196,1789,196,1833,187.8C1876.4,180,1920,163,1964,138.8C2007.3,114,2051,82,2095,98C2138.2,114,2182,180,2225,212.3C2269.1,245,2313,245,2356,277.7C2400,310,2444,376,2487,343C2530.9,310,2575,180,2618,179.7C2661.8,180,2705,310,2749,334.8C2792.7,359,2836,278,2880,277.7C2923.6,278,2967,359,3011,359.3C3054.5,359,3098,278,3120,236.8L3141.8,196L3141.8,490L3120,490C3098.2,490,3055,490,3011,490C2967.3,490,2924,490,2880,490C2836.4,490,2793,490,2749,490C2705.5,490,2662,490,2618,490C2574.5,490,2531,490,2487,490C2443.6,490,2400,490,2356,490C2312.7,490,2269,490,2225,490C2181.8,490,2138,490,2095,490C2050.9,490,2007,490,1964,490C1920,490,1876,490,1833,490C1789.1,490,1745,490,1702,490C1658.2,490,1615,490,1571,490C1527.3,490,1484,490,1440,490C1396.4,490,1353,490,1309,490C1265.5,490,1222,490,1178,490C1134.5,490,1091,490,1047,490C1003.6,490,960,490,916,490C872.7,490,829,490,785,490C741.8,490,698,490,655,490C610.9,490,567,490,524,490C480,490,436,490,393,490C349.1,490,305,490,262,490C218.2,490,175,490,131,490C87.3,490,44,490,22,490L0,490Z"></path><defs><linearGradient id="sw-gradient-1" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(168, 2, 2, 1)" offset="0%"></stop><stop stop-color="rgba(0, 0, 0, 1)" offset="100%"></stop></linearGradient></defs><path style="transform:translate(0, 50px); opacity:0.9" fill="url(#sw-gradient-1)" d="M0,0L21.8,0C43.6,0,87,0,131,24.5C174.5,49,218,98,262,122.5C305.5,147,349,147,393,155.2C436.4,163,480,180,524,171.5C567.3,163,611,131,655,106.2C698.2,82,742,65,785,65.3C829.1,65,873,82,916,122.5C960,163,1004,229,1047,253.2C1090.9,278,1135,261,1178,277.7C1221.8,294,1265,343,1309,351.2C1352.7,359,1396,327,1440,310.3C1483.6,294,1527,294,1571,245C1614.5,196,1658,98,1702,65.3C1745.5,33,1789,65,1833,73.5C1876.4,82,1920,65,1964,49C2007.3,33,2051,16,2095,65.3C2138.2,114,2182,229,2225,228.7C2269.1,229,2313,114,2356,81.7C2400,49,2444,98,2487,171.5C2530.9,245,2575,343,2618,334.8C2661.8,327,2705,212,2749,171.5C2792.7,131,2836,163,2880,204.2C2923.6,245,2967,294,3011,285.8C3054.5,278,3098,212,3120,179.7L3141.8,147L3141.8,490L3120,490C3098.2,490,3055,490,3011,490C2967.3,490,2924,490,2880,490C2836.4,490,2793,490,2749,490C2705.5,490,2662,490,2618,490C2574.5,490,2531,490,2487,490C2443.6,490,2400,490,2356,490C2312.7,490,2269,490,2225,490C2181.8,490,2138,490,2095,490C2050.9,490,2007,490,1964,490C1920,490,1876,490,1833,490C1789.1,490,1745,490,1702,490C1658.2,490,1615,490,1571,490C1527.3,490,1484,490,1440,490C1396.4,490,1353,490,1309,490C1265.5,490,1222,490,1178,490C1134.5,490,1091,490,1047,490C1003.6,490,960,490,916,490C872.7,490,829,490,785,490C741.8,490,698,490,655,490C610.9,490,567,490,524,490C480,490,436,490,393,490C349.1,490,305,490,262,490C218.2,490,175,490,131,490C87.3,490,44,490,22,490L0,490Z"></path><defs><linearGradient id="sw-gradient-2" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(168, 2, 2, 1)" offset="0%"></stop><stop stop-color="rgba(0, 0, 0, 1)" offset="100%"></stop></linearGradient></defs><path style="transform:translate(0, 100px); opacity:0.8" fill="url(#sw-gradient-2)" d="M0,294L21.8,294C43.6,294,87,294,131,285.8C174.5,278,218,261,262,212.3C305.5,163,349,82,393,49C436.4,16,480,33,524,32.7C567.3,33,611,16,655,40.8C698.2,65,742,131,785,147C829.1,163,873,131,916,155.2C960,180,1004,261,1047,245C1090.9,229,1135,114,1178,106.2C1221.8,98,1265,196,1309,204.2C1352.7,212,1396,131,1440,98C1483.6,65,1527,82,1571,130.7C1614.5,180,1658,261,1702,310.3C1745.5,359,1789,376,1833,326.7C1876.4,278,1920,163,1964,114.3C2007.3,65,2051,82,2095,114.3C2138.2,147,2182,196,2225,253.2C2269.1,310,2313,376,2356,375.7C2400,376,2444,310,2487,294C2530.9,278,2575,310,2618,302.2C2661.8,294,2705,245,2749,236.8C2792.7,229,2836,261,2880,253.2C2923.6,245,2967,196,3011,147C3054.5,98,3098,49,3120,24.5L3141.8,0L3141.8,490L3120,490C3098.2,490,3055,490,3011,490C2967.3,490,2924,490,2880,490C2836.4,490,2793,490,2749,490C2705.5,490,2662,490,2618,490C2574.5,490,2531,490,2487,490C2443.6,490,2400,490,2356,490C2312.7,490,2269,490,2225,490C2181.8,490,2138,490,2095,490C2050.9,490,2007,490,1964,490C1920,490,1876,490,1833,490C1789.1,490,1745,490,1702,490C1658.2,490,1615,490,1571,490C1527.3,490,1484,490,1440,490C1396.4,490,1353,490,1309,490C1265.5,490,1222,490,1178,490C1134.5,490,1091,490,1047,490C1003.6,490,960,490,916,490C872.7,490,829,490,785,490C741.8,490,698,490,655,490C610.9,490,567,490,524,490C480,490,436,490,393,490C349.1,490,305,490,262,490C218.2,490,175,490,131,490C87.3,490,44,490,22,490L0,490Z"></path></svg>
-      </div>
-      <div class="cards owl-carousel owl-theme owl1" id="trend-cards">
+      <div class="search-bar d-flex justify-content-between">
+        <input class="search w-75 px-3" id="search" type="text" placeholder="Name Of Moive, Series, Person, Collection And ...">
+        <button class="btn btn-outline-light" type="button" id="button-addon2">Search</button>
       </div>
     </div>
-  </section>
-
-  <section class="popular">
-    <div class="container">
-      <h1 class="head">Popular</h1>
-      <div class="wave wave1">
-        <svg id="wave" style="transform:rotate(180deg); transition: 0.3s" viewBox="0 0 1440 490" version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sw-gradient-0" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(168, 2, 2, 1)" offset="0%"></stop><stop stop-color="rgba(0, 0, 0, 1)" offset="100%"></stop></linearGradient></defs><path style="transform:translate(0, 0px); opacity:1" fill="url(#sw-gradient-0)" d="M0,343L17.1,343C34.3,343,69,343,103,310.3C137.1,278,171,212,206,163.3C240,114,274,82,309,57.2C342.9,33,377,16,411,57.2C445.7,98,480,196,514,245C548.6,294,583,294,617,318.5C651.4,343,686,392,720,367.5C754.3,343,789,245,823,245C857.1,245,891,343,926,383.8C960,425,994,408,1029,334.8C1062.9,261,1097,131,1131,114.3C1165.7,98,1200,196,1234,245C1268.6,294,1303,294,1337,261.3C1371.4,229,1406,163,1440,138.8C1474.3,114,1509,131,1543,114.3C1577.1,98,1611,49,1646,49C1680,49,1714,98,1749,114.3C1782.9,131,1817,114,1851,130.7C1885.7,147,1920,196,1954,196C1988.6,196,2023,147,2057,106.2C2091.4,65,2126,33,2160,32.7C2194.3,33,2229,65,2263,130.7C2297.1,196,2331,294,2366,334.8C2400,376,2434,359,2451,351.2L2468.6,343L2468.6,490L2451.4,490C2434.3,490,2400,490,2366,490C2331.4,490,2297,490,2263,490C2228.6,490,2194,490,2160,490C2125.7,490,2091,490,2057,490C2022.9,490,1989,490,1954,490C1920,490,1886,490,1851,490C1817.1,490,1783,490,1749,490C1714.3,490,1680,490,1646,490C1611.4,490,1577,490,1543,490C1508.6,490,1474,490,1440,490C1405.7,490,1371,490,1337,490C1302.9,490,1269,490,1234,490C1200,490,1166,490,1131,490C1097.1,490,1063,490,1029,490C994.3,490,960,490,926,490C891.4,490,857,490,823,490C788.6,490,754,490,720,490C685.7,490,651,490,617,490C582.9,490,549,490,514,490C480,490,446,490,411,490C377.1,490,343,490,309,490C274.3,490,240,490,206,490C171.4,490,137,490,103,490C68.6,490,34,490,17,490L0,490Z"></path><defs><linearGradient id="sw-gradient-1" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(168, 2, 2, 1)" offset="0%"></stop><stop stop-color="rgba(0, 0, 0, 1)" offset="100%"></stop></linearGradient></defs><path style="transform:translate(0, 50px); opacity:0.9" fill="url(#sw-gradient-1)" d="M0,0L17.1,57.2C34.3,114,69,229,103,269.5C137.1,310,171,278,206,294C240,310,274,376,309,334.8C342.9,294,377,147,411,130.7C445.7,114,480,229,514,253.2C548.6,278,583,212,617,212.3C651.4,212,686,278,720,294C754.3,310,789,278,823,261.3C857.1,245,891,245,926,220.5C960,196,994,147,1029,163.3C1062.9,180,1097,261,1131,269.5C1165.7,278,1200,212,1234,204.2C1268.6,196,1303,245,1337,261.3C1371.4,278,1406,261,1440,236.8C1474.3,212,1509,180,1543,171.5C1577.1,163,1611,180,1646,220.5C1680,261,1714,327,1749,318.5C1782.9,310,1817,229,1851,163.3C1885.7,98,1920,49,1954,32.7C1988.6,16,2023,33,2057,98C2091.4,163,2126,278,2160,269.5C2194.3,261,2229,131,2263,89.8C2297.1,49,2331,98,2366,114.3C2400,131,2434,114,2451,106.2L2468.6,98L2468.6,490L2451.4,490C2434.3,490,2400,490,2366,490C2331.4,490,2297,490,2263,490C2228.6,490,2194,490,2160,490C2125.7,490,2091,490,2057,490C2022.9,490,1989,490,1954,490C1920,490,1886,490,1851,490C1817.1,490,1783,490,1749,490C1714.3,490,1680,490,1646,490C1611.4,490,1577,490,1543,490C1508.6,490,1474,490,1440,490C1405.7,490,1371,490,1337,490C1302.9,490,1269,490,1234,490C1200,490,1166,490,1131,490C1097.1,490,1063,490,1029,490C994.3,490,960,490,926,490C891.4,490,857,490,823,490C788.6,490,754,490,720,490C685.7,490,651,490,617,490C582.9,490,549,490,514,490C480,490,446,490,411,490C377.1,490,343,490,309,490C274.3,490,240,490,206,490C171.4,490,137,490,103,490C68.6,490,34,490,17,490L0,490Z"></path><defs><linearGradient id="sw-gradient-2" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(168, 2, 2, 1)" offset="0%"></stop><stop stop-color="rgba(0, 0, 0, 1)" offset="100%"></stop></linearGradient></defs><path style="transform:translate(0, 100px); opacity:0.8" fill="url(#sw-gradient-2)" d="M0,441L17.1,408.3C34.3,376,69,310,103,277.7C137.1,245,171,245,206,236.8C240,229,274,212,309,236.8C342.9,261,377,327,411,310.3C445.7,294,480,196,514,171.5C548.6,147,583,196,617,196C651.4,196,686,147,720,130.7C754.3,114,789,131,823,114.3C857.1,98,891,49,926,98C960,147,994,294,1029,302.2C1062.9,310,1097,180,1131,163.3C1165.7,147,1200,245,1234,310.3C1268.6,376,1303,408,1337,408.3C1371.4,408,1406,376,1440,326.7C1474.3,278,1509,212,1543,179.7C1577.1,147,1611,147,1646,147C1680,147,1714,147,1749,163.3C1782.9,180,1817,212,1851,187.8C1885.7,163,1920,82,1954,89.8C1988.6,98,2023,196,2057,204.2C2091.4,212,2126,131,2160,98C2194.3,65,2229,82,2263,98C2297.1,114,2331,131,2366,138.8C2400,147,2434,147,2451,147L2468.6,147L2468.6,490L2451.4,490C2434.3,490,2400,490,2366,490C2331.4,490,2297,490,2263,490C2228.6,490,2194,490,2160,490C2125.7,490,2091,490,2057,490C2022.9,490,1989,490,1954,490C1920,490,1886,490,1851,490C1817.1,490,1783,490,1749,490C1714.3,490,1680,490,1646,490C1611.4,490,1577,490,1543,490C1508.6,490,1474,490,1440,490C1405.7,490,1371,490,1337,490C1302.9,490,1269,490,1234,490C1200,490,1166,490,1131,490C1097.1,490,1063,490,1029,490C994.3,490,960,490,926,490C891.4,490,857,490,823,490C788.6,490,754,490,720,490C685.7,490,651,490,617,490C582.9,490,549,490,514,490C480,490,446,490,411,490C377.1,490,343,490,309,490C274.3,490,240,490,206,490C171.4,490,137,490,103,490C68.6,490,34,490,17,490L0,490Z"></path></svg>
-      </div>
-      <div class="cards owl-carousel owl-theme owl2" id="popular-cards">
-      </div>
-    </div>
-  </section>
+  </nav>
 </body>
 
 </html>
