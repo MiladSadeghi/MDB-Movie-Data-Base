@@ -29,3 +29,49 @@ nav {
 .search:focus {
   background-color: #fff;
 }
+
+.trending {
+  background-color: #0B0909;
+  height: 500px;
+  z-index: 1;
+}
+
+.trending h1 {
+  padding: 1.3rem 0 1.8rem;
+}
+
+.next-slide {
+  position: absolute;
+  right: 3%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  z-index: 2;
+}
+
+.prev-slide {
+  position: absolute;
+  left: 3%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  z-index: 2;
+}
+
+.card {
+  width: 150px;
+  background: #0B0909;
+  color: #fff;
+}
+
+
+.vote {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+
+}
+
+.card-text {
+  font-size: 0.85rem;
+}

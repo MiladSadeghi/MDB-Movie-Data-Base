@@ -1,13 +1,69 @@
-const imagesURL = [
-  "https://s4.uupload.ir/files/breaking_bad_science-wallpaper-1920x1080_4e76.jpg",
-  "https://s4.uupload.ir/files/mulan_2020_film-wallpaper-1920x1080_1omx.jpg",
-  "https://s4.uupload.ir/files/pirates_of_the_caribbean_5_dead_men_tell_no_tales-wallpaper-1920x1080_i680.jpg",
-  "https://s4.uupload.ir/files/kylo_ren_star_wars_the_force_awaken-wallpaper-1920x1080_l8w.jpg",
-  "https://s4.uupload.ir/files/fast_and_furious_6_movie_2013-wallpaper-1920x1080_jnyf.jpg",
-  "https://s4.uupload.ir/files/captain_marvel_4k_5k-wallpaper-1920x1080_rpgb.jpg",
-  "https://s4.uupload.ir/files/breaking_bad_science-wallpaper-1920x1080_(1)_ly8v.jpg",
-  "https://s4.uupload.ir/files/the_vampire_diaries_2-wallpaper-1920x1080_vpjv.jpg",
-  "https://s4.uupload.ir/files/the_expendables_3_2014_movie-wallpaper-1920x1080_qstm.jpg",
-  "https://s4.uupload.ir/files/fury_brad_pitt-wallpaper-1920x1080_8bz2.jpg",
-  "https://s4.uupload.ir/files/teen_wolf_cast-wallpaper-1920x1080_vva1.jpg",
-];
+const trendingContent = document.querySelector('#trending-content');
+prevSlideButton = document.querySelector('.prev-slide');
+nextSlideButton = document.querySelector('.next-slide');
+  posterURL = "https://image.tmdb.org/t/p/w220_and_h330_face";
+
+let trending = []
+let cardIndexStart = 0;
+let cardIndexEnd = 6;
+
+document.addEventListener("DOMContentLoaded", () => {
+  trendingCard();
+  nextSlideButton.addEventListener("click", nextSlide)
+  prevSlideButton.addEventListener("click", prevSlide)
+})
+
+async function getFromAPI(API_URL) {
+  const response = await fetch(API_URL);
+  const responseContent = await response.json();
+  return responseContent;
+}
+
+function trendingCard() {
+  const API = "https://api.themoviedb.org/3/trending/movie/week?api_key=75c8aed355937ba0502f74d9a1aed11c";
+  let posterPathURL = "https://www.themoviedb.org/t/p/w220_and_h330_face";
+  (async () => {
+    let result = await getFromAPI(API);
+    result.results.forEach((element, index) => {
+      trending.push(element)
+    });
+    createCard(trendingContent, trending, cardIndexStart, cardIndexEnd);
+  })();
+}
+
+function createCard(path, data, indexStart, indexEnd) {
+  let pushToHTML = []
+  let slideContent = data.filter((element, index) => {
+    return index <= indexEnd && index >= indexStart
+  })
+  slideContent.forEach(element => {
+    let card = `
+    <div class="card p-0 position-relative">
+    <div class="position-relative">
+      <img src="${posterURL + element.backdrop_path}" class="card-img-top w-100">
+      <div class="vote"><span class="badge bg-secondary">${element.vote_average}</span></h1></div>
+    </div>
+      <div class="card-body pb-0">
+        <h5 class="card-title fs-6">${element.original_title}</h5></h5>
+        <p class="card-text text-white-50">${element.release_date}</p>
+      </div>
+    </div>
+    `
+    pushToHTML.push(card)
+  });
+  path.insertAdjacentHTML("beforeend", pushToHTML.join(""));
+  
+}
+
+function nextSlide() {
+  (cardIndexEnd === trending.length - 1) ? (cardIndexEnd = cardIndexEnd, cardIndexStart = cardIndexStart) : (cardIndexEnd += 1, cardIndexStart += 1);
+  trendingContent.innerHTML = "";
+  createCard(trendingContent, trending, cardIndexStart, cardIndexEnd);
+}
+
+function prevSlide() {
+  (cardIndexStart === 0) ? (cardIndexEnd = cardIndexEnd, cardIndexStart = cardIndexStart) : (cardIndexEnd -= 1, cardIndexStart -= 1);
+  trendingContent.innerHTML = "";
+  createCard(trendingContent, trending, cardIndexStart, cardIndexEnd);
+}
+
