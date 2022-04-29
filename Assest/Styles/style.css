@@ -30,13 +30,21 @@ nav {
   background-color: #fff;
 }
 
-.trending {
+.trending, .popluar {
   background-color: #0B0909;
   height: 500px;
   z-index: 1;
 }
 
-.trending h1 {
+.trending .card {
+  background: #44444C;
+}
+
+.popluar {
+  background-color: #44444C;
+}
+
+.trending h1, .popluar h1 {
   padding: 1.3rem 0 1.8rem;
 }
 
@@ -61,7 +69,7 @@ nav {
 .card {
   width: 150px;
   background: #0B0909;
-  color: #fff;
+  color: #D6D6D6;
 }
 
 
