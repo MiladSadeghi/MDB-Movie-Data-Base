@@ -2,73 +2,61 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
-    integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
-    integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
-    integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="Assest/Styles/style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
-    integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script defer src="Assest/JS/main.js"></script>
-  <title></title>
+
+  <head>
+    <meta name="title" content="im Second IMDB">
+    <meta name="description"
+      content="An open source project, which can be used as the second IMDB without storing any informations.">
+    <meta name="keywords" content="imdb, movie, series, tv, movie detail, open source">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="author" content="Milad Sadeghi">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="Assest/Styles/style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"></script>
+    <script defer src="Assest/JS/main.js"></script>
+    <title></title>
+  </head>
 </head>
 
 <body>
-  <section class="search">
-    <input type="text" class="search-bar" id="search-bar" value="">
-    <i class="fas fa-search" id="search"></i>
-  </section>
-
-  <section class="main">
+  <nav class="py-3">
     <div class="container">
-      <div class="main-content">
-        <div class="filter">
-          <span class="result">Search Results</span>
-          <ul class="filter-list">
-            <li class="lists bg-selected" id="movie">
-              <p>Movies</p> <span class="counter">0</span>
-            </li>
-            <li class="lists" id="tv">
-              <p>TV Shows</p> <span class="counter">0</span>
-            </li>
-            <li class="lists" id="collection">
-              <p>Collection</p> <span class="counter">0</span>
-            </li>
-            <li class="lists" id="person">
-              <p>People</p> <span class="counter">0</span>
-            </li>
-            <li class="lists" id="company">
-              <p>Companies</p> <span class="counter">0</span>
-            </li>
-            <li class="lists" id="keyword">
-              <p>Keywords</p> <span class="counter">0</span>
-            </li>
-          </ul>
-        </div>
-        <div class="content" id="content">
-        </div>
+      <div class="logo">
       </div>
-      <div class="pagenation" id="pagenation">
-
+      <div class="search-bar d-flex justify-content-between">
+        <input class="search w-75 px-3" id="search" type="text"
+          placeholder="Name Of Moive, Series, Person, Collection And ...">
+        <button class="btn btn-outline-light search-btn" type="button" id="button-addon2">Search</button>
       </div>
     </div>
-  </section>
+  </nav>
+
+  <div>
+    <div class="container">
+      <div class="row mt-5">
+        <div class="col-sm-3">
+          <div class="search-result">
+            <h5 class="mb-0">Search Result</h5>
+            <p class="active">Movies<span class="badge bg-secondary position-absolute">0</span></p>
+            <p>TV Shows<span class="badge bg-secondary position-absolute">0</span></p>
+            <p>Collection<span class="badge bg-secondary position-absolute">0</span></p>
+            <p>People<span class="badge bg-secondary position-absolute">0</span></p>
+            <p>Companies<span class="badge bg-secondary position-absolute">0</span></p>
+            <p>Keywords<span class="badge bg-secondary position-absolute">0</span></p>
+          </div>
+        </div>
+        <div id="search-content" class="col-sm-9">
+
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
