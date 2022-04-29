@@ -29,7 +29,7 @@
       <div class="search-bar d-flex justify-content-between">
         <input class="search w-75 px-3" id="search" type="text"
           placeholder="Name Of Moive, Series, Person, Collection And ...">
-        <button class="btn btn-outline-light" type="button" id="button-addon2">Search</button>
+        <button class="btn btn-outline-light search-btn" type="button" id="button-addon2">Search</button>
       </div>
     </div>
   </nav>
@@ -56,6 +56,18 @@
       </div>
     </div>
   </section>
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <i class="bi bi-x-circle text-danger"></i>
+        <strong class="me-auto ms-1">Error</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        Nothing Was Enter In Input.
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

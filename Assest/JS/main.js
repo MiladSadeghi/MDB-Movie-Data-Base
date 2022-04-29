@@ -4,6 +4,8 @@ const trendPrevBtnSlide = document.querySelector('.trending .prev-slide');
 const trendNextBtnSlide = document.querySelector('.trending .next-slide');
 const popluarPrevBtnSlide = document.querySelector('.popluar .prev-slide');
 const popluarNextBtnSlide = document.querySelector('.popluar .next-slide');
+const searchBtn = document.querySelector('.search-btn');
+const searchInput = document.querySelector("#search")
 const posterURL = "https://image.tmdb.org/t/p/w220_and_h330_face";
 
 let trending = []
@@ -20,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   trendPrevBtnSlide.addEventListener("click", prevSlide)
   popluarNextBtnSlide.addEventListener("click", nextSlide)
   popluarPrevBtnSlide.addEventListener("click", prevSlide)
+  searchBtn.addEventListener("click", handleSearch)
 })
 
 async function getFromAPI(API_URL) {
@@ -100,4 +103,14 @@ function popluarCard() {
     });
     createCard(popluarContent, popluar, popluarCardIndexStart, popluarCardIndexEnd);
   })();
+}
+
+function handleSearch() {
+  if (searchInput.value === "") {
+    let toastClass = document.querySelector("#liveToast")
+    var toast = new bootstrap.Toast(toastClass)
+    toast.show()
+  } else {
+    window.location.href = `./search.html?search=${searchInput.value}`
+  }
 }
