@@ -58,3 +58,29 @@ nav {
   background: #8C8C8C;
   color: #fff;
 }
+
+.card {
+  background-color: #D6D6D6;
+}
+
+.no-image {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.no-image img {
+  width: auto;
+}
+
+.card-title {
+  color: #0B0909 !important;
+}
+
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
