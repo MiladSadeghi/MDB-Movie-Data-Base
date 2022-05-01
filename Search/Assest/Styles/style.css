@@ -43,6 +43,7 @@ nav {
   color: #D6D6D6;
   margin-bottom: 0;
   position: relative;
+  transition: background-color .15s ease-out;
 }
 
 .search-result p span {
@@ -50,13 +51,17 @@ nav {
 }
 
 .search-result p:hover {
-  background: #8C8C8C;
+  background: #44444C;
   color: #fff;
 }
 
 .search-result .active {
   background: #8C8C8C;
   color: #fff;
+}
+
+.search-result .active:hover {
+  background-color: #8C8C8C;
 }
 
 .card {

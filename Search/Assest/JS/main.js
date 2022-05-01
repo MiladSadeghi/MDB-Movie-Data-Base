@@ -1,6 +1,7 @@
 const searchResult = document.querySelector("#search-content");
 const posterURL = "https://image.tmdb.org/t/p/original/";
 const resultCounter = document.querySelectorAll(".search-result .badge");
+const searchResultType = document.querySelectorAll(".search-result p");
 const resultType = document.querySelector(".search-result");
 
 
@@ -27,7 +28,6 @@ let releaseDate = (element) => {
 let collaboratedProducts = (element) => {
   let name = "";
   element.forEach(element => {
-    console.log(element.original_title || element.original_name);
     name += `${element.original_title || element.original_name} - `
   });
   return name.slice(0, name.length - 3);
@@ -42,7 +42,8 @@ let typesArray = [movieResult, tv, collection, person, company, keyword];
 document.title = userIDParam + " - Use Me As 2nd IMDB";
 
 document.addEventListener("DOMContentLoaded", () => {
-  startedPage()
+  searchResultElBG();
+  startedPage();
   resultType.addEventListener("click", (event) => {
     switch (event.target.getAttribute("type")) {
       case "movie":
@@ -141,8 +142,6 @@ function collectionShow() {
   let searchResultArray = [];
   searchResult.innerHTML = "";
   collection[0].results.forEach(element => {
-    console.log(element);
-
     let searchResultCard = `
       <div class="card mb-3" style="max-width: auto;">
       <div class="row g-0">
@@ -167,7 +166,6 @@ function personShow() {
   let searchResultArray = [];
   searchResult.innerHTML = "";
   person[0].results.forEach(element => {
-    console.log(element);
     let searchResultCard = `
       <div class="card mb-3" style="max-width: auto;">
       <div class="row g-0">
@@ -192,7 +190,6 @@ function companyShow() {
   let searchResultArray = [];
   searchResult.innerHTML = "";
   company[0].results.forEach(element => {
-    console.log(element);
     let searchResultCard = `
       <div class="card mb-3" style="max-width: auto;">
       <div class="row g-0">
@@ -217,11 +214,21 @@ function keywordShow() {
   let searchResultArray = [];
   searchResult.innerHTML = "";
   company[0].results.forEach(element => {
-    console.log(element);
     let searchResultCard = `
     <span class="badge bg-secondary me-2 mb-2 fs-6 fw-normal">${element.name}</span>
       `
     searchResultArray.push(searchResultCard)
   })
   searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+}
+
+function searchResultElBG() {
+  searchResultType.forEach(element => {
+    element.addEventListener('click', () => {
+      searchResultType.forEach(element => {
+        element.classList.remove('active')
+      })
+      element.classList.add('active')
+    })
+  })
 }
