@@ -1,67 +1,227 @@
 const searchResult = document.querySelector("#search-content");
-const posterURL = "https://image.tmdb.org/t/p/w220_and_h330_face";
-const moviesCounter = document.querySelector("#movieCounter");
-const tvCounter = document.querySelector("#tvCounter");
-const collectionCounter = document.querySelector("#collectionCounter");
-const personCounter = document.querySelector("#personCounter");
-const companiesCounter = document.querySelector("#companyCounter");
-const keywordCounter = document.querySelector("#keywordCounter");
+const posterURL = "https://image.tmdb.org/t/p/original/";
+const resultCounter = document.querySelectorAll(".search-result .badge");
+const resultType = document.querySelector(".search-result");
+
+
 let locationSearch = location.search;
 let locationSearchParams = new URLSearchParams(locationSearch);
 let userIDParam = locationSearchParams.get('search');
-let movies = [];
+let movieResult = [];
 let tv = [];
 let collection = [];
 let person = [];
 let company = [];
 let keyword = [];
 
+let noImageAddClass = (element) => {
+  return (element.poster_path == null) ? "no-image" : ""
+}
+let availablePosterPath = (element) => {
+  return ((element.poster_path || element.profile_path || element.logo_path) == null) ? "/Search/Assest/Images/no-image.png" : (posterURL + (element.poster_path || element.profile_path || element.logo_path));
+}
+let releaseDate = (element) => {
+  return (element.release_date === "") ? "Unavailable Release Date" : element.release_date
+}
+
+let collaboratedProducts = (element) => {
+  let name = "";
+  element.forEach(element => {
+    console.log(element.original_title || element.original_name);
+    name += `${element.original_title || element.original_name} - `
+  });
+  return name.slice(0, name.length - 3);
+}
+
+let availableEstablishment = (element) => {
+  return (element == "") ? "Establishment Not Available." : `Establishment In ${element}.`
+}
+
+let typesSeach = ["movie", "tv", "collection", "person", "company", "keyword"];
+let typesArray = [movieResult, tv, collection, person, company, keyword];
 document.title = userIDParam + " - Use Me As 2nd IMDB";
 
 document.addEventListener("DOMContentLoaded", () => {
-  startedPage();
+  startedPage()
+  resultType.addEventListener("click", (event) => {
+    switch (event.target.getAttribute("type")) {
+      case "movie":
+        movie();
+        break;
+      case "tv":
+        tvShow();
+        break;
+      case "collection":
+        collectionShow();
+        break;
+      case "person":
+        personShow();
+        break;
+      case "company":
+        companyShow();
+        break;
+      case "keyword":
+        keywordShow(); 
+        break;
+    
+      default: movie();
+        break;
+    }
+  })
 })
 
-function startedPage() {
-  const API = `https://api.themoviedb.org/3/search/movie?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=${userIDParam}`;
+function movie() {
   let searchResultArray = [];
-  getFromAPI(API).then(data => {
-    console.log(data);
-    data.results.forEach(element => {
-      console.log(element);
-      let noImageAddClass = () => {
-        return (element.poster_path == null) ? "no-image" : ""
-      }
-      let availablePosterPath = () => {
-        return (element.poster_path == null) ? "/Search/Assest/Images/no-image.png" : (posterURL + element.poster_path);
-      }
-      let releaseDate = () => {
-        return (element.release_date === "") ? "Unavailable Release Date" : element.release_date 
-      }
+  searchResult.innerHTML = "";
+  
+    movieResult[0].results.forEach(element => {
       let searchResultCard = `
+        <div class="card mb-3" style="max-width: auto;">
+        <div class="row g-0">
+          <div class="col-md-3 ${noImageAddClass(element)}">
+            <img src="${availablePosterPath(element)}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-9">
+            <div class="card-body">
+              <h5 class="card-title">${element.original_title}</h5>
+              <p class="card-text text">${element.overview}.</p>
+              <p class="card-text"><small class="text-muted">${releaseDate(element)}</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+        `
+      searchResultArray.push(searchResultCard)
+    })
+    searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+}
+
+async function getFromAPI(API_LINK) {
+  const response = await fetch(API_LINK);
+  const result = await response.json();
+  return result;
+}
+
+async function startedPage() {
+  for await (let [index,element] of typesArray.entries()) {
+    let api = `https://api.themoviedb.org/3/search/${typesSeach[index]}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=${userIDParam}`
+    let result =  await getFromAPI(api);
+    resultCounter[index].innerHTML = result.total_results;
+    element.push(result)
+};
+  movie();
+}
+
+function tvShow() {
+  let searchResultArray = [];
+  searchResult.innerHTML = "";
+  tv[0].results.forEach(element => {
+    let searchResultCard = `
       <div class="card mb-3" style="max-width: auto;">
       <div class="row g-0">
-        <div class="col-md-3 ${noImageAddClass()}">
-          <img src="${availablePosterPath()}" class="img-fluid rounded-start" alt="...">
+        <div class="col-md-3 ${noImageAddClass(element)}">
+          <img src="${availablePosterPath(element)}" class="img-fluid rounded-start" alt="...">
         </div>
         <div class="col-md-9">
           <div class="card-body">
-            <h5 class="card-title">${element.original_title}</h5>
+            <h5 class="card-title">${element.original_name}</h5>
             <p class="card-text text">${element.overview}.</p>
-            <p class="card-text"><small class="text-muted">${releaseDate()}</small></p>
+            <p class="card-text"><small class="text-muted">${releaseDate(element)}</small></p>
           </div>
         </div>
       </div>
     </div>
       `
-      searchResultArray.push(searchResultCard)
-    })
-    searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+    searchResultArray.push(searchResultCard)
   })
+  searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
 }
 
-async function getFromAPI(API_LINK) {
-  const response = await fetch(API_LINK);
-  const result = response.json();
-  return result;
+function collectionShow() {
+  let searchResultArray = [];
+  searchResult.innerHTML = "";
+  collection[0].results.forEach(element => {
+    console.log(element);
+
+    let searchResultCard = `
+      <div class="card mb-3" style="max-width: auto;">
+      <div class="row g-0">
+        <div class="col-md-3 ${noImageAddClass(element)}">
+          <img src="${availablePosterPath(element)}" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-9">
+          <div class="card-body">
+            <h5 class="card-title">${element.original_name}</h5>
+            <p class="card-text text">${element.overview}.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+      `
+    searchResultArray.push(searchResultCard)
+  })
+  searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+}
+
+function personShow() {
+  let searchResultArray = [];
+  searchResult.innerHTML = "";
+  person[0].results.forEach(element => {
+    console.log(element);
+    let searchResultCard = `
+      <div class="card mb-3" style="max-width: auto;">
+      <div class="row g-0">
+        <div class="col-md-3 ${noImageAddClass(element)}">
+          <img src="${availablePosterPath(element)}" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-9">
+          <div class="card-body">
+            <h5 class="card-title">${element.name} - ${element.known_for_department}</h5>
+            <p class="card-text text">${collaboratedProducts(element.known_for)}.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+      `
+    searchResultArray.push(searchResultCard)
+  })
+  searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+}
+
+function companyShow() {
+  let searchResultArray = [];
+  searchResult.innerHTML = "";
+  company[0].results.forEach(element => {
+    console.log(element);
+    let searchResultCard = `
+      <div class="card mb-3" style="max-width: auto;">
+      <div class="row g-0">
+        <div class="col-md-3 ${noImageAddClass(element)}">
+          <img src="${availablePosterPath(element)}" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-9">
+          <div class="card-body">
+            <h5 class="card-title">${element.name}</h5>
+            <p class="card-text text">${availableEstablishment(element.origin_country)}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+      `
+    searchResultArray.push(searchResultCard)
+  })
+  searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+}
+
+function keywordShow() {
+  let searchResultArray = [];
+  searchResult.innerHTML = "";
+  company[0].results.forEach(element => {
+    console.log(element);
+    let searchResultCard = `
+    <span class="badge bg-secondary me-2 mb-2 fs-6 fw-normal">${element.name}</span>
+      `
+    searchResultArray.push(searchResultCard)
+  })
+  searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
 }
