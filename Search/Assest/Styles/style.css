@@ -89,3 +89,7 @@ nav {
   -webkit-line-clamp: 5; /* number of lines to show */
   -webkit-box-orient: vertical;
 }
+
+#pageNationCounter > li > a{
+  border-radius: 0;
+}

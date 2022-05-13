@@ -3,6 +3,7 @@ const posterURL = "https://image.tmdb.org/t/p/original/";
 const resultCounter = document.querySelectorAll(".search-result .badge");
 const searchResultType = document.querySelectorAll(".search-result p");
 const resultType = document.querySelector(".search-result");
+const pageNationUlist = document.querySelector("#ul-pagenation")
 
 
 let locationSearch = location.search;
@@ -14,6 +15,8 @@ let collection = [];
 let person = [];
 let company = [];
 let keyword = [];
+let classResult = [];
+let now = [];
 
 let noImageAddClass = (element) => {
   return (element.poster_path == null) ? "no-image" : ""
@@ -62,21 +65,38 @@ document.addEventListener("DOMContentLoaded", () => {
         companyShow();
         break;
       case "keyword":
-        keywordShow(); 
+        keywordShow();
         break;
-    
-      default: movie();
-        break;
+    }
+  })
+  pageNationUlist.addEventListener('click', async (e) => {
+    e.stopImmediatePropagation();
+    if (e.target.classList.contains("page-next")) {
+      let nowObject = now[1];
+      if (nowObject[2] <= nowObject[1]) {
+        nowObject[2]++;
+      }
+      await pageNation(nowObject[2], nowObject[1], nowObject[3], nowObject)
+      now[0]();
+    }
+    if (e.target.classList.contains("page-prev")) {
+      let nowObject = now[1];
+      if (nowObject[2] <= nowObject[1]) {
+        nowObject[2]--;
+      }
+      now[0]();
     }
   })
 })
 
 function movie() {
+  now[0] = movie;
+  now[1] = movieResult;
   let searchResultArray = [];
   searchResult.innerHTML = "";
-  
-    movieResult[0].results.forEach(element => {
-      let searchResultCard = `
+  pageNationUlist.innerHTML = "";
+  movieResult[0].results.forEach(element => {
+    let searchResultCard = `
         <div class="card mb-3" style="max-width: auto;">
         <div class="row g-0">
           <div class="col-md-3 ${noImageAddClass(element)}">
@@ -92,9 +112,10 @@ function movie() {
         </div>
       </div>
         `
-      searchResultArray.push(searchResultCard)
-    })
-    searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+    searchResultArray.push(searchResultCard)
+  })
+  searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+  pageNation(Number(movieResult[2]), Number(movieResult[1]), "movie", movieResult, movie);
 }
 
 async function getFromAPI(API_LINK) {
@@ -104,16 +125,21 @@ async function getFromAPI(API_LINK) {
 }
 
 async function startedPage() {
-  for await (let [index,element] of typesArray.entries()) {
+  for await (let [index, element] of typesArray.entries()) {
     let api = `https://api.themoviedb.org/3/search/${typesSeach[index]}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=${userIDParam}`
-    let result =  await getFromAPI(api);
+    let result = await getFromAPI(api);
     resultCounter[index].innerHTML = result.total_results;
-    element.push(result)
-};
+    element.push(result);
+    element.push(result.total_pages);
+    element.push(result.page);
+    element.push(typesSeach[index]);
+  };
   movie();
 }
 
 function tvShow() {
+  now[0] = tvShow;
+  now[1] = tv;
   let searchResultArray = [];
   searchResult.innerHTML = "";
   tv[0].results.forEach(element => {
@@ -136,9 +162,12 @@ function tvShow() {
     searchResultArray.push(searchResultCard)
   })
   searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+  pageNation(Number(tv[2]), Number(tv[1]), "tv", tv, tvShow);
 }
 
 function collectionShow() {
+  now[0] = collectionShow;
+  now[1] = collection;
   let searchResultArray = [];
   searchResult.innerHTML = "";
   collection[0].results.forEach(element => {
@@ -160,9 +189,12 @@ function collectionShow() {
     searchResultArray.push(searchResultCard)
   })
   searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+  pageNation(Number(collection[2]), Number(collection[1]), "collection", collection, collectionShow);
 }
 
 function personShow() {
+  now[0] = personShow;
+  now[1] = person;
   let searchResultArray = [];
   searchResult.innerHTML = "";
   person[0].results.forEach(element => {
@@ -184,9 +216,12 @@ function personShow() {
     searchResultArray.push(searchResultCard)
   })
   searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+  pageNation(Number(person[2]), Number(person[1]), "person", person, personShow);
 }
 
 function companyShow() {
+  now[0] = companyShow;
+  now[1] = company;
   let searchResultArray = [];
   searchResult.innerHTML = "";
   company[0].results.forEach(element => {
@@ -208,18 +243,22 @@ function companyShow() {
     searchResultArray.push(searchResultCard)
   })
   searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+  pageNation(Number(company[2]), Number(company[1]), "company", company, companyShow);
 }
 
 function keywordShow() {
+  now[0] = keywordShow;
+  now[1] = keyword;
   let searchResultArray = [];
   searchResult.innerHTML = "";
-  company[0].results.forEach(element => {
+  keyword[0].results.forEach(element => {
     let searchResultCard = `
     <span class="badge bg-secondary me-2 mb-2 fs-6 fw-normal">${element.name}</span>
       `
     searchResultArray.push(searchResultCard)
   })
   searchResult.insertAdjacentHTML('beforeend', searchResultArray.join(""))
+  pageNation(Number(keyword[2]), Number(keyword[1]), "keyword", keyword, keywordShow);
 }
 
 function searchResultElBG() {
@@ -231,4 +270,16 @@ function searchResultElBG() {
       element.classList.add('active')
     })
   })
+}
+
+async function pageNation(pageNow, totalPage, searchType, searchArray) {
+  let api = `https://api.themoviedb.org/3/search/${searchType}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&query=${userIDParam}&page=${pageNow}`;
+  let result = await getFromAPI(api)
+
+  searchArray[2] = pageNow;
+  searchArray[0] = result;
+  pageNationUlist.innerHTML = `
+  <li class="page-item ${pageNow === 1? "disabled" : ""}"><a class="page-link page-prev" href="#">Previous</a></li>
+  <li class="page-item ${pageNow === totalPage ? 'disabled':''} "><a class="page-link page-next" href="#">Next</a></li>
+  `
 }
