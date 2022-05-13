@@ -4,11 +4,13 @@ const resultCounter = document.querySelectorAll(".search-result .badge");
 const searchResultType = document.querySelectorAll(".search-result p");
 const resultType = document.querySelector(".search-result");
 const pageNationUlist = document.querySelector("#ul-pagenation")
+const locationSearch = location.search;
+const searchInput = document.querySelector("#search-input");
+const searchButton = document.querySelector(".search-btn");
+const navBar = document.querySelector("nav")
+const locationSearchParams = new URLSearchParams(locationSearch);
+const userIDParam = locationSearchParams.get('search');
 
-
-let locationSearch = location.search;
-let locationSearchParams = new URLSearchParams(locationSearch);
-let userIDParam = locationSearchParams.get('search');
 let movieResult = [];
 let tv = [];
 let collection = [];
@@ -17,6 +19,8 @@ let company = [];
 let keyword = [];
 let classResult = [];
 let now = [];
+
+document.title = userIDParam + " - Use Me As 2nd IMDB";
 
 let noImageAddClass = (element) => {
   return (element.poster_path == null) ? "no-image" : ""
@@ -42,7 +46,6 @@ let availableEstablishment = (element) => {
 
 let typesSeach = ["movie", "tv", "collection", "person", "company", "keyword"];
 let typesArray = [movieResult, tv, collection, person, company, keyword];
-document.title = userIDParam + " - Use Me As 2nd IMDB";
 
 document.addEventListener("DOMContentLoaded", () => {
   searchResultElBG();
@@ -85,6 +88,20 @@ document.addEventListener("DOMContentLoaded", () => {
         nowObject[2]--;
       }
       now[0]();
+    }
+  })
+  searchButton.addEventListener('click', () => {
+    if (searchInput.value != "") {
+      location.href = `/Search/?search=${searchInput.value}`
+    } else {
+      navBar.animate([
+        { boxShadow: 'none' },
+        { boxShadow: 'inset 0px 7px 20px rgb(255 0 0 / 51%), inset 0px -7px 20px rgb(255 0 0 / 51%)' },
+        { boxShadow: 'none' }
+      ], {
+        duration: 1400,
+        iterations: 2
+      });
     }
   })
 })
@@ -279,7 +296,7 @@ async function pageNation(pageNow, totalPage, searchType, searchArray) {
   searchArray[2] = pageNow;
   searchArray[0] = result;
   pageNationUlist.innerHTML = `
-  <li class="page-item ${pageNow === 1? "disabled" : ""}"><a class="page-link page-prev" href="#">Previous</a></li>
-  <li class="page-item ${pageNow === totalPage ? 'disabled':''} "><a class="page-link page-next" href="#">Next</a></li>
+  <li class="page-item ${pageNow === 1 ? "disabled" : ""}"><a class="page-link page-prev" href="#">Previous</a></li>
+  <li class="page-item ${pageNow === totalPage ? 'disabled' : ''} "><a class="page-link page-next" href="#">Next</a></li>
   `
 }
