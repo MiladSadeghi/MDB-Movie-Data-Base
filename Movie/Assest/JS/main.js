@@ -17,6 +17,8 @@ const keywordFact = document.querySelector(".keyword");
 const topCast = document.querySelector(".cast");
 const topCastNextSlide = document.querySelector("#next-cast");
 const topCastPrevSlide = document.querySelector("#prev-cast");
+const collectionImage = document.querySelector(".collection-image");
+const collectionCard = document.querySelector(".collection .card-img-overlay");
 const movieIDParam = new URLSearchParams(location.search).get("id");
 const headerSection = document.querySelector(".header");
 const poster = document.querySelector(".image-banner img")
@@ -24,9 +26,8 @@ const bannerImageURL = "https://image.tmdb.org/t/p/original"
 const posterImageURL = "https://www.themoviedb.org/t/p/original"
 const castImageURL = "https://www.themoviedb.org/t/p/original"
 
-let apiURL = [`https://api.themoviedb.org/3/movie/${movieIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/movie/${movieIDParam}/release_dates?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/movie/${movieIDParam}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`]
 let movieDataObj = {}
-let activePO = 1;
+let apiURL = [`https://api.themoviedb.org/3/movie/${movieIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/movie/${movieIDParam}/release_dates?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/movie/${movieIDParam}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`]
 
 document.addEventListener('DOMContentLoaded', () => {
   getFromAPI(apiURL);
@@ -35,21 +36,21 @@ document.addEventListener('DOMContentLoaded', () => {
     topCast.scrollLeft += 350;
   })
   topCastPrevSlide.parentElement.addEventListener("click", () => {
-
     topCast.scrollLeft -= 350;
   })
 
 })
 
-async function getFromAPI(apiURL) {
+function getFromAPI(apiURL) {
   let requests = apiURL.map(async (item) =>
     await fetch(item).then(async (response) => await response.json()));
-  Promise.all(requests).then(datas => {
+  Promise.all(requests).then(async (datas) => {
     movieDataObj["movieDetails"] = datas[0];
     movieDataObj["releaseDate"] = datas[1];
     movieDataObj["Cast&Crew"] = datas[2];
     movieDataObj["socialMedia"] = datas[3];
     movieDataObj["keywords"] = datas[4];
+    movieDataObj["collection"] = await fetch(`https://api.themoviedb.org/3/collection/${movieDataObj["movieDetails"].belongs_to_collection.id}?api_key=75c8aed355937ba0502f74d9a1aed11c`).then(response => response.json());
     header();
     aside();
     article();
@@ -66,10 +67,10 @@ function getISO(iso) {
   return certificate.release_dates[0].certification;
 }
 
-let arrangeGenresStyle = (element) => {
+function multipleArrayInObj(element, value) {
   let name = "";
   element.forEach(element => {
-    name += `${element.name}, `
+    name += `${element[value]}, `
   });
   return name.slice(0, name.length - 2);
 }
@@ -170,7 +171,7 @@ function header() {
   certificationBadge.innerHTML = `${getISO(movieDataObj["movieDetails"].production_countries[0])}`
   releaseDate.innerHTML = `${movieDataObj["movieDetails"].release_date}`;
   country.innerHTML = `${movieDataObj["movieDetails"].production_countries[0].iso_3166_1}`
-  genres.innerHTML = `${arrangeGenresStyle(movieDataObj["movieDetails"].genres)}`
+  genres.innerHTML = `${multipleArrayInObj(movieDataObj["movieDetails"].genres, "name")}`
   runTime.innerHTML = `${timeConvert(movieDataObj["movieDetails"].runtime)}`
   tagLine.innerHTML = `${movieDataObj["movieDetails"].tagline}`
   overview.innerHTML = `${movieDataObj["movieDetails"].overview}`
@@ -189,4 +190,12 @@ function aside() {
 
 function article() {
   topCast.insertAdjacentHTML("beforeend", arrangeTopCast().join(""));
+  collectionImage.src = `${posterImageURL}${movieDataObj["movieDetails"].belongs_to_collection.backdrop_path}`;
+  collectionCard.innerHTML = `
+  <h5 class="card-title">Part of the ${movieDataObj["movieDetails"].belongs_to_collection.name}</h5>
+  <p class="card-text">Inlude ${multipleArrayInObj(movieDataObj["collection"].parts, "original_title")}</p>
+  <a href="#" class="px-3 fs-6 py-3 badge bg-secondary text-white">VIEW THE COLLECTION</a>
+  `
+  console.log(movieDataObj["collection"].parts);
+  console.log();
 }

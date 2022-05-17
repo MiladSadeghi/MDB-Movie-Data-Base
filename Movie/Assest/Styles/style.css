@@ -18,11 +18,20 @@ body {
   font-family: "Poppins";
 }
 
-.overview-title, .overview, .certification, #movie-title, .header-crew h6, .fact, .facts h6, .cast-title {
+.overview-title,
+.overview,
+.certification,
+#movie-title,
+.header-crew h6,
+.fact,
+.facts h6,
+.cast-title {
   color: #D6D6D6;
 }
 
-.tagline, .header-crew p, .facts span {
+.tagline,
+.header-crew p,
+.facts span {
   color: #8C8C8C;
 }
 
@@ -85,7 +94,7 @@ body {
 }
 
 .cast {
-  height:auto;
+  height: auto;
   width: auto;
   overflow-x: scroll;
   display: flex;
@@ -151,4 +160,20 @@ body {
 #prev-cast {
   font-size: 1.3rem;
   margin-left: 1.2rem;
+}
+
+.collection-image {
+  height: 263px;
+  object-fit: cover;
+}
+
+.collection .card-img-overlay {
+  background: linear-gradient(90deg, rgb(80 80 80 / 93%) 20%, rgb(34 34 34 / 65%)100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.collection .card-img-overlay a {
+  align-self: baseline;
 }
