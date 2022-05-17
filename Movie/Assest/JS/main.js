@@ -9,18 +9,35 @@ const overview = document.querySelector(".overview");
 const headerCrew = document.querySelector(".header-crew");
 const socialIcon = document.querySelector(".social-icon");
 const sideFact = document.querySelector(".facts");
+const statusFact = document.querySelector(".status");
+const languageFact = document.querySelector(".language");
+const budgetFact = document.querySelector(".budget");
+const revenueFact = document.querySelector(".revenue");
+const keywordFact = document.querySelector(".keyword");
+const topCast = document.querySelector(".cast");
+const topCastNextSlide = document.querySelector("#next-cast");
+const topCastPrevSlide = document.querySelector("#prev-cast");
 const movieIDParam = new URLSearchParams(location.search).get("id");
 const headerSection = document.querySelector(".header");
 const poster = document.querySelector(".image-banner img")
 const bannerImageURL = "https://image.tmdb.org/t/p/original"
 const posterImageURL = "https://www.themoviedb.org/t/p/original"
+const castImageURL = "https://www.themoviedb.org/t/p/original"
 
 let apiURL = [`https://api.themoviedb.org/3/movie/${movieIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/movie/${movieIDParam}/release_dates?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/movie/${movieIDParam}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`]
 let movieDataObj = {}
-
+let activePO = 1;
 
 document.addEventListener('DOMContentLoaded', () => {
   getFromAPI(apiURL);
+
+  topCastNextSlide.parentElement.addEventListener("click", () => {
+    topCast.scrollLeft += 350;
+  })
+  topCastPrevSlide.parentElement.addEventListener("click", () => {
+
+    topCast.scrollLeft -= 350;
+  })
 
 })
 
@@ -34,6 +51,8 @@ async function getFromAPI(apiURL) {
     movieDataObj["socialMedia"] = datas[3];
     movieDataObj["keywords"] = datas[4];
     header();
+    aside();
+    article();
     createToolTip();
   })
 }
@@ -120,7 +139,25 @@ function getKeywords() {
 }
 
 function numberToUSD(number) {
-  return number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+  return `$${number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+}
+
+function arrangeTopCast() {
+  let cast = [];
+  movieDataObj['Cast&Crew'].cast.filter((item) => {
+    if (item.order <= 8) {
+      cast.push(`
+      <div class="cast-card me-2 rounded">
+      <img src="${castImageURL + item.profile_path}" class="card-img-top" alt="">
+      <div class="cast-body">
+        <h5 class="cast-title text-black">${item.name}</h5>
+        <p class="cast-text text-black">${item.character}</p>
+      </div>
+    </div>
+      `)
+    }
+  })
+  return cast
 }
 
 function header() {
@@ -138,30 +175,18 @@ function header() {
   tagLine.innerHTML = `${movieDataObj["movieDetails"].tagline}`
   overview.innerHTML = `${movieDataObj["movieDetails"].overview}`
   headerCrew.insertAdjacentHTML("beforeend", arrangeHeaderPeople().join(""));
-  socialIcon.insertAdjacentHTML("beforeend", availableSocialMedia().join(""));
-  sideFact.innerHTML = `
-  <div>
-    <h6>Status</h6>
-    <span>${movieDataObj["movieDetails"].status}</span>
-  </div>
-  <div>
-    <h6>Language</h6>
-    <span>${getMovieLanguage()}</span>
-  </div>
-  <div>
-    <h6>Budget</h6>
-    <span>$${numberToUSD((movieDataObj["movieDetails"].budget))}</span>
-  </div>
-  <div>
-    <h6>Revenue</h6>
-    <span>$${numberToUSD(movieDataObj["movieDetails"].revenue)}</span>
-  </div>
-  <div>
-    <h6>Keywords</h6>
-    <div class="keyword">${getKeywords().join("")}</d>
-  </div>
-  `
-  console.log();
-  console.log(movieDataObj);
+}
 
+function aside() {
+  socialIcon.insertAdjacentHTML("beforeend", availableSocialMedia().join(""));
+  statusFact.innerHTML = movieDataObj["movieDetails"].status
+  languageFact.innerHTML = getMovieLanguage()
+  budgetFact.innerHTML = numberToUSD((movieDataObj["movieDetails"].budget))
+  revenueFact.innerHTML = numberToUSD((movieDataObj["movieDetails"].revenue))
+  keywordFact.innerHTML = getKeywords().join("")
+  console.log(movieDataObj);
+}
+
+function article() {
+  topCast.insertAdjacentHTML("beforeend", arrangeTopCast().join(""));
 }

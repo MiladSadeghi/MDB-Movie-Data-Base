@@ -18,7 +18,7 @@ body {
   font-family: "Poppins";
 }
 
-.overview-title, .overview, .certification, #movie-title, .header-crew h6, .fact, .facts h6 {
+.overview-title, .overview, .certification, #movie-title, .header-crew h6, .fact, .facts h6, .cast-title {
   color: #D6D6D6;
 }
 
@@ -78,4 +78,77 @@ body {
 
 .keyword a {
   font-size: 0.83rem;
+}
+
+.cast::-webkit-scrollbar {
+  overflow: hidden;
+}
+
+.cast {
+  height:auto;
+  width: auto;
+  overflow-x: scroll;
+  display: flex;
+  scroll-behavior: smooth;
+}
+
+.cast-card {
+  background: #fff;
+}
+
+.cast img {
+  width: 180px;
+}
+
+.cast-body {
+  padding: 0.8rem;
+  width: 100%;
+  padding-bottom: 0rem;
+}
+
+.cast-body h5 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.cast-body p {
+  font-size: 0.9rem;
+}
+
+.parrent-cast-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #44444C;
+  height: 100%;
+  width: 3%;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: -13px 0px 20px 20px #44444c;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.parent-prev-btn {
+  box-shadow: 13px 0px 20px 20px #44444c;
+  left: 0;
+}
+
+.cast:hover .parrent-cast-btn {
+  opacity: 0.7;
+}
+
+
+#next-cast {
+  font-size: 1.3rem;
+  margin-right: 1.2rem;
+}
+
+#prev-cast {
+  font-size: 1.3rem;
+  margin-left: 1.2rem;
 }
