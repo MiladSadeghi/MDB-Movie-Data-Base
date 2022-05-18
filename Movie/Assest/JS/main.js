@@ -15,23 +15,30 @@ const budgetFact = document.querySelector(".budget");
 const revenueFact = document.querySelector(".revenue");
 const keywordFact = document.querySelector(".keyword");
 const topCast = document.querySelector(".cast");
+const recommend = document.querySelector(".recommend");
 const topCastNextSlide = document.querySelector("#next-cast");
 const topCastPrevSlide = document.querySelector("#prev-cast");
 const collectionImage = document.querySelector(".collection-image");
 const collectionCard = document.querySelector(".collection .card-img-overlay");
+const recommendNextSlide = document.querySelector("#next-recommend");
+const recommendPrevSlide = document.querySelector("#prev-recommend");
+const mediaTitleBar = document.querySelector(".media-title-bar");
+const mediaContent = document.querySelector(".media-content");
+const mediaNextSlide = document.querySelector("#next-media");
+const mediaPrevSlide = document.querySelector("#prev-media");
 const movieIDParam = new URLSearchParams(location.search).get("id");
 const headerSection = document.querySelector(".header");
 const poster = document.querySelector(".image-banner img")
 const bannerImageURL = "https://image.tmdb.org/t/p/original"
 const posterImageURL = "https://www.themoviedb.org/t/p/original"
 const castImageURL = "https://www.themoviedb.org/t/p/original"
+const recommendImageURL = "https://www.themoviedb.org/t/p/original"
 
 let movieDataObj = {}
-let apiURL = [`https://api.themoviedb.org/3/movie/${movieIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/movie/${movieIDParam}/release_dates?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/movie/${movieIDParam}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`]
+let apiURL = [`https://api.themoviedb.org/3/movie/${movieIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/movie/${movieIDParam}/release_dates?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/movie/${movieIDParam}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/videos?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/images?api_key=75c8aed355937ba0502f74d9a1aed11c`]
 
 document.addEventListener('DOMContentLoaded', () => {
   getFromAPI(apiURL);
-
   topCastNextSlide.parentElement.addEventListener("click", () => {
     topCast.scrollLeft += 350;
   })
@@ -39,6 +46,38 @@ document.addEventListener('DOMContentLoaded', () => {
     topCast.scrollLeft -= 350;
   })
 
+  recommendNextSlide.parentElement.addEventListener("click", () => {
+    recommend.scrollLeft += 350;
+  })
+  recommendPrevSlide.parentElement.addEventListener("click", () => {
+    recommend.scrollLeft -= 350;
+  })
+
+  mediaNextSlide.parentElement.addEventListener("click", () => {
+    mediaContent.scrollLeft += 350;
+  })
+  mediaPrevSlide.parentElement.addEventListener("click", () => {
+    mediaContent.scrollLeft -= 350;
+  })
+
+  mediaTitleBar.addEventListener("click", (event) => {
+    if (event.target.tagName === "SPAN") {
+      switch (event.target.getAttribute("data-id")) {
+        case "1024":
+          mostPopularMedia(event.target);
+          break;
+        case "1156":
+          videosMedia(event.target);
+          break;
+        case "6722":
+          backdropsMedia(event.target);
+          break;
+        case "6026":
+          postersMedia(event.target);
+          break;
+      }
+    }
+  })
 })
 
 function getFromAPI(apiURL) {
@@ -51,9 +90,13 @@ function getFromAPI(apiURL) {
     movieDataObj["socialMedia"] = datas[3];
     movieDataObj["keywords"] = datas[4];
     movieDataObj["collection"] = await fetch(`https://api.themoviedb.org/3/collection/${movieDataObj["movieDetails"].belongs_to_collection.id}?api_key=75c8aed355937ba0502f74d9a1aed11c`).then(response => response.json());
+    movieDataObj["recommendation"] = datas[5];
+    movieDataObj["videos"] = datas[6];
+    movieDataObj["images"] = datas[7];
     header();
     aside();
     article();
+    mostPopularMedia(mediaTitleBar.children[1]);
     createToolTip();
   })
 }
@@ -148,7 +191,7 @@ function arrangeTopCast() {
   movieDataObj['Cast&Crew'].cast.filter((item) => {
     if (item.order <= 8) {
       cast.push(`
-      <div class="cast-card me-2 rounded">
+      <div class="cast-card me-3 rounded">
       <img src="${castImageURL + item.profile_path}" class="card-img-top" alt="">
       <div class="cast-body">
         <h5 class="cast-title text-black">${item.name}</h5>
@@ -161,7 +204,33 @@ function arrangeTopCast() {
   return cast
 }
 
+function arrangeRecommendations() {
+  let recommendations = [];
+  if (movieDataObj['recommendation'].results) {
+    movieDataObj['recommendation'].results.filter((item) => {
+      recommendations.push(`
+    <div class="recommend-card me-3 rounded">
+    <img class="card-img-top" src="${recommendImageURL + item.backdrop_path}">
+      <div class="recommend-body d-flex justify-content-between align-items-center">
+        <h5>${item.title}</h5>
+        <span class="fw-bold">${item.vote_average.toFixed(1) * 10}%</span>
+      </div>
+    </div>
+    `)
+    })
+    return recommendations.join("");
+  } else {
+    return `<p>We don't have enough data to suggest any movies based on ${movieDataObj["movieDetails"].title}. You can help by rating movies you've seen.</p>`
+  }
+}
+
+function resetMediaActiveClass(event) {
+  document.querySelector(".media-active").classList.remove("media-active");
+  event.classList.add("media-active");
+}
+
 function header() {
+  document.title = movieDataObj["movieDetails"].title + ' - IMDB #2';
   poster.src = `${posterImageURL}${movieDataObj["movieDetails"].poster_path}`;
   headerSection.style.backgroundImage = `url(${bannerImageURL}${movieDataObj["movieDetails"].backdrop_path})`
   headerSection.style.backgroundPosition = "right -200px top";
@@ -185,7 +254,6 @@ function aside() {
   budgetFact.innerHTML = numberToUSD((movieDataObj["movieDetails"].budget))
   revenueFact.innerHTML = numberToUSD((movieDataObj["movieDetails"].revenue))
   keywordFact.innerHTML = getKeywords().join("")
-  console.log(movieDataObj);
 }
 
 function article() {
@@ -196,6 +264,51 @@ function article() {
   <p class="card-text">Inlude ${multipleArrayInObj(movieDataObj["collection"].parts, "original_title")}</p>
   <a href="#" class="px-3 fs-6 py-3 badge bg-secondary text-white">VIEW THE COLLECTION</a>
   `
-  console.log(movieDataObj["collection"].parts);
-  console.log();
+  recommend.insertAdjacentHTML("beforeend", arrangeRecommendations());
+  mediaTitleBar.children[2].innerHTML += ` <div class="badge bg-secondary">${movieDataObj["videos"].results.length}</div>`;
+  mediaTitleBar.children[3].innerHTML += ` <div class="badge bg-secondary">${movieDataObj["images"].backdrops.length}</div>`;
+  mediaTitleBar.children[4].innerHTML += ` <div class="badge bg-secondary">${movieDataObj["images"].posters.length}</div>`;
+}
+
+function mostPopularMedia(event) {
+  mediaContent.scrollLeft = 0;
+  resetMediaActiveClass(event)
+  mediaContent.innerHTML = `
+  <div class="me-3"><iframe width="533" height="300" src="https://www.youtube.com/embed/${movieDataObj["videos"].results[0].key}"></iframe></div>
+  <div class="me-3"><img class="rounded" src="${castImageURL + movieDataObj["images"].backdrops[0].file_path}" width="533" height="300"></div>
+  <div class="me-3"><img class="rounded" src="${castImageURL + movieDataObj["images"].posters[0].file_path}" width="200" height="300"></div>
+  `;
+}
+
+function videosMedia(event) {
+  mediaContent.scrollLeft = 0;
+  resetMediaActiveClass(event);
+  let videos = [];
+  mediaContent.innerHTML = "";
+  movieDataObj["videos"].results.filter((item) => {
+    videos.push(`<div class="me-3"><iframe width="533" height="300" src="https://www.youtube.com/embed/${item.key}"></iframe></div>`)
+  })
+  mediaContent.insertAdjacentHTML("beforeend", videos.join(""));
+}
+
+function backdropsMedia(event) {
+  mediaContent.scrollLeft = 0;
+  resetMediaActiveClass(event);
+  let backdrops = [];
+  mediaContent.innerHTML = "";
+  movieDataObj["images"].backdrops.filter((item) => {
+    backdrops.push(`<div class="me-3"><img class="rounded" src="${castImageURL + item.file_path}" width="533" height="295"></div>`)
+  })
+  mediaContent.insertAdjacentHTML("beforeend", backdrops.join(""));
+}
+
+function postersMedia(event) {
+  mediaContent.scrollLeft = 0;
+  resetMediaActiveClass(event);
+  let posters = [];
+  mediaContent.innerHTML = "";
+  movieDataObj["images"].posters.filter((item) => {
+    posters.push(`<div class="me-3"><img class="rounded" src="${castImageURL + item.file_path}" width="200" height="295"></div>`)
+  })
+  mediaContent.insertAdjacentHTML("beforeend", posters.join(""));
 }

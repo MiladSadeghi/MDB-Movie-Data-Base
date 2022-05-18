@@ -25,7 +25,10 @@ body {
 .header-crew h6,
 .fact,
 .facts h6,
-.cast-title {
+.cast-title,
+.recommnd-title,
+.media-title-bar h5,
+.media-title-bar span{
   color: #D6D6D6;
 }
 
@@ -89,11 +92,11 @@ body {
   font-size: 0.83rem;
 }
 
-.cast::-webkit-scrollbar {
+.cast::-webkit-scrollbar, .recommend::-webkit-scrollbar, .media-content::-webkit-scrollbar {
   overflow: hidden;
 }
 
-.cast {
+.cast, .recommend, .media-content {
   height: auto;
   width: auto;
   overflow-x: scroll;
@@ -101,7 +104,7 @@ body {
   scroll-behavior: smooth;
 }
 
-.cast-card {
+.cast-card, .recommend-card{
   background: #fff;
 }
 
@@ -109,57 +112,63 @@ body {
   width: 180px;
 }
 
-.cast-body {
-  padding: 0.8rem;
+.recommend img {
+  width: 300px;
+}
+
+.cast-body, .recommend-body {
+  padding: 0.5rem;
   width: 100%;
   padding-bottom: 0rem;
 }
 
-.cast-body h5 {
+.recommend-body {
+  padding: 0.4rem 1.1rem;
+}
+
+.cast-body h5, .recommend-body h5 {
   font-size: 1rem;
   margin-bottom: 0.5rem;
 }
+.recommend-body h5 {
+  margin-bottom: 0rem;
+}
 
-.cast-body p {
+.cast-body p, .recommend-body p {
   font-size: 0.9rem;
 }
 
-.parrent-cast-btn {
+.parrent-slide-btn {
   position: absolute;
   right: 0;
-  top: 50%;
+  top: 46%;
   transform: translateY(-50%);
   background: #44444C;
   height: 100%;
-  width: 3%;
+  width: 5%;
   opacity: 0.7;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: -13px 0px 20px 20px #44444c;
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
   cursor: pointer;
 }
 
 .parent-prev-btn {
-  box-shadow: 13px 0px 20px 20px #44444c;
   left: 0;
 }
 
-.cast:hover .parrent-cast-btn {
+.cast:hover .parrent-slide-btn, .recommend:hover .parrent-slide-btn, .media:hover .parrent-slide-btn {
   opacity: 0.7;
 }
 
-
-#next-cast {
+#next-cast, #next-recommend, #next-media {
   font-size: 1.3rem;
-  margin-right: 1.2rem;
 }
 
-#prev-cast {
+#prev-cast, #prev-recommend, #prev-media {
   font-size: 1.3rem;
-  margin-left: 1.2rem;
 }
 
 .collection-image {
@@ -176,4 +185,48 @@ body {
 
 .collection .card-img-overlay a {
   align-self: baseline;
+}
+
+.recommend-card h5 {
+  font-size: 1rem;
+  width: 210px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.media-title-bar {
+  display: flex;
+}
+
+.media-title-bar h6 {
+  margin-right: 2rem;
+}
+
+.media-title-bar span {
+  cursor: pointer;
+}
+
+.media .parrent-slide-btn {
+  height: 302px;
+}
+
+.media-title-bar .badge {
+  vertical-align: middle;
+}
+
+.media-active {
+  position: relative;
+  color: #fff !important;
+}
+
+.media-active::after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  background: #D6D6D6;
+  position: absolute;
+  bottom: -7px;
+  left: 0;
+  border-radius: 50%;
 }
