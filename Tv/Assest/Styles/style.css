@@ -26,7 +26,7 @@ a {
 .header-crew h6,
 .fact,
 .facts h6,
-.cast-title,
+article h2,
 .recommnd-title,
 .media-title-bar h5,
 .media-title-bar span{
@@ -169,4 +169,16 @@ a {
 
 #prev-cast, #prev-recommend, #prev-media {
   font-size: 1.3rem;
+}
+
+.cs {
+  width: 100%;
+}
+
+.recommend-card h5 {
+  font-size: 1rem;
+  width: 210px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

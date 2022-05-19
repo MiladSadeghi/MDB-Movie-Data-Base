@@ -17,8 +17,13 @@ const keywordFact = document.querySelector(".keyword");
 const topCast = document.querySelector(".cast");
 const topCastNextSlide = document.querySelector("#next-cast");
 const topCastPrevSlide = document.querySelector("#prev-cast");
+const currentSessionImg = document.querySelector(".cs");
+const currentSessionBody = document.querySelector(".cs-body");
+const recommend = document.querySelector(".recommend");
 const movieIDParam = new URLSearchParams(location.search).get("id");
 const headerSection = document.querySelector(".header");
+const recommendNextSlide = document.querySelector("#next-recommend");
+const recommendPrevSlide = document.querySelector("#prev-recommend");
 const poster = document.querySelector(".image-banner img")
 const bannerImageURL = "https://image.tmdb.org/t/p/original"
 const posterImageURL = "https://www.themoviedb.org/t/p/original"
@@ -27,15 +32,22 @@ const recommendImageURL = "https://www.themoviedb.org/t/p/original"
 const networkImageURL = "https://www.themoviedb.org/t/p/h30"
 
 let tvDataObj = {}
-let apiURL = [`https://api.themoviedb.org/3/tv/${movieIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${movieIDParam}/content_ratings?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${movieIDParam}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${movieIDParam}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${movieIDParam}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${movieIDParam}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${movieIDParam}/videos?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${movieIDParam}/images?api_key=75c8aed355937ba0502f74d9a1aed11c`]
+let apiURL = [`https://api.themoviedb.org/3/tv/${movieIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${movieIDParam}/content_ratings?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${movieIDParam}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${movieIDParam}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${movieIDParam}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${movieIDParam}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${movieIDParam}/videos?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${movieIDParam}/images?api_key=75c8aed355937ba0502f74d9a1aed11c`,`https://api.themoviedb.org/3/tv/${movieIDParam}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&page=1`]
 
 document.addEventListener('DOMContentLoaded', () => {
   getFromAPI(apiURL);
+  console.log(tvDataObj);
   topCastNextSlide.parentElement.addEventListener("click", () => {
     topCast.scrollLeft += 350;
   })
   topCastPrevSlide.parentElement.addEventListener("click", () => {
     topCast.scrollLeft -= 350;
+  })
+  recommendNextSlide.parentElement.addEventListener("click", () => {
+    recommend.scrollLeft += 350;
+  })
+  recommendPrevSlide.parentElement.addEventListener("click", () => {
+    recommend.scrollLeft -= 350;
   })
 });
 
@@ -43,12 +55,13 @@ function getFromAPI(apiURL) {
   let requests = apiURL.map(async (item) =>
     await fetch(item).then(async (response) => await response.json()));
   Promise.all(requests).then(async (datas) => {
-    console.log(datas);
     tvDataObj["tvDetails"] = datas[0];
     tvDataObj["contentRating"] = datas[1];
     tvDataObj["Cast&Crew"] = datas[2];
     tvDataObj["socialMedia"] = datas[3];
     tvDataObj["keywords"] = datas[4];
+    tvDataObj["currentSession"] = await fetch(`https://api.themoviedb.org/3/tv/${movieIDParam}/season/${tvDataObj["tvDetails"].last_episode_to_air.season_number}?api_key=75c8aed355937ba0502f74d9a1aed11c`).then(response => response.json());
+    tvDataObj["recommendation"] = datas[8];
     header();
     aside();
     article();
@@ -161,6 +174,25 @@ function arrangeTopCast() {
   return cast.join("");
 }
 
+function arrangeRecommendations() {
+  let recommendations = [];
+  if (tvDataObj['recommendation'].results) {
+    tvDataObj['recommendation'].results.filter((item) => {
+      recommendations.push(`
+    <div class="recommend-card me-3 rounded">
+    <img class="card-img-top" src="${recommendImageURL + item.backdrop_path}">
+      <div class="recommend-body d-flex justify-content-between align-items-center">
+        <h5>${item.name}</h5>
+        <span class="fw-bold">${item.vote_average.toFixed(1) * 10}%</span>
+      </div>
+    </div>
+    `)
+    })
+    return recommendations.join("");
+  } else {
+    return `<p>We don't have enough data to suggest any movies based on ${tvDataObj["movieDetails"].name}. You can help by rating movies you've seen.</p>`
+  }
+}
 function header() {
   document.title = tvDataObj["tvDetails"].original_name + ' - IMDB #2';
   poster.src = `${posterImageURL}${tvDataObj["tvDetails"].poster_path}`;
@@ -189,4 +221,11 @@ function aside() {
 
 function article() {
   topCast.insertAdjacentHTML("beforeend", arrangeTopCast());
+  currentSessionImg.src = `${recommendImageURL}${tvDataObj["currentSession"].poster_path}`;
+  currentSessionBody.innerHTML = `
+  <h5 class="card-title">${tvDataObj["currentSession"].name}</h5>
+  <h4 class="card-text fs-6 fw-bold mb-5 mt-2">${new Date(tvDataObj["currentSession"].air_date).getFullYear()}<span class="text-muted w-75 mx-2">|</span>${tvDataObj["currentSession"].episodes.length}</h4>
+  <p>${tvDataObj["currentSession"].overview}</p>
+  `
+  recommend.insertAdjacentHTML("beforeend", arrangeRecommendations());
 }
