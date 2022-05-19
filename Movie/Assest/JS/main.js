@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
           break;
       }
     }
-  })
+  }, true)
 })
 
 function getFromAPI(apiURL) {

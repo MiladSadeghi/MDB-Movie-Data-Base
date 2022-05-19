@@ -20,7 +20,11 @@ const topCastPrevSlide = document.querySelector("#prev-cast");
 const currentSessionImg = document.querySelector(".cs");
 const currentSessionBody = document.querySelector(".cs-body");
 const recommend = document.querySelector(".recommend");
-const movieIDParam = new URLSearchParams(location.search).get("id");
+const mediaTitleBar = document.querySelector(".media-title-bar");
+const mediaContent = document.querySelector(".media-content");
+const mediaNextSlide = document.querySelector("#next-media");
+const mediaPrevSlide = document.querySelector("#prev-media");
+const tvIDParam = new URLSearchParams(location.search).get("id");
 const headerSection = document.querySelector(".header");
 const recommendNextSlide = document.querySelector("#next-recommend");
 const recommendPrevSlide = document.querySelector("#prev-recommend");
@@ -32,11 +36,10 @@ const recommendImageURL = "https://www.themoviedb.org/t/p/original"
 const networkImageURL = "https://www.themoviedb.org/t/p/h30"
 
 let tvDataObj = {}
-let apiURL = [`https://api.themoviedb.org/3/tv/${movieIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${movieIDParam}/content_ratings?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${movieIDParam}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${movieIDParam}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${movieIDParam}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${movieIDParam}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${movieIDParam}/videos?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${movieIDParam}/images?api_key=75c8aed355937ba0502f74d9a1aed11c`,`https://api.themoviedb.org/3/tv/${movieIDParam}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&page=1`]
+let apiURL = [`https://api.themoviedb.org/3/tv/${tvIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${tvIDParam}/content_ratings?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${tvIDParam}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${tvIDParam}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${tvIDParam}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${tvIDParam}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${tvIDParam}/videos?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${tvIDParam}/images?api_key=75c8aed355937ba0502f74d9a1aed11c`,`https://api.themoviedb.org/3/tv/${tvIDParam}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&page=1`]
 
 document.addEventListener('DOMContentLoaded', () => {
   getFromAPI(apiURL);
-  console.log(tvDataObj);
   topCastNextSlide.parentElement.addEventListener("click", () => {
     topCast.scrollLeft += 350;
   })
@@ -49,6 +52,31 @@ document.addEventListener('DOMContentLoaded', () => {
   recommendPrevSlide.parentElement.addEventListener("click", () => {
     recommend.scrollLeft -= 350;
   })
+  mediaNextSlide.parentElement.addEventListener("click", () => {
+    mediaContent.scrollLeft += 350;
+  })
+  mediaPrevSlide.parentElement.addEventListener("click", () => {
+    mediaContent.scrollLeft -= 350;
+  })
+
+  mediaTitleBar.addEventListener("click", (event) => {
+    if (event.target.tagName === "SPAN") {
+      switch (event.target.getAttribute("data-id")) {
+        case "1024":
+          mostPopularMedia(event.target);
+          break;
+        case "1156":
+          videosMedia(event.target);
+          break;
+        case "6722":
+          backdropsMedia(event.target);
+          break;
+        case "6026":
+          postersMedia(event.target);
+          break;
+      }
+    }
+  })
 });
 
 function getFromAPI(apiURL) {
@@ -60,11 +88,15 @@ function getFromAPI(apiURL) {
     tvDataObj["Cast&Crew"] = datas[2];
     tvDataObj["socialMedia"] = datas[3];
     tvDataObj["keywords"] = datas[4];
-    tvDataObj["currentSession"] = await fetch(`https://api.themoviedb.org/3/tv/${movieIDParam}/season/${tvDataObj["tvDetails"].last_episode_to_air.season_number}?api_key=75c8aed355937ba0502f74d9a1aed11c`).then(response => response.json());
+    tvDataObj["currentSession"] = await fetch(`https://api.themoviedb.org/3/tv/${tvIDParam}/season/${tvDataObj["tvDetails"].last_episode_to_air.season_number}?api_key=75c8aed355937ba0502f74d9a1aed11c`).then(response => response.json());
+    tvDataObj["recommendation"] = datas[5];
+    tvDataObj["videos"] = datas[6];
+    tvDataObj["images"] = datas[7];
     tvDataObj["recommendation"] = datas[8];
     header();
     aside();
     article();
+    mostPopularMedia(mediaTitleBar.children[1]);
     createToolTip()
   })
 }
@@ -193,6 +225,12 @@ function arrangeRecommendations() {
     return `<p>We don't have enough data to suggest any movies based on ${tvDataObj["movieDetails"].name}. You can help by rating movies you've seen.</p>`
   }
 }
+
+function resetMediaActiveClass(event) {
+  document.querySelector(".media-active").classList.remove("media-active");
+  event.classList.add("media-active");
+}
+
 function header() {
   document.title = tvDataObj["tvDetails"].original_name + ' - IMDB #2';
   poster.src = `${posterImageURL}${tvDataObj["tvDetails"].poster_path}`;
@@ -228,4 +266,50 @@ function article() {
   <p>${tvDataObj["currentSession"].overview}</p>
   `
   recommend.insertAdjacentHTML("beforeend", arrangeRecommendations());
+  mediaTitleBar.children[2].innerHTML += ` <div class="badge bg-secondary">${tvDataObj["videos"].results.length}</div>`;
+  mediaTitleBar.children[3].innerHTML += ` <div class="badge bg-secondary">${tvDataObj["images"].backdrops.length}</div>`;
+  mediaTitleBar.children[4].innerHTML += ` <div class="badge bg-secondary">${tvDataObj["images"].posters.length}</div>`;
+}
+
+function mostPopularMedia(event) {
+  mediaContent.scrollLeft = 0;
+  resetMediaActiveClass(event)
+  mediaContent.innerHTML = `
+  <div class="me-3"><iframe width="533" height="300" src="https://www.youtube.com/embed/${tvDataObj["videos"].results[0].key}"></iframe></div>
+  <div class="me-3"><img class="rounded" src="${castImageURL + tvDataObj["images"].backdrops[0].file_path}" width="533" height="300"></div>
+  <div class="me-3"><img class="rounded" src="${castImageURL + tvDataObj["images"].posters[0].file_path}" width="200" height="300"></div>
+  `;
+}
+
+function videosMedia(event) {
+  mediaContent.scrollLeft = 0;
+  resetMediaActiveClass(event);
+  let videos = [];
+  mediaContent.innerHTML = "";
+  tvDataObj["videos"].results.filter((item) => {
+    videos.push(`<div class="me-3"><iframe width="533" height="300" src="https://www.youtube.com/embed/${item.key}"></iframe></div>`)
+  })
+  mediaContent.insertAdjacentHTML("beforeend", videos.join(""));
+}
+
+function backdropsMedia(event) {
+  mediaContent.scrollLeft = 0;
+  resetMediaActiveClass(event);
+  let backdrops = [];
+  mediaContent.innerHTML = "";
+  tvDataObj["images"].backdrops.filter((item) => {
+    backdrops.push(`<div class="me-3"><img class="rounded" src="${castImageURL + item.file_path}" width="533" height="295"></div>`)
+  })
+  mediaContent.insertAdjacentHTML("beforeend", backdrops.join(""));
+}
+
+function postersMedia(event) {
+  mediaContent.scrollLeft = 0;
+  resetMediaActiveClass(event);
+  let posters = [];
+  mediaContent.innerHTML = "";
+  tvDataObj["images"].posters.filter((item) => {
+    posters.push(`<div class="me-3"><img class="rounded" src="${castImageURL + item.file_path}" width="200" height="295"></div>`)
+  })
+  mediaContent.insertAdjacentHTML("beforeend", posters.join(""));
 }
