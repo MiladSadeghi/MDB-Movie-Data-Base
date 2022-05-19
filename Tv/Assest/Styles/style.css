@@ -65,3 +65,29 @@ a {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.body {
+  background: #44444C;
+}
+
+.social-icon a {
+  font-size: 1.5rem;
+  margin-right: 1.45rem;
+  color: #D6D6D6;
+}
+
+.social-icon a:last-child {
+  margin-right: 0rem;
+}
+
+.facts div:not(:last-child) {
+  margin-bottom: 1.5rem;
+}
+
+.facts span {
+  color: rgba(173, 173, 173, 0.95);
+}
+
+.keyword a {
+  font-size: 0.83rem;
+}
