@@ -14,6 +14,9 @@ const languageFact = document.querySelector(".language");
 const networkFact = document.querySelector(".network");
 const typeFact = document.querySelector(".type");
 const keywordFact = document.querySelector(".keyword");
+const topCast = document.querySelector(".cast");
+const topCastNextSlide = document.querySelector("#next-cast");
+const topCastPrevSlide = document.querySelector("#prev-cast");
 const movieIDParam = new URLSearchParams(location.search).get("id");
 const headerSection = document.querySelector(".header");
 const poster = document.querySelector(".image-banner img")
@@ -28,7 +31,12 @@ let apiURL = [`https://api.themoviedb.org/3/tv/${movieIDParam}?api_key=75c8aed35
 
 document.addEventListener('DOMContentLoaded', () => {
   getFromAPI(apiURL);
-
+  topCastNextSlide.parentElement.addEventListener("click", () => {
+    topCast.scrollLeft += 350;
+  })
+  topCastPrevSlide.parentElement.addEventListener("click", () => {
+    topCast.scrollLeft -= 350;
+  })
 });
 
 function getFromAPI(apiURL) {
@@ -43,7 +51,7 @@ function getFromAPI(apiURL) {
     tvDataObj["keywords"] = datas[4];
     header();
     aside();
-
+    article();
     createToolTip()
   })
 }
@@ -123,7 +131,7 @@ function getKeywords() {
 function getNetwork() {
   let network = [];
   tvDataObj["tvDetails"].networks.filter((item) => {
-    network.push(`<div><img data-bs-toggle="tooltip" data-bs-html="true" title="${item.name}" data-bs-placement="right" src="${networkImageURL+item.logo_path}"></div>`)
+    network.push(`<div><img data-bs-toggle="tooltip" data-bs-html="true" title="${item.name}" data-bs-placement="right" src="${networkImageURL + item.logo_path}"></div>`)
   })
   return network.join("");
 }
@@ -133,6 +141,24 @@ function createToolTip() {
   var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
   })
+}
+
+function arrangeTopCast() {
+  let cast = [];
+  tvDataObj['Cast&Crew'].cast.filter((item) => {
+    if (item.order <= 8) {
+      cast.push(`
+      <div class="cast-card me-3 rounded">
+      <img src="${castImageURL + item.profile_path}" class="card-img-top" alt="">
+      <div class="cast-body">
+        <h5 class="cast-title text-black">${item.name}</h5>
+        <p class="cast-text text-black">${item.character}</p>
+      </div>
+    </div>
+      `)
+    }
+  })
+  return cast.join("");
 }
 
 function header() {
@@ -159,4 +185,8 @@ function aside() {
   networkFact.innerHTML = getNetwork();
   typeFact.innerHTML = tvDataObj["tvDetails"].type;
   keywordFact.innerHTML = getKeywords();
+}
+
+function article() {
+  topCast.insertAdjacentHTML("beforeend", arrangeTopCast());
 }
