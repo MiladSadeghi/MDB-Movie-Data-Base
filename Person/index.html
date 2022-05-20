@@ -1,102 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
-    integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
-    integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
-    integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta name="title" content="im Second IMDB">
+  <meta name="description"
+    content="An open source project, which can be used as the second IMDB without storing any informations.">
+  <meta name="keywords" content="imdb, movie, series, tv, movie detail, open source">
+  <meta name="robots" content="index, follow">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="language" content="English">
+  <meta name="author" content="Milad Sadeghi">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="Assest/Styles/style.css">
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
-    integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
   <script defer src="Assest/JS/main.js"></script>
+  <title></title>
 </head>
 <body>
-  <section class="person-header">
-    <div class="container">
-      <div class="person-content">
-        <img class="person-img" alt="">
-        <div class="person-content-text">
-          <h2 class="person-name"></h2>
-          <div class="top bg">
-            <h4>Biography</h4>
-            <p class="biography"></p>
-            <a href="#" id="view-more">VIEW MORE</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="main">
-    <div class="container">
-      <div class="mains">
-        <div class="main-content">
-          <div class="known-for">
-            <h2>Known For</h2>
-            <div class="known-for-content">
-              <div class="owl-carousel owl-theme owl1" id ="known"></div>
-            </div>
-          </div>
   
-          <div class="acting">
-            <h2>Acting</h2>
-            <div class="active-content"></div>
-          </div>
-  
-          <div class="production">
-            <h2>Production</h2>
-            <div class="production-content"></div>
-          </div>
-  
-          <div class="crew">
-            <h2>Crew</h2>
-            <div class="crew-content"></div>
-          </div>
-        </div>
-      
-
-      <div class="side-content">
-        <div class="personal-info">
-          <h2>Personal Info</h2>
-          <div class="personal-info-content">
-            <p id="known-for-department"><strong >Known For:</strong> </p>
-            <p id="known-credits"><strong >Known Credits:</strong></p>
-            <p id="gender"><strong >Gender:</strong> </p>
-            <p id="birth-day"><strong>Birthday:</strong> </p>
-            <p id="place-of-birth"><strong >Place of Birth:</strong> </p>
-          </div>
-        </div>
-
-        <div class="social">
-          <h2>Social</h2>
-          <div class="social-content"></div>
-        </div>
-
-        <div class="known-as">
-          <h2>Also Known As</h2>
-          <div class="known-as-content"></div>
-        </div>
-
-      </div>
-    </div>
-    </div>
-  </section>
 </body>
+  <div class="container">
+    <div class="row py-5">
+      <aside class="col-lg-3">
+        <img id="person-image" class="rounded w-100" src="" alt="">
+        <div class="social-icons my-4"></div>
+        <div class="fact">
+          <h3 class="text-color">Personal Info</h3>
+          <div class="fact-content"></div>
+        </div>
+      </aside>
+      <article class="col-lg-9"></article>
+    </div>
+  </div>
 </html>

@@ -1,228 +1,103 @@
-const search = JSON.parse(sessionStorage.getItem("person"));
-querySearch = search[search.length - 1]
+const personImage = document.querySelector('#person-image');
+const socialIcons = document.querySelector('.social-icons');
+const factContent = document.querySelector('.fact-content');
+const originalImageSize = "https://www.themoviedb.org/t/p/original";
+const personIDParam = new URLSearchParams(location.search).get("id");
 
-const personImg = document.querySelector('.person-img'),
-      personName = document.querySelector('.person-name'),
-      personBiography = document.querySelector('.biography'),
-      personImgURL = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2',
-      viewMoreBtn = document.querySelector('#view-more'),
-      knownFor = document.querySelector('#known'),
-      knownForImageURL = 'https://www.themoviedb.org/t/p/w150_and_h225_bestv2',
-      activeContent = document.querySelector('.active-content'),
-      productionContent = document.querySelector('.production-content'),
-      crewContent = document.querySelector('.crew-content'),
-      knownForDepartment = document.querySelector('#known-for-department'),
-      knownCredits = document.querySelector('#known-credits'),
-      gender = document.querySelector('#gender'),
-      birthDay = document.querySelector('#birth-day'),
-      placeOfBirth = document.querySelector('#place-of-birth'),
-      nowTime = new Date().getFullYear(),
-      knownAsContent = document.querySelector('.known-as-content'),
-      socialContent = document.querySelector('.social-content')
+let personDataObj = {}
+let apiURL = [`https://api.themoviedb.org/3/person/${personIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/person/${personIDParam}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/person/${personIDParam}/movie_credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/person/${personIDParam}/tv_credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`]
 
-document.addEventListener('DOMContentLoaded', ()=> {
-  const dataHeader = getAPIHeader()
-  showHeader(dataHeader)
-  const dataKnownFor = getAPIKnownFor()
-  showMain(dataKnownFor)
-  const dataSocial = getAPISocial()
-  showSocial(dataSocial)
 
-  viewMoreBtn.addEventListener('click', (e)=> {
-    e.preventDefault()
-    personBiography.style.height = 'auto'
-    e.target.parentElement.classList.remove('bg');
-    e.target.remove()
-  })
+document.addEventListener("DOMContentLoaded", () => {
+  getFromAPI(apiURL);
 })
 
-async function getAPIHeader() {
-  const API = `https://api.themoviedb.org/3/person/${querySearch}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
-  response = await fetch(API)
-  result = await response.json()
-  return result
-}
-async function getAPIKnownFor() {
-  const API = `https://api.themoviedb.org/3/person/${querySearch}/movie_credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
-  response = await fetch(API)
-  result = await response.json()
-  return result
-}
-async function getAPISocial() {
-  const API = `https://api.themoviedb.org/3/person/${querySearch}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`
-  response = await fetch(API)
-  result = await response.json()
-  return result
-}
-
-function showHeader(result) {
-  result.then(e => {
-    e.also_known_as.forEach(element => {
-      knownAsContent.innerHTML += `
-      <div class="known">${element}</div>
-    `
-    });
-    console.log(e);
-    if(e.profile_path) {
-      personImg.src = personImgURL + e.profile_path
-    } else if(e.gender === 1) {
-      personImg.src = 'Assest/Images/profile.png'
-      personImg.classList.add('bgColor')
-    } else if(e.gender === 2) {
-      personImg.src = 'Assest/Images/profile2.png'
-      personImg.classList.add('bgColor')
-    } else {
-      personImg.src = 'Assest/Images/non-binary.png'
-      personImg.classList.add('bgColor')
-    }
-    personName.textContent = e.name
-    document.title = e.name + ' - Im Second IMDB!'
-    personBiography.textContent = e.biography
-    knownForDepartment.innerHTML += e.known_for_department
-    gender.innerHTML += (e.gender === 2)? 'Male': (e.gender === 1)? 'Female':'Non Binary' 
-    birthDay.innerHTML += `${e.birthday.replaceAll('-','/')} (${((e.deathday)? e.deathday.slice(0,4):nowTime) - e.birthday.slice(0,4)} Years Old)`
-    placeOfBirth.innerHTML += e.place_of_birth
-    
+function getFromAPI(apiURL) {
+  let requests = apiURL.map(async (item) =>
+    await fetch(item).then(async (response) => await response.json()));
+  Promise.all(requests).then(async (datas) => {
+    personDataObj["personDetails"] = datas[0];
+    personDataObj["socialMedia"] = datas[1];
+    personDataObj["movieCredit"] = datas[2];
+    personDataObj["tvCredit"] = datas[3];
+    console.log(personDataObj);
+    aside();
+    createToolTip();
   })
 }
 
-function showMain(result) {
-  let knownForMovie = []
-  let acting = []
-  let production = []
-  let border = ''
-  result.then(e => {
-    knownCredits.innerHTML += e.cast.length + e.crew.length
-    e.cast.forEach(element => {
-      acting.push(element.release_date)
-      if(element.character !== 'Himself' && element.character.indexOf('/') === -1 && element.character.indexOf('(') === -1 && element.character !== 'Self' && element.vote_average >= 5 && element.popularity >= 30 && element.character.indexOf("\n") === -1) {
-        knownForMovie.push(element.release_date)
-      }
-    })
-    knownForMovie.sort().forEach(element => {
-      for (let i = 0; i < e.cast.length; i++) {
-        if(element === e.cast[i].release_date) {
-          knownFor.innerHTML += `
-          <div class="card item">
-            <a href="#" class="move" data-id="${e.cast[i].id}">
-              <img src="${(e.cast[i].poster_path)? knownForImageURL + e.cast[i].poster_path : 'Assest/Images/loadingImage.png'}" data-id="${e.cast[i].id}">
-              <span data-id="${e.cast[i].id}">${e.cast[i].original_title}</span>
-            </a>
-          </div>
-          `
-        }
-      }
-    });
-    for (let i = 0; i < e.cast.length; i++) {
-      if(e.cast[i].release_date === "") {
-        activeContent.innerHTML += `
-          <div class="acting-row">
-            <h6 class="year"> — </h6>
-            <span> <span class="acting-row-movie">${e.cast[i].title}</span> <span class="acting-row-character">
-              ${(e.cast[i].character)? `<as>as</as> ${e.cast[i].character}`: ''}</span></span>
-          </div>
-        `
-      }
-    }
+function availableSocialMedia() {
+  let social = [];
+  if (personDataObj["socialMedia"].facebook_id !== null) {
+    social.push(`<a data-bs-toggle="tooltip" data-bs-html="true" title="Visit Facebook" href="https://www.facebook.com/${personDataObj["socialMedia"].facebook_id}" target="_blank"><i class="bi bi-facebook text-color"></i></a>`)
+  }
+  if (personDataObj["socialMedia"].instagram_id !== null) {
+    social.push(`<a data-bs-toggle="tooltip" data-bs-html="true" title="Visit Instagram" href="https://www.instagram.com/${personDataObj["socialMedia"].instagram_id}" target="_blank"><i class="bi bi-instagram text-color"></i></a>`)
+  }
+  if (personDataObj["socialMedia"].twitter_id !== null) {
+    social.push(`<a data-bs-toggle="tooltip" data-bs-html="true" title="Visit Twiter" href="https://www.twitter.com/${personDataObj["socialMedia"].twitter_id}" target="_blank"><i class="bi bi-twitter text-color"></i></a>`)
+  }
+  console.log(social);
+  return social.join("")
+}
 
-    acting.sort().reverse().forEach((element) => {
-      for (let i = 0; i < e.cast.length; i++) {
-        if(element !== "" && element === e.cast[i].release_date) {
-          activeContent.innerHTML += `
-            <div class="acting-row ${(element.slice(0,4) === border)? '': 'border'}">
-              <h6 class="year">${element.slice(0,4)}</h6>
-              <span> <span class="acting-row-movie">${e.cast[i].title}</span> <span class="acting-row-character">
-              ${(e.cast[i].character)? `<as>as</as> ${e.cast[i].character}`: ''}</span></span>
-            </div>
-          `
-        }
-      }
-      border = element.slice(0,4)
-    })
-
-    e.crew.forEach((element) => {
-      production.push(element.release_date)
-    })
-    for (let i = 0; i < e.crew.length; i++) {
-      if(e.crew[i].release_date === "" && e.crew[i].department === "Production") {
-        productionContent.innerHTML += `
-          <div class="product-row">
-            <h6 class="year"> — </h6>
-            <span> <span class="product-row-movie">${e.crew[i].title}</span> <span class="product-row-job">
-              ${(e.crew[i].job)? `<as>as</as> ${e.crew[i].job}`: ''}</span></span>
-          </div>
-        `
-      }
-    }
-
-    production.sort().reverse().forEach((element) => {
-      for (let i = 0; i < e.crew.length; i++) {
-        if(element !== "" && element === e.crew[i].release_date && e.crew[i].department === "Production") {
-          productionContent.innerHTML += `
-            <div class="product-row ${(element.slice(0,4) === border)? '': 'border'}">
-              <h6 class="year">${element.slice(0,4)}</h6>
-              <span> <span class="product-row-movie">${e.crew[i].title}</span> <span class="product-row-job">
-              ${(e.crew[i].job)? `<as>as</as> ${e.crew[i].job}`: ''}</span></span>
-            </div>
-          `
-        } else if (element !== "" && element === e.crew[i].release_date && e.crew[i].department === "Crew") {
-          crewContent.innerHTML += `
-            <div class="product-row ${(element.slice(0,4) === border)? '': 'border'}">
-              <h6 class="year">${element.slice(0,4)}</h6>
-              <span> <span class="product-row-movie">${e.crew[i].title}</span> <span class="product-row-job">
-              ${(e.crew[i].job)? `<as>as</as> ${e.crew[i].job}`: ''}</span></span>
-            </div>
-          `
-        }
-      }
-      border = element.slice(0,4)
-    })
-    moveToPage('movie','Movie')
-    Carousel('.owl1',1,4,5)
+function createToolTip() {
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
   })
 }
 
-function showSocial(result) {
-  result.then(e => {
-    if((e.facebook_id && e.instagram_id && e.twitter_id) !== null) {
-      socialContent.innerHTML += `${(e.facebook_id)? `<a href="https://www.facebook.com/${e.facebook_id}"" target="_blank""><i class="fab fa-facebook-square"></i></a>`: ''}`
-      socialContent.innerHTML += `${(e.instagram_id)? `<a href="https://www.instagram.com/${e.instagram_id}"" target="_blank""><i class="fab fa-instagram"></i></a>`: ''}`
-      socialContent.innerHTML += `${(e.instagram_id)? `<a href="https://www.twitter.com/${e.twitter_id}"" target="_blank""><i class="fab fa-twitter-square"></i></a>`: ''}`
-    } else {
-      socialContent.parentElement.remove()
-    }
-  })
+function genderVerification(numb) {
+  if (numb === 1) { return "Femail" }
+  if (numb === 2) { return "Male" }
 }
 
-function moveToPage(storage, path) {
-  const classes = document.querySelectorAll('.move')
-  let query = []
-  classes.forEach(element => {
-    element.addEventListener('click',(e)=> {
-      e.preventDefault()
-      query.push(e.target.getAttribute('data-id'))
-      sessionStorage.setItem(storage, JSON.stringify(query))
-      window.open(`../${path}`, '_blank')
-    })
+function calcDate(birthDay){
+  let diffrent = new Date().getTime() - new Date(birthDay).getTime();
+  let diffrentYear = Math.trunc(diffrent / (1000 * 3600 * 24 * 365));
+  return diffrentYear;
+}
+
+function whatKnown(knowns) {
+  let known = [];
+  knowns.forEach(element => {
+    known.push(`<li class="d-d-inline-flex w-100 mb-2 text-color">${element}</li>`)
   });
+  if(known.length !== 0){
+  return known.join("")
+  } else {
+    return `<li class="d-d-inline-flex w-100 mb-2 text-color">-</li>`
+  }
 }
 
-function Carousel(path,responsive1,responsive2,responsive3) {
-  $(path).owlCarousel({
-    dots: true,
-    responsive:{
-        0:{
-            items:2
-        },
-        600:{
-            items:3
-        },
-        800: {
-          items: 3
-        },
-        1000:{
-            items:responsive3
-        }
-    }
-  })
+function aside() {
+  personImage.src = `${originalImageSize}${personDataObj["personDetails"].profile_path}`;
+  socialIcons.insertAdjacentHTML("beforeend", availableSocialMedia());
+  factContent.innerHTML = `
+    <p class="mb-4 text-color">
+    <strong class="d-block">Known For</strong>
+    ${personDataObj["personDetails"].known_for_department}
+    </p>
+    <p class="mb-4 text-color">
+    <strong class="d-block">Known Credits</strong>
+    ${personDataObj["movieCredit"].cast.length + personDataObj["tvCredit"].cast.length}
+    </p>
+    <p class="mb-4 text-color">
+    <strong class="d-block">Gender</strong>
+    ${genderVerification(personDataObj["personDetails"].gender)}
+    </p>
+    <p class="mb-4 text-color">
+    <strong class="d-block">Birthday</strong>
+    ${personDataObj["personDetails"].birthday} (${calcDate(personDataObj["personDetails"].birthday)} Years Old)
+    </p>
+    <p class="mb-4 text-color">
+    <strong class="d-block">Place of Birth</strong>
+    ${personDataObj["personDetails"].place_of_birth}
+    </p>
+    <p class="mb-0"><strong class="d-block text-color">Also Known As</strong></p>
+    <ul class="list-unstyled">
+    ${whatKnown(personDataObj["personDetails"].also_known_as)}
+    </ul>
+    `
 }
