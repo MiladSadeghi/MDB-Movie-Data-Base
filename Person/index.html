@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta name="title" content="im Second IMDB">
   <meta name="description"
@@ -19,12 +20,11 @@
   <script defer src="Assest/JS/main.js"></script>
   <title></title>
 </head>
+
 <body>
-  
-</body>
   <div class="container">
     <div class="row py-5">
-      <aside class="col-lg-3">
+      <aside class="col-lg-4">
         <img id="person-image" class="rounded w-100" src="" alt="">
         <div class="social-icons my-4"></div>
         <div class="fact">
@@ -32,7 +32,26 @@
           <div class="fact-content"></div>
         </div>
       </aside>
-      <article class="col-lg-9"></article>
+      <article class="col-lg-8">
+        <h1 class="text-color mb-4" id="person-name"></h1>
+        <h5 class="text-color mb-2">Biography</h5>
+        <p id="biography" class="text-white fs-6 fw-light"></p>
+        <div class="position-relative">
+          <h5 class="text-color mt-5">Known For</h5>
+          <div class="known-for">
+            <div class="parrent-slide-btn parent-prev-btn">
+              <i id="prev-known-for" class="text-white bi bi-arrow-left"></i>
+            </div>
+            <div class="parrent-slide-btn ">
+              <i id="next-known-for" class="text-white bi bi-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+        <div class="carrer">
+        </div>
+      </article>
     </div>
   </div>
+</body>
+
 </html>

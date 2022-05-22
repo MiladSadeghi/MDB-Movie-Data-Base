@@ -3,6 +3,8 @@
 *,
 *::before,
 *::after {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -19,8 +21,16 @@ body {
   background: #44444C;
 }
 
+.bg-mygrey {
+  background: #8C8C8C;
+}
+
 .text-color {
   color: #D6D6D6;
+}
+
+.black-text-color {
+  color: #0B0909;
 }
 
 .social-icons a {
@@ -35,3 +45,58 @@ body {
 .facts div:not(:last-child) {
   margin-bottom: 1.5rem;
 }
+
+.known-for::-webkit-scrollbar {
+  overflow: hidden;
+}
+
+.known-for {
+  height: auto;
+  width: auto;
+  overflow-x: scroll;
+  display: flex;
+  scroll-behavior: smooth;
+}
+
+
+.parrent-slide-btn {
+  position: absolute;
+  right: 0;
+  top: 44%;
+  transform: translateY(-50%);
+  background: #44444C;
+  height: 69%;
+  width: 5%;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.parent-prev-btn {
+  left: 0;
+}
+
+.known-for:hover .parrent-slide-btn {
+  opacity: 0.7;
+}
+
+#next-known-for {
+  font-size: 1.3rem;
+}
+
+#prev-known-for {
+  font-size: 1.3rem;
+}
+
+.carrer h5:not(:last-child):not(:first-child) {
+  margin-top: 2rem;
+}
+
+.text-known-for {
+  font-size: 0.8rem;
+}
+
