@@ -1,189 +1,88 @@
-const search = JSON.parse(sessionStorage.getItem("collection"));
-querySearch = search[search.length - 1];
-bgURL = "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces";
-posterURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2";
-posterPath = document.querySelector(".img-poster img");
-headerHead = document.querySelector(".header h1");
-detail = document.querySelector(".detail");
-overview = document.querySelector(".movie-stuff p");
-movieNumber = document.querySelector(".movie-number span");
-revenue = document.querySelector(".revenue span");
-formatToCurrency = (amount) => {
-  return "$" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
-};
-featuredSectionContentImg = "https://www.themoviedb.org/t/p/w64_and_h64_face";
-featuredCastContent = document.querySelector(".featured-cast-content");
-featuredCrewContent = document.querySelector(".featured-crew-content");
-movieHeader = document.querySelector('.movie-header')
-moviesContent = document.querySelector('.movies-content')
-moviesContentImg = 'https://www.themoviedb.org/t/p/w94_and_h141_bestv2'
+const collectionTitle = document.querySelector("#collection-title");
+const poster = document.querySelector(".image-banner img");
+const headerSection = document.querySelector(".header");
+const headerContent = document.querySelector(".header-content");
+const orginalImageURL = "https://image.tmdb.org/t/p/original";
+const collectionIDParam = new URLSearchParams(location.search).get("id");
+
+let collectionDataObj = {};
+let genresObject = [
+  [28, "Action"],
+  [12, "Adventure"],
+  [16, "Animation"],
+  [35, "Comedy"],
+  [80, "Crime"],
+  [99, "Documentary"],
+  [18, "Drama"],
+  [10751, "Family"],
+  [14, "Fantasy"],
+  [36, "History"],
+  [27, "Horror"],
+  [10402, "Music"],
+  [9648, "Mystery"],
+  [10749, "Romance"],
+  [878, "Science Fiction"],
+  [10770, "TV Movie"],
+  [53, "Thriller"],
+  [10752, "War"],
+  [37, "Western"],
+]
+let apiURL = [`https://api.themoviedb.org/3/collection/${collectionIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`]
 
 document.addEventListener("DOMContentLoaded", () => {
-  const dataAll = getAPIAll();
-  showHeader(dataAll);
-});
+  getFromAPI(apiURL);
+})
 
-async function getAPIAll() {
-  const API = `https://api.themoviedb.org/3/collection/${querySearch}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`;
-        response = await fetch(API);
-        result = await response.json();
-  return result;
-}
-async function getAPIkeywords() {
-  const API = `https://api.themoviedb.org/3/genre/movie/list?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`;
-        response = await fetch(API);
-        result = await response.json();
-  return result;
-}
-async function getAPIRevenue(id) {
-  const API = `https://api.themoviedb.org/3/movie/${id}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`;
-        response = await fetch(API);
-        result = await response.json();
-  return result;
-}
-async function getAPICast(id) {
-  const API = `https://api.themoviedb.org/3/movie/${id}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`;
-        response = await fetch(API);
-        result = await response.json();
-  return result;
+async function getFromAPI(apiURL) {
+  let requests = apiURL.map(async (item) =>
+    await fetch(item).then(async (response) => await response.json()));
+  Promise.all(requests).then(async (datas) => {
+    collectionDataObj["collectionDetails"] = datas[0];
+    header();
+  })
 }
 
-function showKeywords(array) {
-  let uniqueChars = array.filter((c, index) => {
-    return array.indexOf(c) === index;
-  });
-  let genre = "";
-  getAPIkeywords().then((e) => {
-    for (let i = 0; i < e.genres.length; i++) {
-      for (let j = 0; j < uniqueChars.length; j++) {
-        if (e.genres[i].id === uniqueChars[j]) {
-          genre += `${e.genres[i].name}, `;
-        }
-      }
-    }
-    genre = genre.slice(0, -2);
-    detail.children[0].innerHTML = genre;
-  });
+function numberToUSD(number) {
+  return `$${number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
 }
 
-function showHeader(data) {
-  let voteAverage = 0;
-      genre = [];
-      movie = [];
-  data.then((e) => {
-    e.parts.forEach((element) => {
-      voteAverage += element.vote_average;
-      genre.push(...element.genre_ids);
-      movie.push(element.id);
-      moviesContent.innerHTML += `
-      <a href="#" class="row move" data-id="${element.id}">
-        <div data-id="${element.id}">
-          <img data-id="${element.id}" src="${moviesContentImg + element.poster_path}">
-          <div data-id="${element.id}" class="row-content">
-            <span data-id="${element.id}">
-              <h2 data-id="${element.id}">${element.title}</h2>
-              <span data-id="${element.id}">${element.release_date.replaceAll('-','/')}</span>
-            </span data-id="${element.id}">
-              <p data-id="${element.id}">${element.overview}</p>
-          </div>
-        </div>
-      </a>
-      `
-    });
-    let cast = e.parts[e.parts.length - 1].id;
-    showFeaturedSection(cast);
-    showKeywords(genre);
-    showRevenue(movie);
-    document.documentElement.style.setProperty("--banner", `linear-gradient(90deg, rgba(168, 2, 2, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('${bgURL + e.backdrop_path}') no-repeat`);
-    posterPath.src = posterURL + e.poster_path;
-    headerHead.innerText = e.name;
-    document.title = e.name + " - Im Second IMDB!";
-    detail.innerHTML += `<span class="genre"></span>  	&#9679;  <span class="vote">${(voteAverage / e.parts.length).toFixed(1)}</span>`;
-    overview.innerText = e.overview;
-    movieNumber.innerHTML = `${e.parts.length}`;
-    movieHeader.innerHTML = `${e.parts.length} Movies`
-    moveToPage('movie', 'Movie')
-  });
-}
-
-function showRevenue(id) {
-  let revenueMoney = 0;
-  for (const iterator of id) {
-    getAPIRevenue(iterator).then((e) => {
-      revenueMoney += e.revenue;
-      revenue.innerHTML = `${formatToCurrency(revenueMoney)}`;
-    });
-  }
-}
-
-function showFeaturedSection(cast) {
-  getAPICast(cast).then((e) => {
-    e.cast.forEach((element) => {
-      if (element.order < 14) {
-        featuredCastContent.innerHTML += `
-        <a href="#" class="card move" data-id="${element.id}">
-          <div data-id="${element.id}">
-          <img src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}" data-id="${element.id}">
-            <div class="card-content" data-id="${element.id}">
-              <h5 data-id="${element.id}">${element.name}</h5 >
-              <p data-id="${element.id}">${element.character}</p>
-            </div>
-          </div>
-        </a>
-      `;
-      }
-      moveToPage('person', 'Person')
-    });
-    let loopCounter = 0;
-    e.crew.forEach((element) => {
-      if (loopCounter <= 3) {
-        if (element.department === "Directing" || element.department === "Writing") {
-          if (featuredCrewContent.innerHTML.trim()) {
-            if (element.name === featuredCrewContent.children[loopCounter - 1].children[0].children[1].children[0].textContent) {
-              featuredCrewContent.children[loopCounter - 1].children[0].children[1].children[1].textContent += `, ${element.department}`;
-            } else {
-              featuredCrewContent.innerHTML += `
-              <a href="#" class="card move" data-id="${element.id}">
-                <div>
-                  <img src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}" data-id="${element.id}">
-                  <div class="card-content" data-id="${element.id}">
-                    <h5 data-id="${element.id}">${element.name}</h5>
-                    <p data-id="${element.id}">${element.department}</p>
-                  </div>
-                </div>
-              </a>`;
-                loopCounter++;
-            }
-          } else {
-            featuredCrewContent.innerHTML += `
-            <a href="#" class="card move" data-id="${element.id}">
-              <div>
-              <img data-id="${element.id}" src="${(element.profile_path)? featuredSectionContentImg + element.profile_path: 'Assest/Images/profile.png'}">
-                <div class="card-content" data-id="${element.id}">
-                  <h5 data-id="${element.id}">${element.name}</h5>
-                  <p data-id="${element.id}">${element.department}</p>
-                </div>
-              </div>
-            </a>`;
-              loopCounter++;
-          }
-        }
-      }
-      moveToPage('person', 'Person')
-    });
-  });
-}
-
-function moveToPage(storage, path) {
-  let lists = []
-  const move = document.querySelectorAll('.move')
-  move.forEach(element => {
-    element.addEventListener('click',(e)=> {
-      e.preventDefault()
-      console.log(e.target);
-      lists.push(e.target.getAttribute('data-id'))
-      sessionStorage.setItem(storage, JSON.stringify(lists))
-      window.open(`../${path}`, '_blank')
+async function header() {
+  document.title = collectionDataObj["collectionDetails"].name + ' - IMDB #2';
+  poster.src = `${orginalImageURL}${collectionDataObj["collectionDetails"].poster_path}`;
+  headerSection.style.backgroundImage = `url(${orginalImageURL}${collectionDataObj["collectionDetails"].backdrop_path})`
+  headerSection.style.backgroundPosition = "right -200px top -120px";
+  headerSection.style.backgroundRepeat = "no-repeat";
+  headerSection.style.backgroundSize = "cover";
+  collectionTitle.innerHTML = collectionDataObj["collectionDetails"].name;
+  let setObj = new Set();
+  let genre = [];
+  let revenue = 0;
+  for (item of collectionDataObj["collectionDetails"].parts) {
+    await fetch(`https://api.themoviedb.org/3/movie/${item.id}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`).then(async (response) => (await response.json())).then(async (data) => {
+      revenue += Number(data.revenue);
     })
-  });
+    genresObject.forEach(item1 => {
+      if (item.genre_ids.includes(item1[0])) {
+        if (!setObj.has(item1[1])) {
+          setObj.add(item1[1]);
+          genre.push(item1[1])
+        }
+      }
+    })
+  };
+  console.log(revenue);
+  headerContent.innerHTML = `
+    <p class="text-color mb-4">${genre.join(", ")}</p>
+    <h6 class="text-color fs-5">Overview</h6>
+    <p class="text-color mb-5">${collectionDataObj["collectionDetails"].overview}</p>
+    <div class="d-block mb-2">
+      <h6 class="text-color d-inline">Revenue:</h6>
+      <span class="text-color" text-color fs-6 fw-light">${numberToUSD(revenue)}</span>
+    </div>
+    <div class="d-block">
+      <h6 class="text-color d-inline">Number Of Movies: </h6>
+      <span class="text-color fs-6 fw-light">${collectionDataObj["collectionDetails"].parts.length}</span>
+    </div>
+  `
+  console.log(collectionDataObj);
 }
