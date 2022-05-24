@@ -3,10 +3,11 @@ const poster = document.querySelector(".image-banner img");
 const headerSection = document.querySelector(".header");
 const headerContent = document.querySelector(".header-content");
 const featuredCastSection = document.querySelector(".featured-cast");
+const featuredCrewSection = document.querySelector(".featured-crew");
 const orginalImageURL = "https://image.tmdb.org/t/p/original";
 const collectionIDParam = new URLSearchParams(location.search).get("id");
 
-let collectionDataObj = {movies: [], credit: []};
+let collectionDataObj = { movies: [], credit: [] };
 let genresObject = [
   [28, "Action"],
   [12, "Adventure"],
@@ -41,6 +42,7 @@ async function getFromAPI(apiURL) {
     collectionDataObj["collectionDetails"] = await datas[0];
     await header();
     featuredCast();
+    featuredCrew();
   })
 }
 
@@ -99,7 +101,7 @@ function featuredCast() {
   });
   castArray = castArray.reduce((cast, item, index) => {
     if(!cast[item.id]) cast[item.id] = [];
-    if(!setObj.has(item.id)) {
+    if(!setObj.has(item.id) && item.character !== "") {
       setObj.add(item.id, item);
       cast[item.id] = [item.name ,item.character, item.id, item.profile_path, item.order];
     } else {
@@ -107,10 +109,8 @@ function featuredCast() {
     }
     return cast
   }, []);
-  console.log(castArray);
   castArray.sort((a,b) => a[4] - b[4])
   castArray.slice(0,14).forEach(item => {
-    console.log(item);
     featured.push(`
       <div class="d-flex col-auto bg1 p-0 mb-3 cast">
         <img class="rounded-start" src="${orginalImageURL}${item[3]}">
@@ -122,4 +122,36 @@ function featuredCast() {
     `)
   })
   featuredCastSection.insertAdjacentHTML("beforeend", featured.join(""));
+}
+
+function featuredCrew() {
+  let setObj1 = new Set();
+  let crewArray = [];
+  let crewArray1 = [];
+  let featured = [];
+  collectionDataObj["credit"].filter((item, index) => {
+    crewArray = crewArray.concat(item.crew)
+  });
+  crewArray1 = crewArray.reduce((crew, item, index) => {
+    if ((!setObj1.has(item.id)) && ((item.job === "Director" && item.department === "Directing" && item.known_for_department === "Directing") || ((item.job === "Writer" || item.job === "Screenplay") && item.department === "Writing" && item.known_for_department === "Writing"))) {
+      if (!crew[item.id]) crew[item.id] = [];
+      setObj1.add(item.id, item);
+      crew[item.id] = [item.name, item.department, item.id, item.profile_path, item.popularity];
+    } else if (setObj1.has(item.id)) {
+      if (crew[item.id][1] !== item.department) crew[item.id][1] += `, ${item.department}`;
+    }
+      return crew
+    }, []);
+  crewArray1.forEach(item => {
+    featured.push(`
+      <div class="d-flex col-auto bg1 p-0 mb-3 crew">
+        <img class="rounded-start bg1" style="${(!item[3]) ? `object-fit: contain;` : ``}" src="${(!item[3]) ? `Assest/Images/profile.png` : orginalImageURL + item[3]}">
+        <div class="crew-body bg2 rounded-end ps-2 py-3">
+          <h6 style="font-size: 0.9rem;" class="text-color">${item[0]}</h6>
+          <p class="text-color">${item[1]}</p>
+        </div>
+      </div>
+    `)
+  })
+  featuredCrewSection.insertAdjacentHTML("beforeend", featured.join(""));
 }

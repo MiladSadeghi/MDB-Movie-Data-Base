@@ -26,22 +26,25 @@ body {
 
 .bg1 {
   background: #44444C;
+  background-color: #44444C;
 }
 
 .bg2 {
   background: #8C8C8C;
+  background-color: #8C8C8C;
 }
 
 .text-color {
   color: #D6D6D6;
 }
 
-.featured-cast img {
+.featured-cast img, .featured-crew img {
   width: 60px;
   object-fit: cover;
 }
 
-.cast-body p {
+
+.cast-body p, .crew-body p {
   width: 200px;
   font-size: 0.75rem;
   display: -webkit-box;
