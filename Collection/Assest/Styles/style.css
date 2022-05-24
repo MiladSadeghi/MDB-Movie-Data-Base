@@ -3,6 +3,8 @@
 *,
 *::before,
 *::after {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -22,6 +24,28 @@ body {
   background: linear-gradient(90deg, rgb(68 68 76) 16%, rgb(11 9 9 / 81%) 100%);
 }
 
+.bg1 {
+  background: #44444C;
+}
+
+.bg2 {
+  background: #8C8C8C;
+}
+
 .text-color {
   color: #D6D6D6;
+}
+
+.featured-cast img {
+  width: 60px;
+  object-fit: cover;
+}
+
+.cast-body p {
+  width: 200px;
+  font-size: 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
 }

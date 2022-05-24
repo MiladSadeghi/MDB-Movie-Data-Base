@@ -2,10 +2,11 @@ const collectionTitle = document.querySelector("#collection-title");
 const poster = document.querySelector(".image-banner img");
 const headerSection = document.querySelector(".header");
 const headerContent = document.querySelector(".header-content");
+const featuredCastSection = document.querySelector(".featured-cast");
 const orginalImageURL = "https://image.tmdb.org/t/p/original";
 const collectionIDParam = new URLSearchParams(location.search).get("id");
 
-let collectionDataObj = {};
+let collectionDataObj = {movies: [], credit: []};
 let genresObject = [
   [28, "Action"],
   [12, "Adventure"],
@@ -37,8 +38,9 @@ async function getFromAPI(apiURL) {
   let requests = apiURL.map(async (item) =>
     await fetch(item).then(async (response) => await response.json()));
   Promise.all(requests).then(async (datas) => {
-    collectionDataObj["collectionDetails"] = datas[0];
-    header();
+    collectionDataObj["collectionDetails"] = await datas[0];
+    await header();
+    featuredCast();
   })
 }
 
@@ -58,7 +60,9 @@ async function header() {
   let genre = [];
   let revenue = 0;
   for (item of collectionDataObj["collectionDetails"].parts) {
-    await fetch(`https://api.themoviedb.org/3/movie/${item.id}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`).then(async (response) => (await response.json())).then(async (data) => {
+    await fetch(`https://api.themoviedb.org/3/movie/${item.id}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&append_to_response=credits`).then(async (response) => (await response.json())).then(async (data) => {
+      collectionDataObj["movies"].push(data);
+      collectionDataObj["credit"].push(data.credits);
       revenue += Number(data.revenue);
     })
     genresObject.forEach(item1 => {
@@ -70,7 +74,6 @@ async function header() {
       }
     })
   };
-  console.log(revenue);
   headerContent.innerHTML = `
     <p class="text-color mb-4">${genre.join(", ")}</p>
     <h6 class="text-color fs-5">Overview</h6>
@@ -85,4 +88,38 @@ async function header() {
     </div>
   `
   console.log(collectionDataObj);
+}
+
+function featuredCast() {
+  let setObj = new Set();
+  let castArray = [];
+  let featured = [];
+  collectionDataObj["credit"].filter((item, index) => {
+    castArray = castArray.concat(item.cast)
+  });
+  castArray = castArray.reduce((cast, item, index) => {
+    if(!cast[item.id]) cast[item.id] = [];
+    if(!setObj.has(item.id)) {
+      setObj.add(item.id, item);
+      cast[item.id] = [item.name ,item.character, item.id, item.profile_path, item.order];
+    } else {
+      cast[item.id][1] += item.character;
+    }
+    return cast
+  }, []);
+  console.log(castArray);
+  castArray.sort((a,b) => a[4] - b[4])
+  castArray.slice(0,14).forEach(item => {
+    console.log(item);
+    featured.push(`
+      <div class="d-flex col-auto bg1 p-0 mb-3 cast">
+        <img class="rounded-start" src="${orginalImageURL}${item[3]}">
+        <div class="cast-body bg2 rounded-end ps-2 py-3">
+          <h6 class="text-color">${item[0]}</h6>
+          <p class="text-color">${item[1]}</p>
+        </div>
+      </div>
+    `)
+  })
+  featuredCastSection.insertAdjacentHTML("beforeend", featured.join(""));
 }
