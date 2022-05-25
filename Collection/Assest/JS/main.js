@@ -103,8 +103,8 @@ function featuredCast() {
     if(!cast[item.id]) cast[item.id] = [];
     if(!setObj.has(item.id) && item.character !== "") {
       setObj.add(item.id, item);
-      cast[item.id] = [item.name ,item.character, item.id, item.profile_path, item.order];
-    } else {
+      cast[item.id] = [item.name ,item.character, item.id, item.profile_path, item.order, item.popularity, item.cast_id];
+    } else if(cast[item.id] && item.character !== "") {
       cast[item.id][1] += item.character;
     }
     return cast
@@ -113,7 +113,7 @@ function featuredCast() {
   castArray.slice(0,14).forEach(item => {
     featured.push(`
       <div class="d-flex col-auto bg1 p-0 mb-3 cast">
-        <img class="rounded-start" src="${orginalImageURL}${item[3]}">
+        <img class="rounded-start" style="${(!item[3]) ? `object-fit: contain;` : ``}" src="${(!item[3]) ? `Assest/Images/profile.png` : orginalImageURL + item[3]}">
         <div class="cast-body bg2 rounded-end ps-2 py-3">
           <h6 class="text-color">${item[0]}</h6>
           <p class="text-color">${item[1]}</p>
@@ -133,12 +133,10 @@ function featuredCrew() {
     crewArray = crewArray.concat(item.crew)
   });
   crewArray1 = crewArray.reduce((crew, item, index) => {
-    if ((!setObj1.has(item.id)) && ((item.job === "Director" && item.department === "Directing" && item.known_for_department === "Directing") || ((item.job === "Writer" || item.job === "Screenplay") && item.department === "Writing" && item.known_for_department === "Writing"))) {
+    if ((!setObj1.has(item.id)) && ((item.job === "Director" && item.department === "Directing") || ((item.job === "Writer" || item.job === "Screenplay") && item.department === "Writing"))) {
       if (!crew[item.id]) crew[item.id] = [];
       setObj1.add(item.id, item);
       crew[item.id] = [item.name, item.department, item.id, item.profile_path, item.popularity];
-    } else if (setObj1.has(item.id)) {
-      if (crew[item.id][1] !== item.department) crew[item.id][1] += `, ${item.department}`;
     }
       return crew
     }, []);
