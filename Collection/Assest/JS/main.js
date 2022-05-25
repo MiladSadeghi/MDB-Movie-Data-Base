@@ -4,6 +4,8 @@ const headerSection = document.querySelector(".header");
 const headerContent = document.querySelector(".header-content");
 const featuredCastSection = document.querySelector(".featured-cast");
 const featuredCrewSection = document.querySelector(".featured-crew");
+const moviesContentSection = document.querySelector(".movies-content");
+const moviesCounter = document.querySelector("#movie-counter");
 const orginalImageURL = "https://image.tmdb.org/t/p/original";
 const collectionIDParam = new URLSearchParams(location.search).get("id");
 
@@ -43,6 +45,7 @@ async function getFromAPI(apiURL) {
     await header();
     featuredCast();
     featuredCrew();
+    moviesContent();
   })
 }
 
@@ -89,7 +92,6 @@ async function header() {
       <span class="text-color fs-6 fw-light">${collectionDataObj["collectionDetails"].parts.length}</span>
     </div>
   `
-  console.log(collectionDataObj);
 }
 
 function featuredCast() {
@@ -100,17 +102,17 @@ function featuredCast() {
     castArray = castArray.concat(item.cast)
   });
   castArray = castArray.reduce((cast, item, index) => {
-    if(!cast[item.id]) cast[item.id] = [];
-    if(!setObj.has(item.id) && item.character !== "") {
+    if (!cast[item.id]) cast[item.id] = [];
+    if (!setObj.has(item.id) && item.character !== "") {
       setObj.add(item.id, item);
-      cast[item.id] = [item.name ,item.character, item.id, item.profile_path, item.order, item.popularity, item.cast_id];
-    } else if(cast[item.id] && item.character !== "") {
+      cast[item.id] = [item.name, item.character, item.id, item.profile_path, item.order, item.popularity, item.cast_id];
+    } else if (cast[item.id] && item.character !== "") {
       cast[item.id][1] += item.character;
     }
     return cast
   }, []);
-  castArray.sort((a,b) => a[4] - b[4])
-  castArray.slice(0,14).forEach(item => {
+  castArray.sort((a, b) => a[4] - b[4])
+  castArray.slice(0, 14).forEach(item => {
     featured.push(`
       <div class="d-flex col-auto bg1 p-0 mb-3 cast">
         <img class="rounded-start" style="${(!item[3]) ? `object-fit: contain;` : ``}" src="${(!item[3]) ? `Assest/Images/profile.png` : orginalImageURL + item[3]}">
@@ -138,8 +140,8 @@ function featuredCrew() {
       setObj1.add(item.id, item);
       crew[item.id] = [item.name, item.department, item.id, item.profile_path, item.popularity];
     }
-      return crew
-    }, []);
+    return crew
+  }, []);
   crewArray1.forEach(item => {
     featured.push(`
       <div class="d-flex col-auto bg1 p-0 mb-3 crew">
@@ -152,4 +154,34 @@ function featuredCrew() {
     `)
   })
   featuredCrewSection.insertAdjacentHTML("beforeend", featured.join(""));
+}
+
+function moviesContent() {
+  let content = [];
+  let nowDate = new Date();
+  moviesCounter.innerHTML = `${collectionDataObj["movies"].length} Movies`
+  collectionDataObj["movies"].forEach(item => {
+    let movieDate = new Date(item.release_date);
+    if(!isNaN(movieDate)) {
+      movieDate = `${movieDate.toLocaleString([], {month: 'long'})} ${movieDate.getDay()}, ${movieDate.getFullYear()}`
+    } else {
+      movieDate = "";
+    }
+    content.push(`
+    <div class="card mb-3 w-100 bg2">
+      <div class="row g-0">
+        <div class="col-2">
+          <img src="${orginalImageURL}${item.poster_path}" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-10 d-flex ">
+          <div class="card-body d-flex flex-column justify-content-center">
+            <h5 class="card-title text-color">${item.original_title}</h5>
+            <p class="card-text ${(nowDate < (new Date(item.release_date) !== NaN)? "d-none": "")}">${movieDate}</p>
+            <p class="card-text ${(nowDate < (new Date(item.release_date) !== NaN)? "d-none": "")}">${item.overview}</p>
+          </div>
+        </div>
+      </div>
+    </div>`)
+  })
+  moviesContentSection.insertAdjacentHTML("beforeend", content.join(""));
 }
