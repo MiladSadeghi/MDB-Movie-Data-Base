@@ -42,11 +42,20 @@ body {
   transform: translateX(-50%);
   width: 70%;
   height: 40px;
-  background-color: #8C8C8C;
+  background-color: rgba(140, 140, 140, 0.329);
+  backdrop-filter: blur( 3px );
+  -webkit-backdrop-filter: blur( 4px );
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  border-bottom: none;
 }
+
 
 .body {
   background: #44444C;
+}
+
+.body1 {
+  background: #8C8C8C;
 }
 
 .card {
@@ -59,4 +68,20 @@ body {
 
 #pageNationCounter > li > a{
   border-radius: 0;
+}
+
+#dropdownMenuButton2 {
+  text-transform: capitalize;
+  background: none;
+}
+
+.btn {
+  border: none;
+  box-shadow: none;
+  
+}
+
+.btn:focus {
+  border: none;
+  box-shadow: none;
 }
