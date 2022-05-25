@@ -44,3 +44,15 @@ body {
   height: 40px;
   background-color: #8C8C8C;
 }
+
+.body {
+  background: #44444C;
+}
+
+.card {
+  background: #8C8C8C;
+}
+
+.card:last-child {
+  margin-bottom: 0 !important;
+}
