@@ -25,3 +25,19 @@ body {
   background: linear-gradient(90deg, rgb(68 68 76 / 82%) 16%, rgb(11 9 9 / 86%) 100%), url(../Images/header-bg.jpg);
   background-size: cover;
 }
+
+.body {
+  background: #44444C;
+}
+
+.body1 {
+  background: #8C8C8C;
+}
+
+.card {
+  background: #8C8C8C;
+}
+
+.card:last-child {
+  margin-bottom: 0 !important;
+}
