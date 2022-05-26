@@ -1,16 +1,34 @@
 const keyword = document.querySelector("#keyword");
 const contentCounter = document.querySelector("#data-counter");
 const bodyContent = document.querySelector(".body-content");
+const pageNationUlist = document.querySelector("#ul-pagenation");
 const windowLocationParams = new URLSearchParams(location.search)
 const keywordIDParam = windowLocationParams.get("id");
 const keywordIDParam2 = windowLocationParams.get("show");
 const keywordIDParam3 = windowLocationParams.get("keyword");
 const originalImageURL = "https://image.tmdb.org/t/p/original";
-let keywordDataObj = {};
+let keywordDataObj = { page: 1 };
 let apiURL = [`https://api.themoviedb.org/3/discover/${keywordIDParam2}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&with_keywords=${keywordIDParam}`];
 
 document.addEventListener("DOMContentLoaded", () => {
   getAllFromAPI(apiURL);
+  pageNationUlist.addEventListener('click', async (e) => {
+    e.stopImmediatePropagation();
+    if (e.target.classList.contains("page-next")) {
+      if (keywordDataObj["keywordContent"].page <= keywordDataObj["keywordContent"].total_results) {
+        keywordDataObj["page"] += 1;
+      }
+      await pageNation(keywordDataObj["page"], keywordDataObj["keywordContent"].total_results);
+      body();
+    }
+    if (e.target.classList.contains("page-prev")) {
+      if (keywordDataObj["keywordContent"].page <= keywordDataObj["keywordContent"].total_results) {
+        keywordDataObj["page"] -= 1;
+      }
+      await pageNation(keywordDataObj["page"], keywordDataObj["keywordContent"].total_results);
+      body();
+    }
+  })
 })
 
 async function getAllFromAPI(apiURL) {
@@ -22,6 +40,22 @@ async function getAllFromAPI(apiURL) {
     header();
     body();
   })
+}
+
+async function getFromAPI(API_LINK) {
+  const response = await fetch(API_LINK);
+  const result = await response.json();
+  return result;
+}
+
+async function pageNation(pageNow, totalPage) {
+  let api = `https://api.themoviedb.org/3/discover/${keywordIDParam2}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&with_keywords=${keywordIDParam}&page=${pageNow}`;
+  let result = await getFromAPI(api)
+  keywordDataObj["keywordContent"] = await result;
+  pageNationUlist.innerHTML = `
+  <li class="page-item ${pageNow === 1 ? "disabled" : ""}"><a class="page-link page-prev" href="#">Previous</a></li>
+  <li class="page-item ${pageNow === totalPage ? 'disabled' : ''} "><a class="page-link page-next" href="#">Next</a></li>
+  `
 }
 
 function header() {
@@ -61,4 +95,5 @@ function body() {
     `)
   })
   bodyContent.insertAdjacentHTML("beforeend", content.join(""));
+  pageNation(keywordDataObj["keywordContent"].page, keywordDataObj["keywordContent"].total_pages)
 }

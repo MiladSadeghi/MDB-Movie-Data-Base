@@ -41,3 +41,13 @@ body {
 .card:last-child {
   margin-bottom: 0 !important;
 }
+
+
+#pageNationCounter > li > a{
+  border-radius: 0;
+}
+
+#dropdownMenuButton2 {
+  text-transform: capitalize;
+  background: none;
+}
