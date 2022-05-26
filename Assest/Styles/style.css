@@ -12,6 +12,7 @@ a {
 
 body {
   font-family: "Poppins";
+  background: #44444C;
 }
 
 nav {
@@ -31,21 +32,11 @@ nav {
 }
 
 .trending, .popluar {
-  background-color: #0B0909;
-  height: 500px;
   z-index: 1;
-}
-
-.trending .card {
-  background: #44444C;
 }
 
 .popluar {
   background-color: #44444C;
-}
-
-.trending h1, .popluar h1 {
-  padding: 1.3rem 0 1.8rem;
 }
 
 .next-slide {
@@ -72,14 +63,64 @@ nav {
   color: #D6D6D6;
 }
 
-
 .vote {
   position: absolute;
   top: 2px;
   right: 5px;
-
 }
 
 .card-text {
   font-size: 0.85rem;
+}
+
+.trending-cards::-webkit-scrollbar, .popluar-cards::-webkit-scrollbar {
+  overflow: hidden;
+}
+
+.trending-cards, .popluar-cards {
+  height: auto;
+  width: auto;
+  overflow-x: scroll;
+  display: flex;
+  scroll-behavior: smooth;
+}
+
+.trending-cards img, .popluar-cards img {
+  width: 320px;
+}
+
+.parrent-slide-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #44444C;
+  height: 50%;
+  width: 40px;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 20px 0 0 20px;
+}
+
+.parent-prev-btn {
+  left: 0;
+  border-radius: 0 20px 20px 0;
+}
+
+.hov:hover .parrent-slide-btn{
+  opacity: 0.9;
+}
+
+#next-trending, #next-popluar {
+  font-size: 1.3rem;
+}
+
+#prev-trending, #prev-popluar {
+  font-size: 1.3rem;
 }

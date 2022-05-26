@@ -3,6 +3,7 @@
 
 <head>
   <meta name="title" content="im Second IMDB">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description"
     content="An open source project, which can be used as the second IMDB without storing any informations.">
   <meta name="keywords" content="imdb, movie, series, tv, movie detail, open source">
@@ -22,7 +23,7 @@
 </head>
 
 <body>
-  <nav class="py-3">
+  <nav class="py-3 border-bottom border-1 border-dark">
     <div class="container">
       <div class="logo">
       </div>
@@ -33,25 +34,33 @@
       </div>
     </div>
   </nav>
-
-  <section class="trending position-relative">
-    <div class="next-slide text-white"><i section="trending" class="bi bi-arrow-right-circle"></i></div>
-    <div class="prev-slide text-white"><i section="trending" class="bi bi-arrow-left-circle"></i></div>
+  
+  <section class="trending py-4">
     <div class="container">
-      <h1 class="text-light">Trending</h1>
-      <div class="position-relative">
-        <div id="trending-content" class="row justify-content-between">
+      <h1 class="text-light mb-2">Trending</h1>
+      <div class="position-relative hov">
+        <div class="trending-cards">
+          <div class="parrent-slide-btn parent-prev-btn">
+            <i id="prev-trending" class="text-white bi bi-arrow-left"></i>
+          </div>
+          <div class="parrent-slide-btn next-btn">
+            <i id="next-trending" class="text-white bi bi-arrow-right"></i>
+          </div>
         </div>
       </div>
     </div>
   </section>
-  <section class="popluar position-relative">
-    <div class="next-slide text-white"><i section="popluar" class="bi bi-arrow-right-circle"></i></div>
-    <div class="prev-slide text-white"><i section="popluar" class="bi bi-arrow-left-circle"></i></div>
+  <section class="popluar py-4">
     <div class="container">
-      <h1 class="text-light">Popular</h1>
-      <div class="position-relative">
-        <div id="popluar-content" class="row justify-content-between">
+      <h1 class="text-light mb-2">Popluar</h1>
+      <div class="position-relative hov">
+        <div class="popluar-cards">
+          <div class="parrent-slide-btn parent-prev-btn">
+            <i id="prev-popluar" class="text-white bi bi-arrow-left"></i>
+          </div>
+          <div class="parrent-slide-btn ">
+            <i id="next-popluar" class="text-white bi bi-arrow-right"></i>
+          </div>
         </div>
       </div>
     </div>

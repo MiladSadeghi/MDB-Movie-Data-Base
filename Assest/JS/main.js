@@ -1,27 +1,33 @@
 const trendingContent = document.querySelector('#trending-content');
 const popluarContent = document.querySelector('#popluar-content');
-const trendPrevBtnSlide = document.querySelector('.trending .prev-slide');
-const trendNextBtnSlide = document.querySelector('.trending .next-slide');
-const popluarPrevBtnSlide = document.querySelector('.popluar .prev-slide');
-const popluarNextBtnSlide = document.querySelector('.popluar .next-slide');
+const trendingNextSlide = document.querySelector("#next-trending");
+const trendingPrevSlide = document.querySelector("#prev-trending");
+const trendingCards = document.querySelector(".trending-cards");
+const popluarNextSlide = document.querySelector("#next-popluar");
+const popluarPrevSlide = document.querySelector("#prev-popluar");
+const popluarCards = document.querySelector(".popluar-cards");
 const searchBtn = document.querySelector('.search-btn');
 const searchInput = document.querySelector("#search")
-const posterURL = "https://image.tmdb.org/t/p/w220_and_h330_face";
+const posterURL = "https://image.tmdb.org/t/p/original";
 
 let trending = []
 let popluar = []
-let trendCardIndexStart = 0;
-let trendCardIndexEnd = 5;
-let popluarCardIndexStart = 0;
-let popluarCardIndexEnd = 5;
 
 document.addEventListener("DOMContentLoaded", () => {
   trendingCard();
   popluarCard();
-  trendNextBtnSlide.addEventListener("click", nextSlide)
-  trendPrevBtnSlide.addEventListener("click", prevSlide)
-  popluarNextBtnSlide.addEventListener("click", nextSlide)
-  popluarPrevBtnSlide.addEventListener("click", prevSlide)
+  trendingNextSlide.parentElement.addEventListener("click", () => {
+    trendingCards.scrollLeft += 350;
+  })
+  trendingPrevSlide.parentElement.addEventListener("click", () => {
+    trendingCards.scrollLeft -= 350;
+  })
+  popluarNextSlide.parentElement.addEventListener("click", () => {
+    popluarCards.scrollLeft += 350;
+  })
+  popluarPrevSlide.parentElement.addEventListener("click", () => {
+    popluarCards.scrollLeft -= 350;
+  })
   searchBtn.addEventListener("click", handleSearch)
 })
 
@@ -38,21 +44,19 @@ function trendingCard() {
     result.results.forEach((element, index) => {
       trending.push(element)
     });
-    createCard(trendingContent, trending, trendCardIndexStart, trendCardIndexEnd);
+    console.log(trending);
+    createCard(trending, trendingCards);
   })();
 }
 
-function createCard(path, data, indexStart, indexEnd) {
+function createCard(array, path) {
   let pushToHTML = []
-  let slideContent = data.filter((element, index) => {
-    return index <= indexEnd && index >= indexStart
-  })
-  slideContent.forEach(element => {
+  array.forEach(element => {
     let card = `
-    <div class="col">
-      <div class="card h-100 p-0 position-relative">
+    <div class="col me-4">
+      <div class="card h-100 w-100 p-0">
         <div class="position-relative">
-          <img src="${posterURL + element.backdrop_path}" class="card-img-top w-100">
+          <img src="${posterURL + element.backdrop_path}" class="card-img-top">
           <div class="vote"><span class="badge bg-secondary">${element.vote_average}</span></h1></div>
         </div>
         <div class="card-body pb-0">
@@ -65,33 +69,6 @@ function createCard(path, data, indexStart, indexEnd) {
     pushToHTML.push(card)
   });
   path.insertAdjacentHTML("beforeend", pushToHTML.join(""));
-
-}
-
-function nextSlide(event) {
-  if (event.target.getAttribute("section") === "trending") {
-    (trendCardIndexEnd === trending.length - 1) ? (trendCardIndexEnd = trendCardIndexEnd, trendCardIndexStart = trendCardIndexStart) : (trendCardIndexEnd += 1, trendCardIndexStart += 1);
-    trendingContent.innerHTML = "";
-    createCard(trendingContent, trending, trendCardIndexStart, trendCardIndexEnd);
-  }
-  if (event.target.getAttribute("section") === "popluar") {
-    (popluarCardIndexEnd === trending.length - 1) ? (popluarCardIndexEnd = popluarCardIndexEnd, popluarCardIndexStart = popluarCardIndexStart) : (popluarCardIndexEnd += 1, popluarCardIndexStart += 1);
-    popluarContent.innerHTML = "";
-    createCard(popluarContent, popluar, popluarCardIndexStart, popluarCardIndexEnd);
-  }
-}
-
-function prevSlide(event) {
-  if (event.target.getAttribute("section") === "trending") {
-    (trendCardIndexStart === 0) ? (trendCardIndexEnd = trendCardIndexEnd, trendCardIndexStart = trendCardIndexStart) : (trendCardIndexEnd -= 1, trendCardIndexStart -= 1);
-    trendingContent.innerHTML = "";
-    createCard(trendingContent, trending, trendCardIndexStart, trendCardIndexEnd);
-  }
-  if (event.target.getAttribute("section") === "popluar") {
-    (popluarCardIndexEnd === 0) ? (popluarCardIndexEnd = popluarCardIndexEnd, popluarCardIndexStart = popluarCardIndexStart) : (popluarCardIndexEnd -= 1, popluarCardIndexStart -= 1);
-    popluarContent.innerHTML = "";
-    createCard(popluarContent, popluar, popluarCardIndexStart, popluarCardIndexEnd);
-  }
 }
 
 function popluarCard() {
@@ -101,7 +78,7 @@ function popluarCard() {
     result.results.forEach((element, index) => {
       popluar.push(element)
     });
-    createCard(popluarContent, popluar, popluarCardIndexStart, popluarCardIndexEnd);
+    createCard(popluar, popluarCards);
   })();
 }
 
@@ -111,6 +88,6 @@ function handleSearch() {
     var toast = new bootstrap.Toast(toastClass)
     toast.show()
   } else {
-    window.location.href = `./search.html?search=${searchInput.value}`
+    window.location.href = `./search/?search=${searchInput.value}`
   }
 }
