@@ -43,7 +43,6 @@ body {
   object-fit: cover;
 }
 
-
 .cast-body p, .crew-body p {
   width: 200px;
   font-size: 0.75rem;
@@ -51,4 +50,14 @@ body {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;  
   overflow: hidden;
+}
+
+@media only screen and (max-device-width: 991px) {
+  .cast-body, .crew-body {
+    width: 100%;
+  }
+  .cast-body p, .crew-body p {
+    width: 100%;
+    -webkit-line-clamp: unset;
+  }
 }

@@ -67,7 +67,7 @@ function header() {
   let counter = String(companyDataObj["companyMovie"].total_results).split("").reverse().join("").match(/.{1,3}/g).reverse().join(",");
   companyLogo.src = `${originalImageURL}${companyDataObj["company"].logo_path}`
   contentCounter.innerHTML = `${counter} ${companyIDParam2}`
-  informationBar.innerHTML += `<div><i class="bi bi-building fs-5"></i> ${companyDataObj["company"].name}</div><div><i class="bi bi-geo-alt-fill fs-5"></i> ${companyDataObj["company"].headquarters}</div><div><i class="bi bi-globe2 fs-5"></i> ${companyDataObj["company"].origin_country}</div><div><i class="bi bi-link fs-5"></i> <a href="${companyDataObj["company"].homepage}" class="text-color">Homepage</a></div>`
+  informationBar.innerHTML += `<div class="d-flex align-items-center justify-content-center"><i class="bi bi-building fs-5"></i> ${companyDataObj["company"].name}</div><div class="d-flex align-items-center justify-content-center"><i class="bi bi-geo-alt-fill fs-5"></i> ${companyDataObj["company"].headquarters}</div><div class="d-flex align-items-center justify-content-center"><i class="bi bi-globe2 fs-5"></i> ${companyDataObj["company"].origin_country}</div><div class="d-flex align-items-center justify-content-center"><i class="bi bi-link fs-5"></i> <a href="${companyDataObj["company"].homepage}" class="text-color">Homepage</a></div>`
   const dropDownBTN = document.querySelector("#dropdownMenuButton2");
   dropDownBTN.innerHTML = `${companyIDParam2}`
   const dropDownUL = document.querySelector("#ul-content");

@@ -4,6 +4,8 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -86,10 +88,10 @@ nav {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 5; /* number of lines to show */
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
 }
 
-#pageNationCounter > li > a{
+#pageNationCounter>li>a {
   border-radius: 0;
 }

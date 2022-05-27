@@ -117,7 +117,7 @@ function movie() {
         <div class="card mb-3" style="max-width: auto;">
         <div class="row g-0">
           <div class="col-md-3 ${noImageAddClass(element)}">
-            <img src="${availablePosterPath(element)}" class="img-fluid rounded-start" alt="...">
+            <img src="${availablePosterPath(element)}" class="img-fluid rounded-start w-100" alt="...">
           </div>
           <div class="col-md-9">
             <div class="card-body">

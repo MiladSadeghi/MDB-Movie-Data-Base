@@ -17,8 +17,8 @@ let apiURL = [`https://api.themoviedb.org/3/person/${personIDParam}?api_key=75c8
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.title = 
-  getFromAPI(apiURL);
+  document.title =
+    getFromAPI(apiURL);
   knownForNextSlide.parentElement.addEventListener("click", () => {
     knownFor.scrollLeft += 350;
   })
@@ -136,19 +136,19 @@ function carrerShow() {
     department[item].filter((item2, index2) => {
       let nowDate = (item2.release_date === "" || item2.first_air_date === "") ? "-" : Number((item2.release_date || item2.first_air_date).slice(0, 4));
       let oldDate = new Date((department[item][(index2 - 1 === -1) ? 0 : index2 - 1].release_date || department[item][(index2 - 1 === -1) ? 0 : index2 - 1].first_air_date)).getFullYear();
-      if(isNaN(oldDate)){ oldDate = "-"};
+      if (isNaN(oldDate)) { oldDate = "-" };
       if (oldDate != nowDate) {
         content.push(`</div>`);
       }
       content.push(`
-      ${((nowDate != oldDate) || index2 === 0)?`</div><div class="mb-2 bg-mygrey rounded">`:``}
+      ${((nowDate != oldDate) || index2 === 0) ? `</div><div class="mb-2 bg-mygrey rounded">` : ``}
       <div class="row mb-1 p-2">
-      <div class="col-md-2 text-center black-text-color fs-6">${nowDate}</div>
-      <div class="col-md-5"><strong class="text-known-for black-text-color">${item2.title || item2.original_name}<small class="text-known-for fw-light d-block ${(!item2.episode_count)?"d-none":""}">	&nbsp;${(item2.episode_count)? `(${item2.episode_count} episodes) `:""}</small></strong>
+      <div class="col-2 text-center black-text-color fs-6">${nowDate}</div>
+      <div class="col-5"><strong class="text-known-for black-text-color">${item2.title || item2.original_name}<small class="text-known-for fw-light d-block ${(!item2.episode_count) ? "d-none" : ""}">	&nbsp;${(item2.episode_count) ? `(${item2.episode_count} episodes) ` : ""}</small></strong>
         
       </div>
-      <div class="col-md text-known-for black-text-color ${(!item2.character)?"d-none":""}">as <p class=" fw-bold d-inline">${item2.character}</p></div>
-      <div class="col-md text-known-for black-text-color ${(!item2.job)?"d-none":""}"><p class="fw-normal d-inline">${item2.job}</p></div>
+      <div class="col text-known-for black-text-color ${(!item2.character) ? "d-none" : ""}">as <p class=" fw-bold d-inline">${item2.character}</p></div>
+      <div class="col text-known-for black-text-color ${(!item2.job) ? "d-none" : ""}"><p class="fw-normal d-inline">${item2.job}</p></div>
       </div>
       `)
     })
@@ -160,30 +160,43 @@ function aside() {
   personImage.src = `${originalImageSize}${personDataObj["personDetails"].profile_path}`;
   socialIcons.insertAdjacentHTML("beforeend", availableSocialMedia());
   factContent.innerHTML = `
+  <div>
     <p class="mb-4 text-color">
     <strong class="d-block">Known For</strong>
     ${personDataObj["personDetails"].known_for_department}
     </p>
+    </div>
+    <div>
     <p class="mb-4 text-color">
     <strong class="d-block">Known Credits</strong>
     ${personDataObj["movieCredit"].cast.length + personDataObj["tvCredit"].cast.length}
     </p>
+    </div>
+    <div>
     <p class="mb-4 text-color">
     <strong class="d-block">Gender</strong>
     ${genderVerification(personDataObj["personDetails"].gender)}
     </p>
+    </div>
+    <div>
     <p class="mb-4 text-color">
     <strong class="d-block">Birthday</strong>
     ${personDataObj["personDetails"].birthday} (${calcDate(personDataObj["personDetails"].birthday)} Years Old)
     </p>
+    </div>
+    <div>
     <p class="mb-4 text-color">
     <strong class="d-block">Place of Birth</strong>
     ${personDataObj["personDetails"].place_of_birth}
     </p>
+    </div>
+    <div>
     <p class="mb-0"><strong class="d-block text-color">Also Known As</strong></p>
     <ul class="list-unstyled">
     ${whatKnown(personDataObj["personDetails"].also_known_as)}
     </ul>
+    </div>
+    <div>
     `
 }
 

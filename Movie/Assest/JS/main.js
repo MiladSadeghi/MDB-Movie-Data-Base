@@ -34,11 +34,17 @@ const posterImageURL = "https://www.themoviedb.org/t/p/original"
 const castImageURL = "https://www.themoviedb.org/t/p/original"
 const recommendImageURL = "https://www.themoviedb.org/t/p/original"
 
+let screenSize = window.screen.availWidth;
 let movieDataObj = {}
 let apiURL = [`https://api.themoviedb.org/3/movie/${movieIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/movie/${movieIDParam}/release_dates?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/movie/${movieIDParam}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/videos?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/movie/${movieIDParam}/images?api_key=75c8aed355937ba0502f74d9a1aed11c`]
 
 document.addEventListener('DOMContentLoaded', () => {
   getFromAPI(apiURL);
+  if(screenSize <= 991) {
+    screenSize = "none"
+  } else {
+    screenSize = "right -200px top";
+  }
   topCastNextSlide.parentElement.addEventListener("click", () => {
     topCast.scrollLeft += 350;
   })
@@ -194,8 +200,8 @@ function arrangeTopCast() {
       <div class="cast-card me-3 rounded">
       <img src="${castImageURL + item.profile_path}" class="card-img-top" alt="">
       <div class="cast-body">
-        <h5 class="cast-title text-black">${item.name}</h5>
-        <p class="cast-text text-black">${item.character}</p>
+        <h5 class="cast-title text-color">${item.name}</h5>
+        <p class="cast-text text-color">${item.character}</p>
       </div>
     </div>
       `)
@@ -233,7 +239,7 @@ function header() {
   document.title = movieDataObj["movieDetails"].title + ' - IMDB #2';
   poster.src = `${posterImageURL}${movieDataObj["movieDetails"].poster_path}`;
   headerSection.style.backgroundImage = `url(${bannerImageURL}${movieDataObj["movieDetails"].backdrop_path})`
-  headerSection.style.backgroundPosition = "right -200px top";
+  headerSection.style.backgroundPosition = screenSize;
   headerSection.style.backgroundRepeat = "no-repeat";
   headerSection.style.backgroundSize = "cover";
   movieTitle.innerHTML += `${movieDataObj["movieDetails"].title}`;

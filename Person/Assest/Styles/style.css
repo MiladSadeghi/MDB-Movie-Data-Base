@@ -58,15 +58,14 @@ body {
   scroll-behavior: smooth;
 }
 
-
 .parrent-slide-btn {
   position: absolute;
   right: 0;
-  top: 44%;
+  top: 50%;
   transform: translateY(-50%);
   background: #44444C;
-  height: 69%;
-  width: 5%;
+  height: 50%;
+  width: 40px;
   opacity: 0.7;
   display: flex;
   align-items: center;
@@ -74,14 +73,17 @@ body {
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
   cursor: pointer;
+  z-index: 10;
+  border-radius: 20px 0 0 20px;
 }
 
 .parent-prev-btn {
   left: 0;
+  border-radius: 0 20px 20px 0;
 }
 
 .known-for:hover .parrent-slide-btn {
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 #next-known-for {
@@ -100,3 +102,8 @@ body {
   font-size: 0.8rem;
 }
 
+@media only screen and (max-device-width: 991px) {
+  .fact-content {
+    gap: 2rem;
+  }
+}

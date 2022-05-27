@@ -35,11 +35,17 @@ const castImageURL = "https://www.themoviedb.org/t/p/original"
 const recommendImageURL = "https://www.themoviedb.org/t/p/original"
 const networkImageURL = "https://www.themoviedb.org/t/p/h30"
 
+let screenSize = window.screen.availWidth;
 let tvDataObj = {}
 let apiURL = [`https://api.themoviedb.org/3/tv/${tvIDParam}?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${tvIDParam}/content_ratings?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${tvIDParam}/credits?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US`, `https://api.themoviedb.org/3/tv/${tvIDParam}/external_ids?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${tvIDParam}/keywords?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${tvIDParam}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${tvIDParam}/videos?api_key=75c8aed355937ba0502f74d9a1aed11c`, `https://api.themoviedb.org/3/tv/${tvIDParam}/images?api_key=75c8aed355937ba0502f74d9a1aed11c`,`https://api.themoviedb.org/3/tv/${tvIDParam}/recommendations?api_key=75c8aed355937ba0502f74d9a1aed11c&language=en-US&page=1`]
 
 document.addEventListener('DOMContentLoaded', () => {
   getFromAPI(apiURL);
+  if(screenSize <= 991) {
+    screenSize = "none"
+  } else {
+    screenSize = "right -200px top";
+  }
   topCastNextSlide.parentElement.addEventListener("click", () => {
     topCast.scrollLeft += 350;
   })
@@ -235,7 +241,7 @@ function header() {
   document.title = tvDataObj["tvDetails"].original_name + ' - IMDB #2';
   poster.src = `${posterImageURL}${tvDataObj["tvDetails"].poster_path}`;
   headerSection.style.backgroundImage = `url(${bannerImageURL}${tvDataObj["tvDetails"].backdrop_path})`
-  headerSection.style.backgroundPosition = "right -200px top";
+  headerSection.style.backgroundPosition = screenSize;
   headerSection.style.backgroundRepeat = "no-repeat";
   headerSection.style.backgroundSize = "cover";
   tvTitle.innerHTML += `${tvDataObj["tvDetails"].original_name}`;

@@ -4,6 +4,8 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 :root {
@@ -31,6 +33,10 @@ article h2,
 .media-title-bar h5,
 .media-title-bar span{
   color: #D6D6D6;
+}
+
+.text-color {
+  color: #0B0909;
 }
 
 .tagline,
@@ -104,12 +110,12 @@ article h2,
   scroll-behavior: smooth;
 }
 
-.cast-card, .recommend-card{
-  background: #fff;
+.cast-card, .recommend-card, .card{
+  background: #8C8C8C;
 }
 
 .cast img {
-  width: 180px;
+  width: 220px;
 }
 
 .recommend img {
@@ -141,11 +147,11 @@ article h2,
 .parrent-slide-btn {
   position: absolute;
   right: 0;
-  top: 46%;
+  top: 50%;
   transform: translateY(-50%);
   background: #44444C;
-  height: 100%;
-  width: 5%;
+  height: 50%;
+  width: 40px;
   opacity: 0.7;
   display: flex;
   align-items: center;
@@ -153,14 +159,17 @@ article h2,
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
   cursor: pointer;
+  z-index: 10;
+  border-radius: 20px 0 0 20px;
 }
 
 .parent-prev-btn {
   left: 0;
+  border-radius: 0 20px 20px 0;
 }
 
-.cast:hover .parrent-slide-btn, .recommend:hover .parrent-slide-btn, .media:hover .parrent-slide-btn {
-  opacity: 0.7;
+.hov:hover .parrent-slide-btn {
+  opacity: 0.9;
 }
 
 #next-cast, #next-recommend, #next-media {
@@ -185,6 +194,7 @@ article h2,
 
 .media-title-bar {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .media-title-bar h6 {
@@ -193,10 +203,6 @@ article h2,
 
 .media-title-bar span {
   cursor: pointer;
-}
-
-.media .parrent-slide-btn {
-  height: 302px;
 }
 
 .media-title-bar .badge {
@@ -217,4 +223,13 @@ article h2,
   bottom: -7px;
   left: 0;
   border-radius: 50%;
+}
+
+@media only screen and (max-device-width: 991px) {
+  .media-active::after {
+    display: none;
+  }
+  .media-title-bar > * {
+    margin-top: 10px;
+  }
 }

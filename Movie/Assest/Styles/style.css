@@ -28,8 +28,12 @@ body {
 .cast-title,
 .recommnd-title,
 .media-title-bar h5,
-.media-title-bar span{
+.media-title-bar span {
   color: #D6D6D6;
+}
+
+.text-color {
+  color: #0B0909;
 }
 
 .tagline,
@@ -92,11 +96,15 @@ body {
   font-size: 0.83rem;
 }
 
-.cast::-webkit-scrollbar, .recommend::-webkit-scrollbar, .media-content::-webkit-scrollbar {
+.cast::-webkit-scrollbar,
+.recommend::-webkit-scrollbar,
+.media-content::-webkit-scrollbar {
   overflow: hidden;
 }
 
-.cast, .recommend, .media-content {
+.cast,
+.recommend,
+.media-content {
   height: auto;
   width: auto;
   overflow-x: scroll;
@@ -104,19 +112,21 @@ body {
   scroll-behavior: smooth;
 }
 
-.cast-card, .recommend-card{
-  background: #fff;
+.cast-card,
+.recommend-card {
+  background: #8C8C8C;
 }
 
 .cast img {
-  width: 180px;
+  width: 260px;
 }
 
 .recommend img {
   width: 300px;
 }
 
-.cast-body, .recommend-body {
+.cast-body,
+.recommend-body {
   padding: 0.5rem;
   width: 100%;
   padding-bottom: 0rem;
@@ -126,26 +136,29 @@ body {
   padding: 0.4rem 1.1rem;
 }
 
-.cast-body h5, .recommend-body h5 {
+.cast-body h5,
+.recommend-body h5 {
   font-size: 1rem;
   margin-bottom: 0.5rem;
 }
+
 .recommend-body h5 {
   margin-bottom: 0rem;
 }
 
-.cast-body p, .recommend-body p {
+.cast-body p,
+.recommend-body p {
   font-size: 0.9rem;
 }
 
 .parrent-slide-btn {
   position: absolute;
   right: 0;
-  top: 46%;
+  top: 50%;
   transform: translateY(-50%);
   background: #44444C;
-  height: 100%;
-  width: 5%;
+  height: 50%;
+  width: 40px;
   opacity: 0.7;
   display: flex;
   align-items: center;
@@ -153,21 +166,28 @@ body {
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
   cursor: pointer;
+  z-index: 10;
+  border-radius: 20px 0 0 20px;
 }
 
 .parent-prev-btn {
   left: 0;
+  border-radius: 0 20px 20px 0;
 }
 
-.cast:hover .parrent-slide-btn, .recommend:hover .parrent-slide-btn, .media:hover .parrent-slide-btn {
-  opacity: 0.7;
+.hov:hover .parrent-slide-btn{
+  opacity: 0.9;
 }
 
-#next-cast, #next-recommend, #next-media {
+#next-cast,
+#next-recommend,
+#next-media {
   font-size: 1.3rem;
 }
 
-#prev-cast, #prev-recommend, #prev-media {
+#prev-cast,
+#prev-recommend,
+#prev-media {
   font-size: 1.3rem;
 }
 
@@ -197,6 +217,7 @@ body {
 
 .media-title-bar {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .media-title-bar h6 {
@@ -229,4 +250,13 @@ body {
   bottom: -7px;
   left: 0;
   border-radius: 50%;
+}
+
+@media only screen and (max-device-width: 991px) {
+  .media-active::after {
+    display: none;
+  }
+  .media-title-bar > * {
+    margin-top: 10px;
+  }
 }

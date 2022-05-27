@@ -9,6 +9,7 @@ const moviesCounter = document.querySelector("#movie-counter");
 const orginalImageURL = "https://image.tmdb.org/t/p/original";
 const collectionIDParam = new URLSearchParams(location.search).get("id");
 
+let screenSize = window.screen.availWidth;
 let collectionDataObj = { movies: [], credit: [] };
 let genresObject = [
   [28, "Action"],
@@ -35,6 +36,11 @@ let apiURL = [`https://api.themoviedb.org/3/collection/${collectionIDParam}?api_
 
 document.addEventListener("DOMContentLoaded", () => {
   getFromAPI(apiURL);
+  if(screenSize <= 991) {
+    screenSize = "none"
+  } else {
+    screenSize = "right -200px top";
+  }
 })
 
 async function getFromAPI(apiURL) {
@@ -57,7 +63,7 @@ async function header() {
   document.title = collectionDataObj["collectionDetails"].name + ' - IMDB #2';
   poster.src = `${orginalImageURL}${collectionDataObj["collectionDetails"].poster_path}`;
   headerSection.style.backgroundImage = `url(${orginalImageURL}${collectionDataObj["collectionDetails"].backdrop_path})`
-  headerSection.style.backgroundPosition = "right -200px top -120px";
+  headerSection.style.backgroundPosition = screenSize;
   headerSection.style.backgroundRepeat = "no-repeat";
   headerSection.style.backgroundSize = "cover";
   collectionTitle.innerHTML = collectionDataObj["collectionDetails"].name;
@@ -114,7 +120,7 @@ function featuredCast() {
   castArray.sort((a, b) => a[4] - b[4])
   castArray.slice(0, 14).forEach(item => {
     featured.push(`
-      <div class="d-flex col-auto bg1 p-0 mb-3 cast">
+      <div class="d-flex col-12 col-md-auto bg1 p-0 mb-3 cast ">
         <img class="rounded-start" style="${(!item[3]) ? `object-fit: contain;` : ``}" src="${(!item[3]) ? `Assest/Images/profile.png` : orginalImageURL + item[3]}">
         <div class="cast-body bg2 rounded-end ps-2 py-3">
           <h6 class="text-color">${item[0]}</h6>
@@ -144,7 +150,7 @@ function featuredCrew() {
   }, []);
   crewArray1.forEach(item => {
     featured.push(`
-      <div class="d-flex col-auto bg1 p-0 mb-3 crew">
+      <div class="d-flex col-12 col-md-auto bg1 p-0 mb-3 crew">
         <img class="rounded-start bg1" style="${(!item[3]) ? `object-fit: contain;` : ``}" src="${(!item[3]) ? `Assest/Images/profile.png` : orginalImageURL + item[3]}">
         <div class="crew-body bg2 rounded-end ps-2 py-3">
           <h6 style="font-size: 0.9rem;" class="text-color">${item[0]}</h6>
@@ -170,10 +176,10 @@ function moviesContent() {
     content.push(`
     <div class="card mb-3 w-100 bg2">
       <div class="row g-0">
-        <div class="col-2">
+        <div class="col-md-2">
           <img src="${orginalImageURL}${item.poster_path}" class="img-fluid rounded-start" alt="...">
         </div>
-        <div class="col-10 d-flex ">
+        <div class="col-md-10 d-flex ">
           <div class="card-body d-flex flex-column justify-content-center">
             <h5 class="card-title text-color">${item.original_title}</h5>
             <p class="card-text ${(nowDate < (new Date(item.release_date) !== NaN)? "d-none": "")}">${movieDate}</p>
