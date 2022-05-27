@@ -79,6 +79,7 @@ function body() {
     image = (item.poster_path !== null) ? `${originalImageURL}${item.poster_path}` : "/Company/Assest/Images/loadingImage.png";
     content.push(`
     <div class="card mb-4">
+    <a href="/${keywordIDParam2}/?id=${item.id}" target="_blank">
       <div class="row g-0">
         <div class="col-md-2">
           <img src="${image}" class="img-fluid rounded-start" alt="...">
@@ -91,6 +92,7 @@ function body() {
           </div>
         </div>
       </div>
+      </a>
     </div>
     `)
   })

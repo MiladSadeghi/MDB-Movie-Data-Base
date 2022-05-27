@@ -28,8 +28,17 @@ let noImageAddClass = (element) => {
 let availablePosterPath = (element) => {
   return ((element.poster_path || element.profile_path || element.logo_path) == null) ? "/Search/Assest/Images/no-image.png" : (posterURL + (element.poster_path || element.profile_path || element.logo_path));
 }
+let genderPhoto = (element) => {
+  if(element.gender === 1) {
+    return `/Search/Assest/Images/profile.png`
+  } else if(element.gender === 2) {
+    return `/Search/Assest/Images/profile2.png`
+  } else if(element.gender === 3) {
+    return `/Search/Assest/Images/non-binary.png`
+  }
+}
 let releaseDate = (element) => {
-  return (element.release_date === "") ? "Unavailable Release Date" : element.release_date
+  return (element.release_date === "" || element.first_air_date === "") ? "Unavailable Release Date" : (element.release_date || element.first_air_date)
 }
 
 let collaboratedProducts = (element) => {
@@ -114,6 +123,7 @@ function movie() {
   pageNationUlist.innerHTML = "";
   movieResult[0].results.forEach(element => {
     let searchResultCard = `
+    <a href="/movie/?id=${element.id}" target="_blank">
         <div class="card mb-3" style="max-width: auto;">
         <div class="row g-0">
           <div class="col-md-3 ${noImageAddClass(element)}">
@@ -122,12 +132,13 @@ function movie() {
           <div class="col-md-9">
             <div class="card-body">
               <h5 class="card-title">${element.original_title}</h5>
-              <p class="card-text text">${element.overview}.</p>
+              <p class="card-text text-color fw-normal">${element.overview}.</p>
               <p class="card-text"><small class="text-muted">${releaseDate(element)}</small></p>
             </div>
           </div>
         </div>
-      </div>
+        </div>
+        </a>
         `
     searchResultArray.push(searchResultCard)
   })
@@ -161,6 +172,7 @@ function tvShow() {
   searchResult.innerHTML = "";
   tv[0].results.forEach(element => {
     let searchResultCard = `
+    <a href="/tv/?id=${element.id}" target="_blank">
       <div class="card mb-3" style="max-width: auto;">
       <div class="row g-0">
         <div class="col-md-3 ${noImageAddClass(element)}">
@@ -169,12 +181,13 @@ function tvShow() {
         <div class="col-md-9">
           <div class="card-body">
             <h5 class="card-title">${element.original_name}</h5>
-            <p class="card-text text">${element.overview}.</p>
+            <p class="card-text text-color">${element.overview}.</p>
             <p class="card-text"><small class="text-muted">${releaseDate(element)}</small></p>
           </div>
         </div>
       </div>
     </div>
+    </a>
       `
     searchResultArray.push(searchResultCard)
   })
@@ -189,6 +202,7 @@ function collectionShow() {
   searchResult.innerHTML = "";
   collection[0].results.forEach(element => {
     let searchResultCard = `
+    <a href="/collection/?id=${element.id}" target="_blank">
       <div class="card mb-3" style="max-width: auto;">
       <div class="row g-0">
         <div class="col-md-3 ${noImageAddClass(element)}">
@@ -197,11 +211,12 @@ function collectionShow() {
         <div class="col-md-9">
           <div class="card-body">
             <h5 class="card-title">${element.original_name}</h5>
-            <p class="card-text text">${element.overview}.</p>
+            <p class="card-text text-color">${element.overview}.</p>
           </div>
         </div>
       </div>
     </div>
+    </a>
       `
     searchResultArray.push(searchResultCard)
   })
@@ -216,19 +231,21 @@ function personShow() {
   searchResult.innerHTML = "";
   person[0].results.forEach(element => {
     let searchResultCard = `
+    <a href="/person/?id=${element.id}" target="_blank">
       <div class="card mb-3" style="max-width: auto;">
       <div class="row g-0">
         <div class="col-md-3 ${noImageAddClass(element)}">
-          <img src="${availablePosterPath(element)}" class="img-fluid rounded-start" alt="...">
+          <img src="${genderPhoto(element)}" class="img-fluid rounded-start" alt="...">
         </div>
         <div class="col-md-9">
           <div class="card-body">
             <h5 class="card-title">${element.name} - ${element.known_for_department}</h5>
-            <p class="card-text text">${collaboratedProducts(element.known_for)}.</p>
+            <p class="card-text text-color">${collaboratedProducts(element.known_for)}.</p>
           </div>
         </div>
       </div>
     </div>
+    </a>
       `
     searchResultArray.push(searchResultCard)
   })
@@ -243,6 +260,7 @@ function companyShow() {
   searchResult.innerHTML = "";
   company[0].results.forEach(element => {
     let searchResultCard = `
+    <a href="/company/?id=${element.id}" target="_blank">
       <div class="card mb-3" style="max-width: auto;">
       <div class="row g-0">
         <div class="col-md-3 ${noImageAddClass(element)}">
@@ -251,11 +269,12 @@ function companyShow() {
         <div class="col-md-9">
           <div class="card-body">
             <h5 class="card-title">${element.name}</h5>
-            <p class="card-text text">${availableEstablishment(element.origin_country)}</p>
+            <p class="card-text text-color">${availableEstablishment(element.origin_country)}</p>
           </div>
         </div>
       </div>
     </div>
+    </a>
       `
     searchResultArray.push(searchResultCard)
   })
@@ -270,7 +289,8 @@ function keywordShow() {
   searchResult.innerHTML = "";
   keyword[0].results.forEach(element => {
     let searchResultCard = `
-    <span class="badge bg-secondary me-2 mb-2 fs-6 fw-normal">${element.name}</span>
+    <a href="/keyword/?id=${element.id}&keyword=${element.name}&show=tv" target="_blank">
+    <span class="badge bg-secondary me-2 mb-2 fs-6 fw-normal">${element.name}</span></a>
       `
     searchResultArray.push(searchResultCard)
   })

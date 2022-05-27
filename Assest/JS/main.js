@@ -52,8 +52,10 @@ function trendingCard() {
 function createCard(array, path) {
   let pushToHTML = []
   array.forEach(element => {
+    console.log(element.id);
     let card = `
     <div class="col me-4">
+    <a href="/movie/?id=${element.id}" target="_blank">
       <div class="card h-100 w-100 p-0">
         <div class="position-relative">
           <img src="${posterURL + element.backdrop_path}" class="card-img-top">
@@ -64,6 +66,7 @@ function createCard(array, path) {
           <p class="card-text text-white-50">${element.release_date}</p>
         </div>
       </div>
+      </a>
     </div>
     `
     pushToHTML.push(card)

@@ -8,6 +8,14 @@
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
+.text-color {
+  color: #0B0909;
+}
+
 body {
   font-family: "Poppins";
   background: #0B0909;
@@ -46,6 +54,7 @@ nav {
   margin-bottom: 0;
   position: relative;
   transition: background-color .15s ease-out;
+  cursor: pointer;
 }
 
 .search-result p span {

@@ -61,8 +61,14 @@ function numberToUSD(number) {
 
 async function header() {
   document.title = collectionDataObj["collectionDetails"].name + ' - IMDB #2';
-  poster.src = `${orginalImageURL}${collectionDataObj["collectionDetails"].poster_path}`;
-  headerSection.style.backgroundImage = `url(${orginalImageURL}${collectionDataObj["collectionDetails"].backdrop_path})`
+  if(collectionDataObj["collectionDetails"].poster_path !== null) {
+    poster.src = `${orginalImageURL}${collectionDataObj["collectionDetails"].poster_path}`;
+  } else {
+    poster.src = `Assest/Images/no-image.png`;
+  }
+  if(collectionDataObj["collectionDetails"].backdrop_path !== null) {
+    headerSection.style.backgroundImage = `url(${orginalImageURL}${collectionDataObj["collectionDetails"].backdrop_path})`
+  }
   headerSection.style.backgroundPosition = screenSize;
   headerSection.style.backgroundRepeat = "no-repeat";
   headerSection.style.backgroundSize = "cover";
@@ -173,11 +179,16 @@ function moviesContent() {
     } else {
       movieDate = "";
     }
+    if(item.poster_path !== null) {
+      var poster = orginalImageURL + item.poster_path;
+    } else {
+      var poster = "Assest/Images/no-image.png";
+    }
     content.push(`
     <div class="card mb-3 w-100 bg2">
       <div class="row g-0">
-        <div class="col-md-2">
-          <img src="${orginalImageURL}${item.poster_path}" class="img-fluid rounded-start" alt="...">
+        <div class="col-md-2 text-center">
+          <img src="${poster}" class="img-fluid rounded-start" alt="...">
         </div>
         <div class="col-md-10 d-flex ">
           <div class="card-body d-flex flex-column justify-content-center">

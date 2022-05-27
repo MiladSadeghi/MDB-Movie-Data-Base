@@ -101,11 +101,19 @@ function knowFor() {
     return acc;
   }, []);
   result.splice(0, 8).filter((item, index) => {
-    knownFor.push(`<div class="known-for-card me-3">
-    <img src="${knownForImageSize + item.poster_path}" class="known-for-img-top rounded" alt="">
+    if(item.poster_path !== null) {
+      var poster = knownForImageSize + item.poster_path;
+    } else {
+      poster = `/Tv/Assest/Images/no-image.png`
+    }
+    knownFor.push(`
+    <div class="known-for-card me-3">
+    <a class="" target="_blank" href="${(item.episode_count)? `/tv/?id=${item.id}`:`/movie/?id=${item.id}`}">
+    <img src="${poster}" class="known-for-img-top rounded" alt="">
     <div class="known-for-body text-center mt-2">
-      <h6 class="known-title text-color fw-normal fs-6">${item.original_title}</h6>
+      <h6 class="known-title text-color fw-normal">${item.original_title || item.original_name}</h6>
     </div>
+    </a>
   </div>`);
   })
 
@@ -116,6 +124,7 @@ function carrerShow() {
   let department = {};
   let content = [];
   let mergedCC = personDataObj["movieCredit"].cast.concat(personDataObj["tvCredit"].cast).concat(personDataObj["movieCredit"].crew.concat(personDataObj["tvCredit"].crew));
+  let newDate = new Date().getFullYear().toString();
   mergedCC.filter((item, index) => {
     let departmentAvailable = (item.department) ? item.department : "Acting";
     if (Object.keys(department).includes(departmentAvailable)) {
@@ -130,21 +139,30 @@ function carrerShow() {
   })
   Object.keys(department).filter((item, index1) => {
     department[item].sort((a, b) => {
-      return new Date(b.release_date || b.first_air_date) - new Date(a.release_date || a.first_air_date);
+      return new Date(b.release_date || b.first_air_date || (((b.release_date)===undefined)? newDate:b.release_date) 
+      || (((b.first_air_date)===undefined)? newDate:b.first_air_date)) 
+      - new Date(a.release_date || a.first_air_date || 
+        (((a.release_date)===undefined)? newDate:a.release_date) 
+        || (((a.first_air_date)===undefined)? newDate:a.first_air_date));
     })
     content.push(`</div><h5 class="text-color">${item}</h5><div class="mb-2 bg-mygrey rounded">`)
     department[item].filter((item2, index2) => {
-      let nowDate = (item2.release_date === "" || item2.first_air_date === "") ? "-" : Number((item2.release_date || item2.first_air_date).slice(0, 4));
+      let nowDate = ((item2.release_date === "") || (item2.first_air_date === "") || ((item2.release_date || item2.first_air_date)===undefined) ) ? "-" : Number((item2.release_date || item2.first_air_date).slice(0, 4));
       let oldDate = new Date((department[item][(index2 - 1 === -1) ? 0 : index2 - 1].release_date || department[item][(index2 - 1 === -1) ? 0 : index2 - 1].first_air_date)).getFullYear();
       if (isNaN(oldDate)) { oldDate = "-" };
       if (oldDate != nowDate) {
         content.push(`</div>`);
       }
+      if(item2.episode_count) {
+        var dir = "tv"
+      } else {
+        var dir = "movie"
+      }
       content.push(`
       ${((nowDate != oldDate) || index2 === 0) ? `</div><div class="mb-2 bg-mygrey rounded">` : ``}
       <div class="row mb-1 p-2">
       <div class="col-2 text-center black-text-color fs-6">${nowDate}</div>
-      <div class="col-5"><strong class="text-known-for black-text-color">${item2.title || item2.original_name}<small class="text-known-for fw-light d-block ${(!item2.episode_count) ? "d-none" : ""}">	&nbsp;${(item2.episode_count) ? `(${item2.episode_count} episodes) ` : ""}</small></strong>
+      <div class="col-5"><strong class="text-known-for black-text-color"><a class="black-text-color" target="_blank" href="/${dir}/?id=${item2.id}">${item2.title || item2.original_name}</a><small class="text-known-for fw-light d-block ${(!item2.episode_count) ? "d-none" : ""}">	&nbsp;${(item2.episode_count) ? `(${item2.episode_count} episodes) ` : ""}</small></strong>
         
       </div>
       <div class="col text-known-for black-text-color ${(!item2.character) ? "d-none" : ""}">as <p class=" fw-bold d-inline">${item2.character}</p></div>
@@ -157,47 +175,27 @@ function carrerShow() {
 }
 
 function aside() {
-  personImage.src = `${originalImageSize}${personDataObj["personDetails"].profile_path}`;
+  if(personDataObj["personDetails"].profile_path !== null) {
+    personImage.src = `${originalImageSize}${personDataObj["personDetails"].profile_path}`;
+    personImage.style.width = "100%";
+  } else {
+    personImage.src = `/Person/Assest/Images/no-image.png`;
+    personImage.style.width = "40%";
+  }
   socialIcons.insertAdjacentHTML("beforeend", availableSocialMedia());
+  console.log(personDataObj["personDetails"]);
+  if(personDataObj["personDetails"].birthday !== null) {
+    var birth = `${personDataObj["personDetails"].birthday} (${calcDate(personDataObj["personDetails"].birthday)}Years Old)`;
+  } else {
+    birth = "-"
+  }
+  if(personDataObj["personDetails"].place_of_birth !== null) {
+    var place = personDataObj["personDetails"].place_of_birth;
+  } else {
+    place = "-";
+  }
   factContent.innerHTML = `
-  <div>
-    <p class="mb-4 text-color">
-    <strong class="d-block">Known For</strong>
-    ${personDataObj["personDetails"].known_for_department}
-    </p>
-    </div>
-    <div>
-    <p class="mb-4 text-color">
-    <strong class="d-block">Known Credits</strong>
-    ${personDataObj["movieCredit"].cast.length + personDataObj["tvCredit"].cast.length}
-    </p>
-    </div>
-    <div>
-    <p class="mb-4 text-color">
-    <strong class="d-block">Gender</strong>
-    ${genderVerification(personDataObj["personDetails"].gender)}
-    </p>
-    </div>
-    <div>
-    <p class="mb-4 text-color">
-    <strong class="d-block">Birthday</strong>
-    ${personDataObj["personDetails"].birthday} (${calcDate(personDataObj["personDetails"].birthday)} Years Old)
-    </p>
-    </div>
-    <div>
-    <p class="mb-4 text-color">
-    <strong class="d-block">Place of Birth</strong>
-    ${personDataObj["personDetails"].place_of_birth}
-    </p>
-    </div>
-    <div>
-    <p class="mb-0"><strong class="d-block text-color">Also Known As</strong></p>
-    <ul class="list-unstyled">
-    ${whatKnown(personDataObj["personDetails"].also_known_as)}
-    </ul>
-    </div>
-    <div>
-    `
+  <div><p class="mb-4 text-color"><strong class="d-block">Known For</strong>${personDataObj["personDetails"].known_for_department}</p></div><div><p class="mb-4 text-color"><strong class="d-block">Known Credits</strong>${personDataObj["movieCredit"].cast.length + personDataObj["tvCredit"].cast.length}</p></div><div><p class="mb-4 text-color"><strong class="d-block">Gender</strong>${genderVerification(personDataObj["personDetails"].gender)}</p></div><div><p class="mb-4 text-color"><strong class="d-block">Birthday</strong>${birth}</p></div><div><p class="mb-4 text-color"><strong class="d-block">Place of Birth</strong>${place}</p></div><div><p class="mb-0"><strong class="d-block text-color">Also Known As</strong></p><ul class="list-unstyled">${whatKnown(personDataObj["personDetails"].also_known_as)}</ul></div><div>`
 }
 
 function article() {

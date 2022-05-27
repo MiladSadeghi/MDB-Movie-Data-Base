@@ -17,6 +17,7 @@ const keywordFact = document.querySelector(".keyword");
 const topCast = document.querySelector(".cast");
 const topCastNextSlide = document.querySelector("#next-cast");
 const topCastPrevSlide = document.querySelector("#prev-cast");
+const currentSession = document.querySelector(".current-session");
 const currentSessionImg = document.querySelector(".cs");
 const currentSessionBody = document.querySelector(".cs-body");
 const recommend = document.querySelector(".recommend");
@@ -94,7 +95,9 @@ function getFromAPI(apiURL) {
     tvDataObj["Cast&Crew"] = datas[2];
     tvDataObj["socialMedia"] = datas[3];
     tvDataObj["keywords"] = datas[4];
-    tvDataObj["currentSession"] = await fetch(`https://api.themoviedb.org/3/tv/${tvIDParam}/season/${tvDataObj["tvDetails"].last_episode_to_air.season_number}?api_key=75c8aed355937ba0502f74d9a1aed11c`).then(response => response.json());
+    if(tvDataObj["tvDetails"].last_episode_to_air) {
+      tvDataObj["currentSession"] = await fetch(`https://api.themoviedb.org/3/tv/${tvIDParam}/season/${tvDataObj["tvDetails"].last_episode_to_air.season_number}?api_key=75c8aed355937ba0502f74d9a1aed11c`).then(response => response.json());
+    }
     tvDataObj["recommendation"] = datas[5];
     tvDataObj["videos"] = datas[6];
     tvDataObj["images"] = datas[7];
@@ -108,12 +111,16 @@ function getFromAPI(apiURL) {
 }
 
 function ageRestriction(Country) {
-  let certificate = tvDataObj["contentRating"].results.find((item) => {
-    if (item.iso_3166_1 === Country) {
-      return item.rating
-    }
-  })
-  return certificate.rating
+  if(tvDataObj["contentRating"].results.length !== 0) {
+    let certificate = tvDataObj["contentRating"].results.find((item) => {
+      if (item.iso_3166_1 === Country) {
+        return item.rating
+      } else {
+        return false
+      }
+    })
+    return certificate.rating
+  }
 }
 
 function multipleArrayInObj(element, value) {
@@ -140,7 +147,7 @@ function timeConvert(n) {
 function arrangeHeaderPeople() {
   let importantCrew = []
   tvDataObj["tvDetails"].created_by.filter(item => {
-    importantCrew.push(`<div class="col"><h6>${item.name}</h6><p>Creator</p></div>`);
+    importantCrew.push(`<div class="col"><a href="/Person/?id=${item.id}" target="_blank"><h6>${item.name}</h6></a><p>Creator</p></div>`);
   });
   return importantCrew
 }
@@ -174,7 +181,7 @@ function getTvLanguage() {
 function getKeywords() {
   let keywords = [];
   tvDataObj["keywords"].results.filter((item) => {
-    keywords.push(`<a href="#" class="badge bg-secondary text-white me-2 my-1" target="_blank">${item.name}</a>`)
+    keywords.push(`<a href="/Keyword/?id=${item.id}&keyword=${item.name}&show=tv" class="badge bg-secondary text-white me-2 my-1" target="_blank">${item.name}</a>`)
   })
   return keywords.join("");
 }
@@ -198,13 +205,28 @@ function arrangeTopCast() {
   let cast = [];
   tvDataObj['Cast&Crew'].cast.filter((item) => {
     if (item.order <= 8) {
+      if(item.profile_path !== null) {
+        var prof = castImageURL + item.profile_path;
+      } else {
+        if(item.gender === 2) {
+          prof = '/Tv/Assest/Images/profile2.png'
+        }
+        if(item.gender === 1) {
+          prof = '/Tv/Assest/Images/profile.png'
+        }
+        if(item.gender === 3) {
+          prof = '/Tv/Assest/Images/non-binary.png'
+        }
+      }
       cast.push(`
       <div class="cast-card me-3 rounded">
-      <img src="${castImageURL + item.profile_path}" class="card-img-top" alt="">
+      <a href="/person/?id=${item.id}" target="_blank" class="d-flex flex-column align-items-center">
+      <img src="${prof}" class="card-img-top" alt="">
       <div class="cast-body">
         <h5 class="cast-title text-black">${item.name}</h5>
         <p class="cast-text text-black">${item.character}</p>
       </div>
+      </a>
     </div>
       `)
     }
@@ -216,13 +238,22 @@ function arrangeRecommendations() {
   let recommendations = [];
   if (tvDataObj['recommendation'].results) {
     tvDataObj['recommendation'].results.filter((item) => {
+      if(item.poster_path !== null) {
+        var recommendImage = recommendImageURL + item.backdrop_path;
+        var size = "100%";
+      } else {
+        recommendImage = '/Tv/Assest/Images/no-image.png'
+        var size = "56%"
+      }
       recommendations.push(`
     <div class="recommend-card me-3 rounded">
-    <img class="card-img-top" src="${recommendImageURL + item.backdrop_path}">
-      <div class="recommend-body d-flex justify-content-between align-items-center">
+    <a href="/tv/?id=${item.id}" target="_blank" class="d-flex flex-column align-items-center">
+    <img class="card-img-top" style="width: ${size}" src="${recommendImage}">
+      <div class="recommend-body d-flex justify-content-between align-items-center text-color">
         <h5>${item.name}</h5>
         <span class="fw-bold">${item.vote_average.toFixed(1) * 10}%</span>
       </div>
+      </a>
     </div>
     `)
     })
@@ -239,16 +270,27 @@ function resetMediaActiveClass(event) {
 
 function header() {
   document.title = tvDataObj["tvDetails"].original_name + ' - IMDB #2';
-  poster.src = `${posterImageURL}${tvDataObj["tvDetails"].poster_path}`;
-  headerSection.style.backgroundImage = `url(${bannerImageURL}${tvDataObj["tvDetails"].backdrop_path})`
+  if(tvDataObj["tvDetails"].poster_path !== null) {
+    poster.src = `${posterImageURL}${tvDataObj["tvDetails"].poster_path}`;
+  } else {
+    poster.src = `/Tv/Assest/Images/no-image.png`
+  }
+  if(tvDataObj["tvDetails"].backdrop_path !== null) {
+    headerSection.style.backgroundImage = `url(${bannerImageURL}${tvDataObj["tvDetails"].backdrop_path})`
+  }
   headerSection.style.backgroundPosition = screenSize;
   headerSection.style.backgroundRepeat = "no-repeat";
   headerSection.style.backgroundSize = "cover";
   tvTitle.innerHTML += `${tvDataObj["tvDetails"].original_name}`;
   certificationBadge.innerHTML = `${ageRestriction(tvDataObj["tvDetails"].origin_country[0])}`;
+  if(!ageRestriction(tvDataObj["tvDetails"].origin_country[0])) {
+    certificationBadge.classList.add("d-none")
+  }
   country.innerHTML = `${tvDataObj["tvDetails"].production_countries[0].iso_3166_1}`
   genres.innerHTML = `${multipleArrayInObj(tvDataObj["tvDetails"].genres, "name")}`
-  runTime.innerHTML = `${timeConvert(tvDataObj["tvDetails"].episode_run_time[0])}`
+  if(tvDataObj["tvDetails"].episode_run_time.length !== 0) {
+    runTime.innerHTML = `${timeConvert(tvDataObj["tvDetails"].episode_run_time[0])}`
+  }
   tagLine.innerHTML = `${tvDataObj["tvDetails"].tagline}`
   overview.innerHTML = `${tvDataObj["tvDetails"].overview}`
   headerCrew.insertAdjacentHTML("beforeend", arrangeHeaderPeople().join(""));
@@ -265,13 +307,21 @@ function aside() {
 
 function article() {
   topCast.insertAdjacentHTML("beforeend", arrangeTopCast());
-  currentSessionImg.src = `${recommendImageURL}${tvDataObj["currentSession"].poster_path}`;
-  currentSessionBody.innerHTML = `
-  <h5 class="card-title">${tvDataObj["currentSession"].name}</h5>
-  <h4 class="card-text fs-6 fw-bold mb-5 mt-2">${new Date(tvDataObj["currentSession"].air_date).getFullYear()}<span class="text-muted w-75 mx-2">|</span>${tvDataObj["currentSession"].episodes.length}</h4>
-  <p>${tvDataObj["currentSession"].overview}</p>
-  `
-  recommend.insertAdjacentHTML("beforeend", arrangeRecommendations());
+  if(tvDataObj["currentSession"]) {
+    currentSessionImg.src = `${recommendImageURL}${tvDataObj["currentSession"].poster_path}`;
+    currentSessionBody.innerHTML = `
+    <h5 class="card-title">${tvDataObj["currentSession"].name}</h5>
+    <h4 class="card-text fs-6 fw-bold mb-5 mt-2">${new Date(tvDataObj["currentSession"].air_date).getFullYear()}<span class="text-muted w-75 mx-2">|</span>${tvDataObj["currentSession"].episodes.length}</h4>
+    <p>${tvDataObj["currentSession"].overview}</p>
+    `
+  } else {
+    currentSession.classList.add("d-none");
+  }
+  if(tvDataObj['recommendation'].results.length === 0) {
+    document.querySelector(".recommend-div").classList.add("d-none")
+  } else {
+    recommend.insertAdjacentHTML("beforeend", arrangeRecommendations());
+  }
   mediaTitleBar.children[2].innerHTML += ` <div class="badge bg-secondary">${tvDataObj["videos"].results.length}</div>`;
   mediaTitleBar.children[3].innerHTML += ` <div class="badge bg-secondary">${tvDataObj["images"].backdrops.length}</div>`;
   mediaTitleBar.children[4].innerHTML += ` <div class="badge bg-secondary">${tvDataObj["images"].posters.length}</div>`;
@@ -281,9 +331,9 @@ function mostPopularMedia(event) {
   mediaContent.scrollLeft = 0;
   resetMediaActiveClass(event)
   mediaContent.innerHTML = `
-  <div class="me-3"><iframe width="533" height="300" src="https://www.youtube.com/embed/${tvDataObj["videos"].results[0].key}"></iframe></div>
-  <div class="me-3"><img class="rounded" src="${castImageURL + tvDataObj["images"].backdrops[0].file_path}" width="533" height="300"></div>
-  <div class="me-3"><img class="rounded" src="${castImageURL + tvDataObj["images"].posters[0].file_path}" width="200" height="300"></div>
+  ${(tvDataObj["videos"].results.length !== 0)? `<div class="me-3"><iframe width="533" height="300" src="https://www.youtube.com/embed/${tvDataObj["videos"].results[0].key}"></iframe></div>`:``}
+  ${(tvDataObj["images"].backdrops.length !== 0)? `<div class="me-3"><img class="rounded" src="${castImageURL + tvDataObj["images"].backdrops[0].file_path}" width="533" height="300"></div>`:``}
+  ${(tvDataObj["images"].posters.length !== 0)? `<div class="me-3"><img class="rounded" src="${castImageURL + tvDataObj["images"].posters[0].file_path}" width="200" height="300"></div>`:``}
   `;
 }
 

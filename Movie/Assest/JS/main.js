@@ -18,6 +18,7 @@ const topCast = document.querySelector(".cast");
 const recommend = document.querySelector(".recommend");
 const topCastNextSlide = document.querySelector("#next-cast");
 const topCastPrevSlide = document.querySelector("#prev-cast");
+const collection = document.querySelector(".collection");
 const collectionImage = document.querySelector(".collection-image");
 const collectionCard = document.querySelector(".collection .card-img-overlay");
 const recommendNextSlide = document.querySelector("#next-recommend");
@@ -95,7 +96,9 @@ function getFromAPI(apiURL) {
     movieDataObj["Cast&Crew"] = datas[2];
     movieDataObj["socialMedia"] = datas[3];
     movieDataObj["keywords"] = datas[4];
-    movieDataObj["collection"] = await fetch(`https://api.themoviedb.org/3/collection/${movieDataObj["movieDetails"].belongs_to_collection.id}?api_key=75c8aed355937ba0502f74d9a1aed11c`).then(response => response.json());
+    if(movieDataObj["movieDetails"].belongs_to_collection) {
+      movieDataObj["collection"] = await fetch(`https://api.themoviedb.org/3/collection/${movieDataObj["movieDetails"].belongs_to_collection.id}?api_key=75c8aed355937ba0502f74d9a1aed11c`).then(response => response.json());
+    }
     movieDataObj["recommendation"] = datas[5];
     movieDataObj["videos"] = datas[6];
     movieDataObj["images"] = datas[7];
@@ -108,11 +111,13 @@ function getFromAPI(apiURL) {
 }
 
 function getISO(iso) {
+  
   let certificate = movieDataObj["releaseDate"].results.find((item, index) => {
     if (item.iso_3166_1 === iso.iso_3166_1) {
       return iso
     }
   })
+  console.log(certificate);
   return certificate.release_dates[0].certification;
 }
 
@@ -141,7 +146,7 @@ function arrangeHeaderPeople() {
   let importantCrew = []
   movieDataObj["Cast&Crew"].crew.filter(item => {
     if (item.job === "Director" || item.job === "Screenplay" || item.job === "Author" || item.job === "Novel" || item.job === "Characters" || item.job === "Writer" || item.job === "Story" || item.job === "Teleplay") {
-      importantCrew.push(`<div class="col"><h6>${item.name}</h6><p>${item.job}</p></div>`);
+      importantCrew.push(`<div class="col"><a href="/person/?id=${item.id}" target="_blank"><h6>${item.name}</h6></a><p>${item.job}</p></div>`);
     }
   });
   return importantCrew
@@ -183,7 +188,7 @@ function getMovieLanguage() {
 function getKeywords() {
   let keywords = [];
   movieDataObj["keywords"].keywords.filter((item) => {
-    keywords.push(`<a href="#" class="badge bg-secondary text-white me-2 my-1" target="_blank">${item.name}</a>`)
+    keywords.push(`<a href="/keyword/?id=${item.id}&keyword=${item.name}&show=movie" class="badge bg-secondary text-white me-2 my-1" target="_blank">${item.name}</a>`)
   })
   return keywords;
 }
@@ -197,13 +202,14 @@ function arrangeTopCast() {
   movieDataObj['Cast&Crew'].cast.filter((item) => {
     if (item.order <= 8) {
       cast.push(`
-      <div class="cast-card me-3 rounded">
+      <a href="/person/?id=${item.id}" target="_blank">
+      <div class="cast-card me-3 rounded h-100">
       <img src="${castImageURL + item.profile_path}" class="card-img-top" alt="">
       <div class="cast-body">
         <h5 class="cast-title text-color">${item.name}</h5>
         <p class="cast-text text-color">${item.character}</p>
       </div>
-    </div>
+    </div></a>
       `)
     }
   })
@@ -215,13 +221,14 @@ function arrangeRecommendations() {
   if (movieDataObj['recommendation'].results) {
     movieDataObj['recommendation'].results.filter((item) => {
       recommendations.push(`
+      <a href="/movie/?id=${item.id}" target="_blank">
     <div class="recommend-card me-3 rounded">
     <img class="card-img-top" src="${recommendImageURL + item.backdrop_path}">
       <div class="recommend-body d-flex justify-content-between align-items-center">
-        <h5>${item.title}</h5>
-        <span class="fw-bold">${item.vote_average.toFixed(1) * 10}%</span>
+        <h5 class="text-color">${item.title}</h5>
+        <span class="fw-bold text-color">${item.vote_average.toFixed(1) * 10}%</span>
       </div>
-    </div>
+    </div></a>
     `)
     })
     return recommendations.join("");
@@ -264,12 +271,17 @@ function aside() {
 
 function article() {
   topCast.insertAdjacentHTML("beforeend", arrangeTopCast().join(""));
-  collectionImage.src = `${posterImageURL}${movieDataObj["movieDetails"].belongs_to_collection.backdrop_path}`;
-  collectionCard.innerHTML = `
-  <h5 class="card-title">Part of the ${movieDataObj["movieDetails"].belongs_to_collection.name}</h5>
-  <p class="card-text">Inlude ${multipleArrayInObj(movieDataObj["collection"].parts, "original_title")}</p>
-  <a href="#" class="px-3 fs-6 py-3 badge bg-secondary text-white">VIEW THE COLLECTION</a>
-  `
+  if(movieDataObj["movieDetails"].belongs_to_collection) {
+    collectionImage.src = `${posterImageURL}${movieDataObj["movieDetails"].belongs_to_collection.backdrop_path}`;
+    collectionCard.innerHTML = `
+    <h5 class="card-title">Part of the ${movieDataObj["movieDetails"].belongs_to_collection.name}</h5>
+    <p class="card-text">Inlude ${multipleArrayInObj(movieDataObj["collection"].parts, "original_title")}</p>
+    <a href="/collection/?id=${movieDataObj["movieDetails"].belongs_to_collection.id}" target="_blank" class="px-3 fs-6 py-3 badge bg-secondary text-white">VIEW THE COLLECTION</a>
+    `
+  } else {
+    collection.classList.add("d-none");
+    document.querySelector(".top-collection").classList.add("d-none");
+  }
   recommend.insertAdjacentHTML("beforeend", arrangeRecommendations());
   mediaTitleBar.children[2].innerHTML += ` <div class="badge bg-secondary">${movieDataObj["videos"].results.length}</div>`;
   mediaTitleBar.children[3].innerHTML += ` <div class="badge bg-secondary">${movieDataObj["images"].backdrops.length}</div>`;
