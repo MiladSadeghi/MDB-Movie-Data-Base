@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
   })
   searchButton.addEventListener('click', () => {
     if (searchInput.value != "") {
-      location.href = `/Search/?search=${searchInput.value}`
+      location.href = `/search/?search=${searchInput.value}`
     } else {
       navBar.animate([
         { boxShadow: 'none' },
